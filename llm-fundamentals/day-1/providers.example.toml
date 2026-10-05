@@ -1,0 +1,24 @@
+# Which model each round talks to. Copy this file to providers.toml and edit it there.
+# Pick a block with:  --provider NAME   (or set LLM_PROVIDER=NAME)
+
+default = "anthropic"          # used when you run live and name no provider
+replay_from = "anthropic"      # whose recordings --replay plays back
+
+[anthropic]                    # the trainer's machine; recordings come from here
+kind = "anthropic"
+model = "claude-opus-5-5"
+api_key_env = "ANTHROPIC_API_KEY"
+input_price_per_million = 4.00 # USD, for the cost line in r2 --long
+
+[nexus]                        # the room's laptops
+kind = "openai"                # VERIFY: assumes Nexus speaks the OpenAI chat-completions format
+base_url = "https://nexus.example.internal/v1"   # VERIFY
+model = "MODEL-NAME"           # VERIFY
+api_key_env = "NEXUS_API_KEY"
+input_price_per_million = 0
+
+[ollama]                       # R0 only: a base model, which continues text instead of chatting
+kind = "ollama"
+base_url = "http://localhost:11434"
+model = "llama3.2:1b-text-q4_K_M"   # ollama pull llama3.2:1b-text-q4_K_M
+input_price_per_million = 0

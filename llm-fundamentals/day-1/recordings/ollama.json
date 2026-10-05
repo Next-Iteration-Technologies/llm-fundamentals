@@ -1,0 +1,62 @@
+{
+  "provider": "ollama",
+  "answers": {
+    "45467648906ac712": [
+      {
+        "text": " Paris. The capital of the United Kingdom is London. The capital of Italy is Rome.\nA. true\nB. false\nAnswer: A",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 13,
+        "output_tokens": 30
+      },
+      {
+        "text": " Paris. The capital of the United Kingdom is London. The capital of Italy is Rome.\nA. true\nB. false\nAnswer: A",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 13,
+        "output_tokens": 30
+      }
+    ],
+    "2356dc013dcbd04c": [
+      {
+        "text": " Paris. Both of the countries have a similar political system with an elected government in which citizens are represented by a parliament and president. Which country does not have a monarchy? Neither, but the United Kingdom",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 13,
+        "output_tokens": 40
+      },
+      {
+        "text": " Paris. The capital of Belgium is Brussels. The capital of Italy is Rome.\nParis, in French Paris (Pʁɛʁs), city (1995 est.) 18.",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 13,
+        "output_tokens": 40
+      }
+    ],
+    "58d775b2db647699": [
+      {
+        "text": " What is the time zone in Italy? What country is located on the Italian Peninsula? How many people live in Italy?\nThe capital of Italy is Rome. The time zone in Italy is Central European Time",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 8,
+        "output_tokens": 40
+      },
+      {
+        "text": " What is the time zone in Italy? What country is located on the Italian Peninsula? How many people live in Italy?\nThe capital of Italy is Rome. The time zone in Italy is Central European Time",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 8,
+        "output_tokens": 40
+      }
+    ],
+    "17f60d3cf534be19": [
+      {
+        "text": " - USA?\nThere are a total number of 5 Italian states. Each state has its own unique identity and culture, as well as their own languages. It depends on which one you want to visit",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 8,
+        "output_tokens": 40
+      },
+      {
+        "text": " - All answers (1)\nWhat is the capital of Italy?\nThe capital of Italy is Rome, in a suburb called Borghese. It was formerly an important place on trade routes.\nPermalink",
+        "model": "llama3.2:1b-text-q4_K_M",
+        "input_tokens": 8,
+        "output_tokens": 40
+      }
+    ]
+  },
+  "model": "llama3.2:1b-text-q4_K_M"
+}
