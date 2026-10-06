@@ -1,0 +1,12 @@
+[
+  {"id": "KI-031", "product": "CSP", "symptom": "Upload fails: file too large",
+   "fix": "Files over 2 GB must be split into smaller files, then uploaded again.", "source": "Known issues list"},
+  {"id": "KI-044", "product": "Classic", "symptom": "New documents are not found in search",
+   "fix": "The search index runs nightly. Documents appear in search the next day.", "source": "SOP-12"},
+  {"id": "KI-052", "product": "CSP", "symptom": "Upload fails: missing metadata",
+   "fix": "Add the missing field (for invoices: invoice date and supplier) in the upload form, then upload the file again.", "source": "SOP-07"},
+  {"id": "KI-058", "product": "CSP", "symptom": "Document opens with 'access denied'",
+   "fix": "The user is not in the workspace group. Raise an access request; the workspace owner approves it.", "source": "Known issues list"},
+  {"id": "KI-063", "product": "Classic", "symptom": "Export to PDF is slow for large folders",
+   "fix": "Export folders with more than 500 documents overnight using a scheduled export.", "source": "SOP-15"}
+]
