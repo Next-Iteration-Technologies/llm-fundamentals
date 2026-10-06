@@ -1,0 +1,27 @@
+merge   1: b'e' + b' ' -> b'e '   (id 256, seen 14434 times)
+merge   2: b't' + b'h' -> b'th'   (id 257, seen 10785 times)
+merge   3: b'd' + b' ' -> b'd '   (id 258, seen 9665 times)
+merge   4: b' ' + b'a' -> b' a'   (id 259, seen 7179 times)
+merge   5: b't' + b' ' -> b't '   (id 260, seen 6040 times)
+merge   6: b'i' + b'n' -> b'in'   (id 261, seen 5417 times)
+merge   7: b'e' + b'r' -> b'er'   (id 262, seen 5288 times)
+merge   8: b' ' + b'th' -> b' th'   (id 263, seen 5181 times)
+merge   9: b's' + b' ' -> b's '   (id 264, seen 4205 times)
+merge  10: b'n' + b'd ' -> b'nd '   (id 265, seen 3970 times)
+merge  11: b',' + b' ' -> b', '   (id 266, seen 3844 times)
+merge  12: b'o' + b'u' -> b'ou'   (id 267, seen 3835 times)
+merge  13: b't' + b'o' -> b'to'   (id 268, seen 3521 times)
+merge  14: b'\xe2' + b'\x80' -> b'\xe2\x80'   (id 269, seen 3431 times)
+merge  15: b'e' + b'n' -> b'en'   (id 270, seen 3071 times)
+merge  16: b' ' + b'h' -> b' h'   (id 271, seen 3007 times)
+merge  17: b' th' + b'e ' -> b' the '   (id 272, seen 2995 times)
+merge  18: b' a' + b'nd ' -> b' and '   (id 273, seen 2913 times)
+merge  19: b'e' + b'd ' -> b'ed '   (id 274, seen 2834 times)
+merge  20: b'o' + b'n' -> b'on'   (id 275, seen 2742 times)
+
+Training done. Vocabulary size: 556 tokens. Text went from 445847 bytes to 200797 tokens.
+
+Sample:    Once upon a time there was a little girl.
+Token IDs: [79, 110, 401, 334, 275, 316, 338, 344, 346, 256, 294, 115, 316, 519, 103, 322, 108, 46]
+Tokens:    ['O', 'n', 'ce ', 'up', 'on', ' a ', 'ti', 'me ', 'ther', 'e ', 'wa', 's', ' a ', 'little ', 'g', 'ir', 'l', '.']
+Round trip OK: True

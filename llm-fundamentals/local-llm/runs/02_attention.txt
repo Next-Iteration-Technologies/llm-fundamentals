@@ -1,0 +1,15 @@
+after embedding: (1, 6, 32)   (batch, tokens, dim)
+after attention: (1, 6, 16)   (batch, tokens, head_dim)
+
+attention weights (row = which token is asking, col = who it listens to):
+tensor([[1.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+        [0.61, 0.39, 0.00, 0.00, 0.00, 0.00],
+        [0.56, 0.20, 0.23, 0.00, 0.00, 0.00],
+        [0.24, 0.26, 0.11, 0.39, 0.00, 0.00],
+        [0.13, 0.15, 0.21, 0.15, 0.36, 0.00],
+        [0.26, 0.10, 0.25, 0.09, 0.17, 0.13]], grad_fn=<SelectBackward0>)
+
+each row sums to: tensor([1.00, 1.00, 1.00, 1.00, 1.00, 1.00], grad_fn=<SumBackward1>)
+
+Note the zeros above the diagonal: no token can see the future.
+The numbers are meaningless until training; only the shapes matter now.

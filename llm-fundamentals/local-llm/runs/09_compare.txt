@@ -1,0 +1,96 @@
+$ uv run explore.py compare "Once upon a ti"
+
+[UNTRAINED]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.007  'ook'
+   0.006  '�'
+   0.006  'wi'
+   0.006  '7'
+   0.006  '}'
+   (confidence of best guess: 1%)
+Continuation: 'Once upon a ti,’Ιke fromse�ion9\x03Wto��st �ill�theK?ould \r� d�The  h�sp: ‘�. The � mfbe degainran'
+
+[3,000 STEPS]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.652  'me '
+   0.090  'me'
+   0.086  'm'
+   0.030  'll'
+   0.017  'c'
+   (confidence of best guess: 65%)
+Continuation: 'Once upon a tione, it had her althe\nold town and dest. He food-eath, and swent up, eatecing them chat'
+
+[model.pt]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.647  'me '
+   0.072  'me'
+   0.065  'm'
+   0.032  'on'
+   0.028  'p'
+   (confidence of best guess: 65%)
+Continuation: 'Once upon a tione, it was\nset upon\nhis towood exching the fox, feather it down these each you must foot'
+
+$ uv run explore.py compare "in the mor"
+
+[UNTRAINED]  Prompt: "in the mor"
+Top-5 next tokens:
+   0.010  'om'
+   0.008  '�'
+   0.008  'ge '
+   0.007  'ce '
+   0.007  '�'
+   (confidence of best guess: 1%)
+Continuation: 'in the morge omit ke fromse�ion9 and the Pough� p��y �the��ould �eaoun�The hiAsp: ‘�. The J\x08fbe deesswas '
+
+[3,000 STEPS]  Prompt: "in the mor"
+Top-5 next tokens:
+   0.706  'n'
+   0.033  'e '
+   0.022  'r'
+   0.020  'row'
+   0.017  's'
+   (confidence of best guess: 71%)
+Continuation: 'in the morning, saw althe\nold toneie. Now the fox behead him and hile he meattting them conqu'
+
+[model.pt]  Prompt: "in the mor"
+Top-5 next tokens:
+   0.843  'n'
+   0.038  'e '
+   0.019  'ne'
+   0.013  'row'
+   0.011  'k'
+   (confidence of best guess: 84%)
+Continuation: 'in the morning, saw alther old, and the thief. He fearly feaule shibbling up tooken cont'
+
+$ uv run explore.py compare "The quantum "
+
+[UNTRAINED]  Prompt: "The quantum "
+Top-5 next tokens:
+   0.008  'lea'
+   0.006  '}'
+   0.006  'ma'
+   0.006  '”'
+   0.006  'litt'
+   (confidence of best guess: 1%)
+Continuation: 'The quantum ,’Ιke fromse�ion9\x03Wto��st �ill�theK?ould \r� d�The  h�sp: ‘�. The � mfbe degainran'
+
+[3,000 STEPS]  Prompt: "The quantum "
+Top-5 next tokens:
+   0.060  'ti'
+   0.051  'up'
+   0.050  'on'
+   0.047  'o'
+   0.039  'it'
+   (confidence of best guess: 6%)
+Continuation: 'The quantum once it had beenso up, and stoney and dy to a f? If live\nwho\nmy your must the as'
+
+[model.pt]  Prompt: "The quantum "
+Top-5 next tokens:
+   0.055  'li'
+   0.053  'up'
+   0.049  'la'
+   0.041  't'
+   0.032  'un'
+   (confidence of best guess: 5%)
+Continuation: 'The quantum on it was\nselve, and the town and do nothing so meap of hise while that they had be decri'
+

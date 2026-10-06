@@ -1,0 +1,7 @@
+$ uv run explore.py temperature "in the mor"
+
+temperature 0.5: 'in the morning, he would not by the stone evening that they are a lives, by mead. If know h'
+
+temperature 0.8: 'in the morning, saw alther old, and the thief. He fearly feaule shibbling up tooken cont'
+
+temperature 1.2: 'in the mor of\nit had herselve, and said, “He! Alada? If live\nGretem–8 mus deess. A'

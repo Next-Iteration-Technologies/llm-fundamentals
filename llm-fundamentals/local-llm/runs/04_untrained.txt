@@ -1,0 +1,21 @@
+Untrained model (random weights, seed 0). Saved as model_untrained.pt
+
+Prompt: "Once upon a"
+Top-5 next tokens:
+   0.008  'up'
+   0.006  ' wi'
+   0.006  'le '
+   0.006  'to '
+   0.006  'est'
+   (confidence of best guess: 1%)
+Continuation: 'Once upon a c�it ke fromse�rea�d\n\x06ough� pst � they �the�Hould ��oun�The hiAsp: ‘�. The � mfbe de5�'
+
+Prompt: "The quantum"
+Top-5 next tokens:
+   0.009  'est'
+   0.007  ' the\n'
+   0.007  ' wi'
+   0.007  '�'
+   0.007  'fi'
+   (confidence of best guess: 1%)
+Continuation: 'The quantumly coit ke fromse�rea�d\n\x06ough� pst �K�the�He, ��oun�The hiAsp: ‘�. The � mfbe de5�'

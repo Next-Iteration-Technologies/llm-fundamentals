@@ -23,15 +23,18 @@ uv sync
 
 ## The steps
 
-| Step | File | What it does | Run it |
-|------|------|--------------|--------|
-| 1 | `bpe_tokenizer.py` | Learns byte-level BPE merges from `stories.txt` and writes `tokenizer.json` | `uv run bpe_tokenizer.py stories.txt` |
-| 2 | `attention.py` | Embeddings and **one** attention head, every line spelled out | `uv run attention.py` |
-| 3 | `model.py` | The full transformer: multi-head attention, feed-forward, layers | `uv run model.py` |
-| 4 | `train.py` | Trains the model on the stories and writes `model.pt` | `uv run train.py` |
-| 5 | `generate.py` | Shows next-token probabilities and lets the model keep writing | `uv run generate.py "Once upon a"` |
+| Step | File | What it does | Run it | Wiki |
+|------|------|--------------|--------|------|
+| 1 | `bpe_tokenizer.py` | Learns byte-level BPE merges from `stories.txt` and writes `tokenizer.json` | `uv run bpe_tokenizer.py stories.txt` | [bpe_tokenizer_wiki.md](bpe_tokenizer_wiki.md) |
+| 2 | `attention.py` | Embeddings and **one** attention head, every line spelled out | `uv run attention.py` | [attention_wiki.md](attention_wiki.md) |
+| 3 | `model.py` | The full transformer: multi-head attention, feed-forward, layers | `uv run model.py` | [model_wiki.md](model_wiki.md) |
+| 4 | `train.py` | Trains the model on the stories and writes `model.pt` | `uv run train.py` | [train_wiki.md](train_wiki.md) |
+| 5 | `generate.py` | Shows next-token probabilities and lets the model keep writing | `uv run generate.py "in the mor"` | [generate_wiki.md](generate_wiki.md) |
+| + | `explore.py` | Untrained vs trained: predictions, temperature, embeddings, attention | `uv run explore.py compare "in the mor"` | [explore_wiki.md](explore_wiki.md) |
 
-Run them in order the first time. `tokenizer.json` is already in the repo, so you can skip step 1 and go straight to step 2.
+The wikis quote real output from our runs. Every log is saved in [`runs/`](runs/), numbered in pipeline order.
+
+Run them in order the first time. Every output is already in the repo (`tokenizer.json`, `data.pt`, the trained models), so you can start at any step. On a slow laptop, skip training and go straight to step 5.
 
 ### 1. Tokenizer
 
@@ -78,31 +81,49 @@ Each step:
 
 Every 200 steps it prints a **train loss** and a **val loss**. The val loss is measured on the last 10% of the stories, which the model never trains on. A model that guesses at random scores ln(556) ≈ **6.32**, so watch the loss fall below that. If the train loss keeps falling while the val loss stops falling, the model is memorising rather than learning.
 
-The first run encodes the stories once and saves them as `data.pt`. Later runs reuse that file. On a laptop CPU, expect training to take a few minutes.
+The first run encodes the stories once and saves them as `data.pt`. Later runs reuse that file.
+
+Our results on an Intel MacBook Pro (CPU only), from [runs/](runs/):
+
+| Steps | Time | Final train loss | Final val loss |
+|---|---|---|---|
+| 3,000 | 79 s (+ about 17 s of one-time encoding) | 3.44 | 3.62 |
+| 10,000 | 287 s | 3.06 | 3.42 |
+
+The val loss stops improving at about 7,000 steps: that is as far as this small model goes on this much text. Details in [train_wiki.md](train_wiki.md).
 
 ### 5. Generation
 
 ```bash
-uv run generate.py "Once upon a"    # a story opening: one tall bar
-uv run generate.py "The quantum"    # nothing like the stories: many small bars
-uv run generate.py                  # both
+uv run generate.py "in the mor"     # 84% sure the next token is 'n' (morning): one tall bar
+uv run generate.py "The quantum "   # about 5% at best: many small bars
+uv run generate.py                  # the two built-in prompts
 ```
 
-For each prompt you see the five most likely next tokens with their probabilities, then 40 more tokens written by the model. A language model never refuses to guess; it always gives a spread of probabilities. **A match looks like one tall bar; no match looks like many small ones.**
+For each prompt you see the five most likely next tokens with their probabilities, then 40 more tokens written by the model. The built-in prompt `"Once upon a"` gives a surprise; [generate_wiki.md](generate_wiki.md#the-built-in-prompts-a-surprise) explains why. A language model never refuses to guess; it always gives a spread of probabilities. **A match looks like one tall bar; no match looks like many small ones.**
 
 ## Files
 
-| File | In git? | What it is |
+Everything the pipeline makes is committed, so you can inspect any stage without rerunning it.
+
+| File | Made by | What it is |
 |------|---------|------------|
-| `stories.txt` | yes | About 446 KB of Aesop, Peter Rabbit and Grimm from Project Gutenberg |
-| `tokenizer.json` | yes | Merges and vocabulary written by step 1 |
-| `data.pt` | no | The stories as token IDs, cached by step 4 |
-| `model.pt` | no | Trained weights and settings, written by step 4 |
-| `pyproject.toml`, `uv.lock` | yes | This folder's own environment (PyTorch) |
+| `stories.txt` | `build_stories.py` | About 446 KB of Aesop, Peter Rabbit and Grimm from Project Gutenberg, licence text removed |
+| `tokenizer.json` | step 1 | Merges and vocabulary (556 tokens) |
+| `data.pt` | step 4 | The whole of `stories.txt` as 200,797 token IDs. **Not** the embedding table |
+| `model_untrained.pt` | `explore.py untrained` | Random starting weights, the same ones training starts from |
+| `model_3k.pt` | step 4, 3,000 steps | Trained weights, including the embedding tables |
+| `model.pt` | step 4, 10,000 steps | Trained weights, including the embedding tables. Used by `generate.py` |
+| `runs/*.txt` | every step | The output of each run, quoted in the wikis |
+| `pyproject.toml`, `uv.lock` | | This folder's own environment (PyTorch) |
+
+The embedding tables live inside the model files: `torch.load("model.pt")["state"]["embed.token_table.weight"]`. See [explore_wiki.md](explore_wiki.md#where-the-embedding-table-is-stored).
+
+Running `train.py` overwrites `model.pt`. `git restore model.pt` brings back the committed one.
 
 ## Try this
 
-1. Train for 10,000 steps instead of 3,000. How low does the val loss go, and does the generated text get better?
+1. Run `uv run explore.py compare "Peter Rab"`. How much surer is the 10,000-step model than the 3,000-step one?
 2. In `train.py`, raise `DIM` to 64 and `N_LAYERS` to 4. How many parameters is that now, and how much slower does training get?
-3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help?
+3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help? (`git restore tokenizer.json data.pt model.pt` puts everything back.)
 4. Run `generate.py` with a sentence from the stories, and then with a sentence from your own work. Compare how confident the model is about each.

@@ -1,0 +1,20 @@
+
+Prompt: "Once upon a"
+Top-5 next tokens:
+   0.118  '\n'
+   0.117  'b'
+   0.084  ' s'
+   0.068  'l'
+   0.063  'f'
+   (confidence of best guess: 12%)
+Continuation: 'Once upon assiste Cold larmedilk reached out of a wolf-so fellent to the carry, and strung'
+
+Prompt: "The quantum"
+Top-5 next tokens:
+   0.204  'm'
+   0.072  'ent'
+   0.067  'p'
+   0.065  ' '
+   0.055  'en'
+   (confidence of best guess: 20%)
+Continuation: 'The quantum from to the head, cried with icap of the friendow.’ So the furiter was blay eny us hear'

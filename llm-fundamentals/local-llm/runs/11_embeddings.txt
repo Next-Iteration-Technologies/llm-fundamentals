@@ -1,0 +1,25 @@
+$ uv run explore.py embeddings
+Stored in model.pt -> ['state']['embed.token_table.weight']     shape (556, 32)
+Stored in model.pt -> ['state']['embed.position_table.weight']  shape (64, 32)
+
+Nearest tokens by cosine similarity (1.0 = same direction, 0 = unrelated):
+
+' him'  (id 397)  first 4 numbers: [0.16, -0.98, 0.18, 1.04]
+   untrained: '�' 0.46, '�' 0.44, 'Z' 0.42, 'or' 0.41, ' b' 0.40
+   trained  : 'ed him' 0.57, '�' 0.51, 'him' 0.51, 'long' 0.48, 'ound ' 0.42
+
+'she '  (id 394)  first 4 numbers: [-0.27, -1.03, 0.49, 0.47]
+   untrained: 'it' 0.56, 'j' 0.45, 't\n' 0.43, 'le ' 0.42, ' th' 0.42
+   trained  : ' he ' 0.78, ' she ' 0.77, 'he ' 0.68, ', and ' 0.60, 'it ' 0.58
+
+'king'  (id 485)  first 4 numbers: [1.47, -0.38, 0.26, 0.41]
+   untrained: 'e\n' 0.48, 'b' 0.47, 'th' 0.46, '�' 0.43, 'lo' 0.42
+   trained  : ' them' 0.57, 'way' 0.52, 'other' 0.51, 'when' 0.49, 'er' 0.48
+
+'down'  (id 509)  first 4 numbers: [-0.09, -1.26, 0.82, -1.09]
+   untrained: 'when' 0.45, '\x13' 0.45, '\x1c' 0.43, 'hich' 0.37, '"' 0.36
+   trained  : 'row' 0.49, 're' 0.49, 'in' 0.46, '�' 0.45, 'long' 0.45
+
+'when'  (id 482)  first 4 numbers: [0.85, -0.68, -0.47, -0.77]
+   untrained: ' an' 0.48, 'tr' 0.47, 'ess' 0.46, 'i' 0.46, 'down' 0.45
+   trained  : 'hen' 0.60, 'ow' 0.53, 'if' 0.51, 'king' 0.49, ' for' 0.45
