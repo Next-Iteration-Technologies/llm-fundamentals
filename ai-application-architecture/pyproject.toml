@@ -3,7 +3,7 @@ name = "ai-application-architecture"
 version = "0.1.0"
 description = "AI Application Architecture: the LoDA chatbot, built one step at a time"
 requires-python = ">=3.11"
-dependencies = ["anthropic>=0.120", "httpx"]
+dependencies = ["anthropic>=0.120", "httpx", "fastapi>=0.115", "uvicorn>=0.32"]
 
 [dependency-groups]
 dev = ["pytest>=8"]
