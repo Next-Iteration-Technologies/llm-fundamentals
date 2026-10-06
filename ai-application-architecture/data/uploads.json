@@ -1,0 +1,8 @@
+[
+  {"upload_id": "UP-2041", "uploaded_by": "priya", "workspace": "Finance", "uploaded_on": "yesterday",
+   "files_total": 20, "archived": 18,
+   "failed": [
+     {"file": "invoices_2025_q3_scans.zip", "reason": "File too large: 2.4 GB, the limit is 2 GB"},
+     {"file": "invoice_7788.pdf", "reason": "Missing metadata: invoice date"}
+   ]}
+]

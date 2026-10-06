@@ -1,0 +1,5 @@
+[
+  {"user_id": "priya", "name": "Priya Sharma", "email": "priya.sharma@corp.example", "groups": ["Finance-Records"]},
+  {"user_id": "arun", "name": "Arun Mehta", "email": "arun.mehta@corp.example", "groups": ["HR-Records"]},
+  {"user_id": "mia", "name": "Mia Wagner", "email": "mia.wagner@corp.example", "groups": ["LoDA-Developers"]}
+]

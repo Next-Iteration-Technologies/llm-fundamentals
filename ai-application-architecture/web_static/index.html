@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoDA Chatbot</title>
+<style>
+  :root {
+    --accent: #4f7df0;
+    --accent-weak: #eaf0fe;
+    --blue: #3b6fd6;
+    --green: #1f9d6c;
+    --red: #e5484d;
+    --bg: #f4f5f7;
+    --panel: #ffffff;
+    --panel-2: #fafbfc;
+    --text: #1a1d23;
+    --text-dim: #6b7280;
+    --border: #e4e6eb;
+    --shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --accent: #6c8dff;
+      --accent-weak: #1b2544;
+      --blue: #7aa2ff;
+      --green: #3ddc97;
+      --red: #ff6b6e;
+      --bg: #15171c;
+      --panel: #1d2026;
+      --panel-2: #1a1c22;
+      --text: #e7e9ee;
+      --text-dim: #9099a8;
+      --border: #2b2e36;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- top bar ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+  .brand .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-weak);
+  }
+  .tabs {
+    display: flex;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .tabs button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tabs button.active { background: var(--accent); color: #fff; }
+  .spacer { flex: 1; }
+  #status {
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .icon-btn {
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text-dim);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: var(--border); color: var(--text); }
+
+  /* ---------- layout ---------- */
+  main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+  .pane {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  #chat-pane { flex: 1; }
+  #log-pane {
+    width: 420px;
+    border-left: 1px solid var(--border);
+    background: var(--panel-2);
+    transition: width 0.15s ease, opacity 0.15s ease;
+  }
+  #log-pane.collapsed { width: 0; opacity: 0; overflow: hidden; border-left: none; }
+  .pane-head {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin: 0;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .scroll::-webkit-scrollbar { width: 8px; }
+  .scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+
+  /* ---------- chat bubbles ---------- */
+  .chat-inner { max-width: 720px; margin: 0 auto; }
+  .turn { display: flex; gap: 10px; margin-bottom: 18px; align-items: flex-start; }
+  .turn.user { flex-direction: row-reverse; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .turn.user .avatar { background: var(--text-dim); }
+  .turn.assistant .avatar { background: var(--accent); }
+  .bubble-col { display: flex; flex-direction: column; max-width: 78%; }
+  .turn.user .bubble-col { align-items: flex-end; }
+  .bubble {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    line-height: 1.5;
+    font-size: 14.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: var(--shadow);
+  }
+  .turn.user .bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .turn.assistant .bubble { background: var(--panel); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .timestamp { font-size: 11px; color: var(--text-dim); margin-top: 4px; padding: 0 4px; }
+
+  .typing .bubble { display: flex; gap: 4px; padding: 14px; }
+  .typing .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim);
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing .dot:nth-child(2) { animation-delay: 0.15s; }
+  .typing .dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ---------- log cards ---------- */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 12.5px;
+    overflow: hidden;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .card-head .chip {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .card.request .chip, .card.tool_call .chip { background: var(--blue); }
+  .card.answer .chip { background: var(--green); }
+  .card.error .chip { background: var(--red); }
+  .card-head .summary { flex: 1; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-head .caret { color: var(--text-dim); font-size: 10px; transition: transform 0.1s; }
+  .card.open .card-head .caret { transform: rotate(90deg); }
+  .card-body {
+    display: none;
+    padding: 0 10px 10px 26px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .card.open .card-body { display: block; }
+  .card-body .row { margin: 3px 0; white-space: pre-wrap; word-break: break-word; color: var(--text-dim); }
+  .card-body .msg { padding-left: 10px; color: var(--text-dim); }
+  .card-body .msg b { color: var(--text); }
+
+  /* ---------- footer ---------- */
+  footer {
+    display: flex;
+    justify-content: center;
+    padding: 14px 18px;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .composer {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    gap: 8px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 4px 4px 16px;
+  }
+  .composer input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14.5px;
+    color: var(--text);
+    outline: none;
+  }
+  .composer input::placeholder { color: var(--text-dim); }
+  .composer button {
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .composer button:disabled { opacity: 0.4; cursor: default; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="dot"></span> LoDA Chatbot</div>
+  <div class="tabs" id="step-tabs">
+    <button data-step="1" class="active">1 &middot; bare call</button>
+    <button data-step="2">2 &middot; tools</button>
+    <button data-step="3">3 &middot; retrieval</button>
+  </div>
+  <div class="spacer"></div>
+  <span id="status"><span class="dot"></span> connecting&hellip;</span>
+  <button class="icon-btn" id="toggle-log">Hide log</button>
+  <button class="icon-btn" id="reset">Reset</button>
+</header>
+<main>
+  <section class="pane" id="chat-pane">
+    <div class="scroll" id="chat"><div class="chat-inner" id="chat-inner"></div></div>
+    <footer>
+      <div class="composer">
+        <input type="text" id="message" placeholder="Hi, I'm Priya. I can't find my invoice 1234." autofocus>
+        <button id="send" aria-label="Send">&#8594;</button>
+      </div>
+    </footer>
+  </section>
+  <section class="pane" id="log-pane">
+    <h2 class="pane-head">What the model sees</h2>
+    <div class="scroll" id="log"></div>
+  </section>
+</main>
+
+<script>
+const chatEl = document.getElementById("chat-inner");
+const chatScrollEl = document.getElementById("chat");
+const logEl = document.getElementById("log");
+const logPaneEl = document.getElementById("log-pane");
+const tabsEl = document.getElementById("step-tabs");
+const messageEl = document.getElementById("message");
+const sendEl = document.getElementById("send");
+const statusEl = document.getElementById("status");
+let currentStep = "1";
+let typingEl = null;
+
+function scrollDown(el) { el.scrollTop = el.scrollHeight; }
+
+function timeNow() {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function addBubble(role, text) {
+  const turn = document.createElement("div");
+  turn.className = "turn " + role;
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = role === "user" ? "P" : "AI";
+  const col = document.createElement("div");
+  col.className = "bubble-col";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+  const time = document.createElement("div");
+  time.className = "timestamp";
+  time.textContent = timeNow();
+  col.appendChild(bubble);
+  col.appendChild(time);
+  turn.appendChild(avatar);
+  turn.appendChild(col);
+  chatEl.appendChild(turn);
+  scrollDown(chatScrollEl);
+}
+
+function showTyping() {
+  typingEl = document.createElement("div");
+  typingEl.className = "turn assistant typing";
+  typingEl.innerHTML = `<div class="avatar">AI</div><div class="bubble-col"><div class="bubble">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  chatEl.appendChild(typingEl);
+  scrollDown(chatScrollEl);
+}
+
+function hideTyping() {
+  if (typingEl) { typingEl.remove(); typingEl = null; }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text ?? "";
+  return div.innerHTML;
+}
+
+function summaryFor(event) {
+  if (event.type === "request") {
+    const replay = event.replayed ? " (replay)" : "";
+    return `call ${event.call_number} &middot; ${escapeHtml(event.model)}${replay}`;
+  }
+  if (event.type === "tool_call") {
+    const args = Object.entries(event.arguments).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ");
+    return `ran ${escapeHtml(event.name)}(${escapeHtml(args)})`;
+  }
+  if (event.type === "answer") return "answer ready";
+  if (event.type === "error") return "setup problem";
+  return event.type;
+}
+
+function bodyFor(event) {
+  if (event.type === "request") {
+    let html = `<div class="row">system: ${escapeHtml(event.system)}</div>`;
+    html += `<div class="row">tools offered: ${event.tools_offered.length ? event.tools_offered.join(", ") : "(none)"}</div>`;
+    html += `<div class="row">conversation (${event.messages.length} messages):</div>`;
+    for (const m of event.messages) {
+      html += `<div class="msg"><b>[${m.role}]</b> ${escapeHtml(m.text)}</div>`;
+    }
+    html += `<div class="row">input tokens: ${event.input_tokens ?? "?"}</div>`;
+    return html;
+  }
+  if (event.type === "tool_call") return `<div class="row">${escapeHtml(event.result)}</div>`;
+  if (event.type === "answer") return `<div class="row">${escapeHtml(event.text)}</div>`;
+  if (event.type === "error") return `<div class="row">${escapeHtml(event.text)}</div>`;
+  return "";
+}
+
+function addCard(event) {
+  const card = document.createElement("div");
+  card.className = "card " + event.type;
+  card.innerHTML = `
+    <div class="card-head">
+      <span class="chip"></span>
+      <span class="summary">${summaryFor(event)}</span>
+      <span class="caret">&#9654;</span>
+    </div>
+    <div class="card-body">${bodyFor(event)}</div>`;
+  card.querySelector(".card-head").addEventListener("click", () => card.classList.toggle("open"));
+  logEl.appendChild(card);
+  scrollDown(logEl);
+}
+
+async function send() {
+  const text = messageEl.value.trim();
+  if (!text) return;
+  messageEl.value = "";
+  sendEl.disabled = true;
+  addBubble("user", text);
+  showTyping();
+
+  try {
+    const response = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ step: currentStep, message: text }),
+    });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let first = true;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let newlineIndex;
+      while ((newlineIndex = buffer.indexOf("\n")) >= 0) {
+        const line = buffer.slice(0, newlineIndex);
+        buffer = buffer.slice(newlineIndex + 1);
+        if (!line.trim()) continue;
+        if (first) { hideTyping(); first = false; }
+        const event = JSON.parse(line);
+        addCard(event);
+        if (event.type === "answer" || event.type === "error") addBubble("assistant", event.text);
+      }
+    }
+  } finally {
+    hideTyping();
+    sendEl.disabled = false;
+    messageEl.focus();
+  }
+}
+
+sendEl.addEventListener("click", send);
+messageEl.addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+
+function clearPanes() {
+  chatEl.innerHTML = "";
+  logEl.innerHTML = "";
+}
+
+document.getElementById("reset").addEventListener("click", async () => {
+  await fetch("/api/reset", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ step: currentStep }),
+  });
+  clearPanes();
+});
+
+tabsEl.addEventListener("click", (e) => {
+  const button = e.target.closest("button[data-step]");
+  if (!button) return;
+  currentStep = button.dataset.step;
+  for (const b of tabsEl.querySelectorAll("button")) b.classList.toggle("active", b === button);
+  clearPanes();
+  messageEl.focus();
+});
+
+document.getElementById("toggle-log").addEventListener("click", (e) => {
+  const collapsed = logPaneEl.classList.toggle("collapsed");
+  e.target.textContent = collapsed ? "Show log" : "Hide log";
+});
+
+fetch("/api/status").then(r => r.json()).then(s => {
+  statusEl.innerHTML = `<span class="dot"></span> ${s.provider} / ${s.model}`;
+}).catch(() => {
+  statusEl.textContent = "status unavailable";
+});
+</script>
+</body>
+</html>

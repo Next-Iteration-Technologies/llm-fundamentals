@@ -1,0 +1,17 @@
+[
+  {"doc_id": "1234", "title": "Invoice 1234, Meyer Logistics", "type": "invoice", "workspace": "Finance",
+   "folder": "Finance/Invoices/2025/Q3", "platform": "CSP", "owner": "finance-records-lead",
+   "retention_class": "Tax records (10 years)", "archived_on": "2025-08-14", "delete_after": "2035-12-31"},
+  {"doc_id": "1235", "title": "Invoice 1235, Nordbahn Freight", "type": "invoice", "workspace": "Finance",
+   "folder": "Finance/Invoices/2025/Q3", "platform": "CSP", "owner": "finance-records-lead",
+   "retention_class": "Tax records (10 years)", "archived_on": "2025-08-20", "delete_after": "2035-12-31"},
+  {"doc_id": "4711", "title": "Invoice 4711, Rhein Office Supplies", "type": "invoice", "workspace": "Finance",
+   "folder": "Finance/Invoices/2019/Q1", "platform": "Classic", "owner": "finance-records-lead",
+   "retention_class": "Tax records (10 years)", "archived_on": "2019-03-02", "delete_after": "2029-12-31"},
+  {"doc_id": "7001", "title": "Employment contract 7001", "type": "contract", "workspace": "HR",
+   "folder": "HR/Contracts/2023", "platform": "CSP", "owner": "hr-records-lead",
+   "retention_class": "Personnel files (end of employment + 10 years)", "archived_on": "2023-05-11", "delete_after": "on request"},
+  {"doc_id": "7002", "title": "Employment contract 7002", "type": "contract", "workspace": "HR",
+   "folder": "HR/Contracts/2024", "platform": "CSP", "owner": "hr-records-lead",
+   "retention_class": "Personnel files (end of employment + 10 years)", "archived_on": "2024-01-09", "delete_after": "on request"}
+]
