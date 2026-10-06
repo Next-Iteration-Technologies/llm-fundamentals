@@ -216,6 +216,105 @@
         "input_tokens": 278,
         "output_tokens": 221
       }
+    ],
+    "91c973e503e28dcf": [
+      {
+        "text": "",
+        "model": "claude-opus-5-5",
+        "input_tokens": 642,
+        "output_tokens": 52,
+        "tool_calls": [
+          {
+            "id": "toolu_01QnZkQ8bUhndLGbXZ5T2HDU",
+            "name": "search_document",
+            "arguments": {
+              "query": "invoice 4711"
+            }
+          }
+        ]
+      }
+    ],
+    "092afa20212b6fcc": [
+      {
+        "text": "The search tool ignores permissions, so check whether Priya has access.",
+        "model": "claude-opus-5-5",
+        "input_tokens": 774,
+        "output_tokens": 126,
+        "tool_calls": [
+          {
+            "id": "toolu_01G5JhZejWapVnxEjf1iUuVj",
+            "name": "user_access_report",
+            "arguments": {
+              "workspace": "Finance"
+            }
+          },
+          {
+            "id": "toolu_013WEhc5rz1X2hVsPQB5jzTp",
+            "name": "workspace_owner",
+            "arguments": {
+              "workspace": "Finance"
+            }
+          }
+        ]
+      }
+    ],
+    "50f7b92b77ca2142": [
+      {
+        "text": "Hi Priya, I found the invoice. It's archived in the **Finance** workspace, and you don't have access to that workspace. That's probably why you couldn't find it.\n\nOnly the people on the Finance access list can open it, so I'll leave out what's in the document. To get access, ask the workspace owner:\n\n**Markus Weber**, markus.weber@example.com\n\nWhen you write to him, give the document ID **INV-4711** and say why you need it. That will help him decide whether to give you access to the Finance workspace or just send you this one document.",
+        "model": "claude-opus-5-5",
+        "input_tokens": 1053,
+        "output_tokens": 232
+      }
+    ],
+    "133f3ff0f0d0d97b": [
+      {
+        "text": "",
+        "model": "claude-opus-5-5",
+        "input_tokens": 1239,
+        "output_tokens": 53,
+        "tool_calls": [
+          {
+            "id": "toolu_01Dghx2m6PnPrUUAQcWZCNWs",
+            "name": "workspace_owner",
+            "arguments": {
+              "workspace": "HR"
+            }
+          }
+        ]
+      }
+    ],
+    "34eaaf57f0408a16": [
+      {
+        "text": "**Sabine Wolf** owns the HR workspace. Her email is sabine.wolf@example.com. If you need access to anything in HR, she's the one to ask.",
+        "model": "claude-opus-5-5",
+        "input_tokens": 1344,
+        "output_tokens": 81
+      }
+    ],
+    "e33c9a19015acb60": [
+      {
+        "text": "",
+        "model": "claude-opus-5-5",
+        "input_tokens": 1422,
+        "output_tokens": 52,
+        "tool_calls": [
+          {
+            "id": "toolu_01Y8EyLyvBxZgoNndkFBwBZD",
+            "name": "search_document",
+            "arguments": {
+              "query": "invoice 9999"
+            }
+          }
+        ]
+      }
+    ],
+    "10298b2874ed5bb2": [
+      {
+        "text": "Priya, I couldn't find invoice 9999 anywhere in the archive. This search covers every workspace, including the ones you can't open, so the invoice isn't just hidden from you. Most likely it was never archived, or it's filed under a different number.\n\nThings to try:\n- **Check the number.** It could be a typo, or the invoice might be stored under a prefix like \"INV-9999\".\n- **Search by other details.** If you know the supplier name, the date or the amount, I can search for those.\n- **Ask whoever sent or processed it.** It may still be waiting to be archived.\n\nIf you can give me any other details, I'll search again.",
+        "model": "claude-opus-5-5",
+        "input_tokens": 1496,
+        "output_tokens": 233
+      }
     ]
   },
   "model": "claude-opus-5-5",
@@ -231,6 +330,21 @@
     ],
     "f64dc2c98541c5d9": [
       "{\"city\": \"Munich\", \"country\": \"Germany\", \"temperature_c\": 14.1, \"conditions\": \"overcast\", \"wind_kmh\": 1.6}"
+    ],
+    "23555e9205267d58": [
+      "{\"query\": \"invoice 4711\", \"found\": [{\"id\": \"INV-4711\", \"title\": \"Invoice 4711, Kaufmann Logistik\", \"workspace\": \"Finance\", \"archived\": \"2024-03-14\"}]}"
+    ],
+    "802e73218fe8b71a": [
+      "{\"workspace\": \"Finance\", \"people_with_access\": [\"Markus Weber\", \"Elena Schmidt\", \"Tobias Klein\"]}"
+    ],
+    "2f808d9f9bf0c63f": [
+      "{\"workspace\": \"Finance\", \"owner\": {\"name\": \"Markus Weber\", \"contact\": \"markus.weber@example.com\"}}"
+    ],
+    "50f92cff52c11bba": [
+      "{\"workspace\": \"HR\", \"owner\": {\"name\": \"Sabine Wolf\", \"contact\": \"sabine.wolf@example.com\"}}"
+    ],
+    "4e8b8bb13b0f960d": [
+      "{\"query\": \"invoice 9999\", \"found\": []}"
     ]
   }
 }

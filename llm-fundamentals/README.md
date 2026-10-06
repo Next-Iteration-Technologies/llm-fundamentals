@@ -49,6 +49,7 @@ Then run `uv run check_setup.py` again. `.env` stays on your laptop. Never commi
 | R3 | `uv run r3_system_prompt.py --as helpdesk --demo` | `uv run r3_system_prompt.py --as helpdesk --replay` | The same chat with a system prompt: a strict IT helpdesk |
 | R3 | `uv run r3_system_prompt.py --as tutor --demo` | `uv run r3_system_prompt.py --as tutor --replay` | The same questions, another system prompt: a cheerful tutor |
 | R4 | `uv run r4_tool_call.py --demo` | `uv run r4_tool_call.py --replay` | Tools: the model asks us to run `get_today` or `get_weather`, and we send the result back |
+| R6 | `uv run r6_agent_loop.py --demo` | `uv run r6_agent_loop.py --replay` | The agent loop: "I can't find invoice 4711" needs a search first, and the search result decides which tools come next. Several calls to the model in one turn |
 | R7 | `uv run r7_chaining.py --demo` | `uv run r7_chaining.py --replay` | Chaining: call 1 turns a messy ticket into JSON, call 2 drafts the reply from the JSON only |
 
 Without `--demo` you type the lines yourself; with `--demo` the program types the prepared lines for you. Type `exit` to stop.
@@ -56,6 +57,8 @@ Without `--demo` you type the lines yourself; with `--demo` the program types th
 R0 needs a local base model (Ollama), so most of you will run it with `--replay`.
 
 R4 runs on Nexus unless you name another provider: `--provider anthropic`, or `--provider ollama-chat` for a local model that can call tools. Add `--no-tools` to ask the same questions with no tools offered. The weather comes from [Open-Meteo](https://open-meteo.com), free and without a key.
+
+R6 talks to a **mock archive**: a few documents, access lists and workspace owners written into `r6_agent_loop.py`. There is no connection to CSP. The loop works the same way whatever sits behind the tools. Each pass is labelled THINK (the model picks a tool or answers), ACT (our code runs it) and OBSERVE (our code adds the result to the conversation). The last line counts the passes.
 
 ## The printout
 
