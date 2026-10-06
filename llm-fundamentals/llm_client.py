@@ -14,6 +14,14 @@ Flags every round understands:
 
 Replay looks an answer up by the exact request. If you change a round and the
 request is different, there is no recording for it, and replay says so.
+Tool results are recorded too, so a replay shows the date and the weather of
+the day it was recorded.
+
+Messages use one format for every provider, and this file translates:
+    {"role": "user", "content": "..."}
+    {"role": "assistant", "content": "...", "tool_calls": [{"id", "name", "arguments"}]}
+    {"role": "tool", "tool_call_id": "...", "name": "...", "content": "the result"}
+A tool is described as {"name", "description", "parameters": a JSON schema}.
 """
 
 import argparse
@@ -23,7 +31,7 @@ import json
 import os
 import sys
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -54,6 +62,7 @@ class Reply:
     input_tokens: int | None
     output_tokens: int | None
     replayed: bool = False
+    tool_calls: list = field(default_factory=list)   # [{"id", "name", "arguments"}]: tools the model asks us to run
 
 
 class SetupProblem(Exception):
@@ -74,7 +83,7 @@ def request_key(kind, **request):
 
 
 class Session:
-    def __init__(self, round_name, demo_lines, default_provider=None):
+    def __init__(self, round_name, demo_lines, default_provider=None, replay_provider=None):
         parser = argparse.ArgumentParser(add_help=False)
         parser.add_argument("--provider")
         parser.add_argument("--demo", action="store_true")
@@ -84,7 +93,7 @@ class Session:
 
         providers = load_providers()
         if flags.replay:
-            name = flags.provider or default_provider or providers["replay_from"]
+            name = flags.provider or replay_provider or default_provider or providers["replay_from"]
         else:
             name = flags.provider or os.environ.get("LLM_PROVIDER") or default_provider or providers["default"]
         if name not in providers:
@@ -102,6 +111,7 @@ class Session:
         self.recordings = self._load_recordings()
         self.times_asked = {}      # request key -> how often this session sent it
         self.new_answers = {}      # request key -> answers recorded in this session
+        self.new_tool_results = {} # tool call key -> results recorded in this session
         if self.record:
             atexit.register(self._save_recordings)
 
@@ -119,14 +129,29 @@ class Session:
 
     # ---------- the model's side ----------
 
-    def chat(self, messages, system=None):
-        """Send a conversation, get the next assistant message."""
-        key = request_key("chat", system=system, messages=messages)
+    def chat(self, messages, system=None, tools=None):
+        """Send a conversation (and the tools the model may ask for), get the next assistant message."""
+        key = request_key("chat", system=system, messages=messages, **({"tools": tools} if tools else {}))
         if self.replay:
             return self._replayed(key)
-        reply = self._live_chat(messages, system)
+        reply = self._live_chat(messages, system, tools)
         self._remember(key, reply)
         return reply
+
+    def run_tool(self, call, function):
+        """Run the tool the model asked for, on this laptop. Replay gives back the recorded result."""
+        key = request_key("tool", name=call["name"], arguments=call["arguments"])
+        if self.replay:
+            results = self.recordings.get("tool_results", {}).get(key)
+            if not results:
+                return "(No recording for this tool call. Run it live to see the result.)"
+            turn = self.times_asked.get(key, 0)
+            self.times_asked[key] = turn + 1
+            return results[turn % len(results)]
+        result = function(**call["arguments"])
+        if self.record:
+            self.new_tool_results.setdefault(key, []).append(result)
+        return result
 
     def complete(self, text, temperature, max_new_tokens):
         """Send plain text, no roles, and get the continuation. Needs a base model (Ollama)."""
@@ -144,14 +169,14 @@ class Session:
 
     # ---------- live calls, one per kind of API ----------
 
-    def _live_chat(self, messages, system):
+    def _live_chat(self, messages, system, tools):
         kind = self.provider["kind"]
         if kind == "anthropic":
-            return self._anthropic_chat(messages, system)
+            return self._anthropic_chat(messages, system, tools)
         if kind == "openai":
-            return self._openai_chat(messages, system)
+            return self._openai_chat(messages, system, tools)
         if kind == "ollama":
-            return self._ollama_chat(messages, system)
+            return self._ollama_chat(messages, system, tools)
         raise SetupProblem(f"Unknown kind '{kind}' in providers.toml.")
 
     def _api_key(self):
@@ -161,20 +186,24 @@ class Session:
             raise SetupProblem(f"{variable} is not set. Set it, or run with --replay.")
         return key
 
-    def _anthropic_chat(self, messages, system):
+    def _anthropic_chat(self, messages, system, tools):
         import anthropic
 
         client = anthropic.Anthropic(api_key=self._api_key())
         request = dict(
             model=self.provider["model"],
             max_tokens=MAX_ANSWER_TOKENS,
-            messages=messages,
+            messages=anthropic_messages(messages),
             output_config={"effort": "low"},          # a chat answer, not a hard problem
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",                       # a declined request is retried on another model
         )
         if system:
             request["system"] = system
+        if tools:
+            request["tools"] = [
+                {"name": t["name"], "description": t["description"], "input_schema": t["parameters"]} for t in tools
+            ]
         try:
             response = client.beta.messages.create(**request)
         except anthropic.APIConnectionError:
@@ -186,17 +215,26 @@ class Session:
             text = "(The model declined to answer this one.)"
         else:
             text = "".join(block.text for block in response.content if block.type == "text")
-        return Reply(text, response.model, response.usage.input_tokens, response.usage.output_tokens)
+        tool_calls = [
+            {"id": block.id, "name": block.name, "arguments": block.input}
+            for block in response.content if block.type == "tool_use"
+        ]
+        return Reply(text, response.model, response.usage.input_tokens, response.usage.output_tokens,
+                     tool_calls=tool_calls)
 
-    def _openai_chat(self, messages, system):
+    def _openai_chat(self, messages, system, tools):
         import httpx
 
-        all_messages = ([{"role": "system", "content": system}] if system else []) + messages
+        all_messages = ([{"role": "system", "content": system}] if system else []) + openai_messages(messages)
+        request = {"model": self.provider["model"], "messages": all_messages}
+        if tools:
+            request["tools"] = openai_tools(tools)
+        key = self._api_key()
         try:
             response = httpx.post(
                 self.provider["base_url"].rstrip("/") + "/chat/completions",
-                headers={"Authorization": f"Bearer {self._api_key()}"},
-                json={"model": self.provider["model"], "messages": all_messages},
+                headers={"Authorization": f"Bearer {key}"} if key else {},
+                json=request,
                 timeout=120,
             )
             response.raise_for_status()
@@ -204,8 +242,13 @@ class Session:
             raise SetupProblem(f"Call to {self.provider_name} failed ({error}). Check providers.toml, or run with --replay.")
         body = response.json()
         usage = body.get("usage", {})
-        text = body["choices"][0]["message"]["content"]
-        return Reply(text, body.get("model", self.provider["model"]), usage.get("prompt_tokens"), usage.get("completion_tokens"))
+        message = body["choices"][0]["message"]
+        tool_calls = [
+            {"id": call["id"], "name": call["function"]["name"], "arguments": json.loads(call["function"]["arguments"] or "{}")}
+            for call in message.get("tool_calls") or []
+        ]
+        return Reply(message.get("content") or "", body.get("model", self.provider["model"]),
+                     usage.get("prompt_tokens"), usage.get("completion_tokens"), tool_calls=tool_calls)
 
     def _ollama_post(self, path, payload):
         import httpx
@@ -219,10 +262,21 @@ class Session:
             raise SetupProblem(f"Ollama answered {error.response.status_code}: {error.response.text.strip()}")
         return response.json()
 
-    def _ollama_chat(self, messages, system):
-        all_messages = ([{"role": "system", "content": system}] if system else []) + messages
-        body = self._ollama_post("/api/chat", {"model": self.provider["model"], "messages": all_messages, "stream": False})
-        return Reply(body["message"]["content"], self.provider["model"], body.get("prompt_eval_count"), body.get("eval_count"))
+    def _ollama_chat(self, messages, system, tools):
+        all_messages = ([{"role": "system", "content": system}] if system else []) + ollama_messages(messages)
+        request = {"model": self.provider["model"], "messages": all_messages, "stream": False}
+        if tools:
+            request["tools"] = openai_tools(tools)    # Ollama takes the OpenAI tool format
+        if "think" in self.provider:
+            request["think"] = self.provider["think"]
+        body = self._ollama_post("/api/chat", request)
+        message = body["message"]
+        tool_calls = [
+            {"id": f"call_{number}", "name": call["function"]["name"], "arguments": call["function"]["arguments"]}
+            for number, call in enumerate(message.get("tool_calls") or [], start=1)
+        ]
+        return Reply(message.get("content", ""), self.provider["model"], body.get("prompt_eval_count"),
+                     body.get("eval_count"), tool_calls=tool_calls)
 
     def _ollama_generate(self, text, temperature, max_new_tokens):
         body = self._ollama_post("/api/generate", {
@@ -249,20 +303,80 @@ class Session:
         turn = self.times_asked.get(key, 0)
         self.times_asked[key] = turn + 1
         answer = answers[turn % len(answers)]
-        return Reply(answer["text"], answer["model"], answer["input_tokens"], answer["output_tokens"], replayed=True)
+        return Reply(answer["text"], answer["model"], answer["input_tokens"], answer["output_tokens"],
+                     replayed=True, tool_calls=answer.get("tool_calls", []))
 
     def _remember(self, key, reply):
         if self.record:
             self.new_answers.setdefault(key, []).append({
                 "text": reply.text, "model": reply.model,
                 "input_tokens": reply.input_tokens, "output_tokens": reply.output_tokens,
+                **({"tool_calls": reply.tool_calls} if reply.tool_calls else {}),
             })
 
     def _save_recordings(self):
         if not self.new_answers:
             return
         self.recordings["answers"].update(self.new_answers)
+        if self.new_tool_results:
+            self.recordings.setdefault("tool_results", {}).update(self.new_tool_results)
         self.recordings["model"] = self.provider.get("model")
         RECORDINGS_FOLDER.mkdir(exist_ok=True)
         self.recordings_file.write_text(json.dumps(self.recordings, indent=2, ensure_ascii=False))
         print(f"(Recorded {len(self.new_answers)} request(s) to {self.recordings_file.name}.)")
+
+
+# ---------- one message format, translated for each API ----------
+
+def anthropic_messages(messages):
+    """Tool calls become tool_use blocks; tool results go back inside a user message."""
+    translated = []
+    for message in messages:
+        if message["role"] == "assistant" and message.get("tool_calls"):
+            blocks = [{"type": "text", "text": message["content"]}] if message["content"] else []
+            blocks += [{"type": "tool_use", "id": call["id"], "name": call["name"], "input": call["arguments"]}
+                       for call in message["tool_calls"]]
+            translated.append({"role": "assistant", "content": blocks})
+        elif message["role"] == "tool":
+            result = {"type": "tool_result", "tool_use_id": message["tool_call_id"], "content": message["content"]}
+            if translated and translated[-1]["role"] == "user" and isinstance(translated[-1]["content"], list):
+                translated[-1]["content"].append(result)     # several results from one turn share a message
+            else:
+                translated.append({"role": "user", "content": [result]})
+        else:
+            translated.append({"role": message["role"], "content": message["content"]})
+    return translated
+
+
+def openai_messages(messages):
+    translated = []
+    for message in messages:
+        if message["role"] == "assistant" and message.get("tool_calls"):
+            translated.append({"role": "assistant", "content": message["content"] or None, "tool_calls": [
+                {"id": call["id"], "type": "function",
+                 "function": {"name": call["name"], "arguments": json.dumps(call["arguments"])}}
+                for call in message["tool_calls"]
+            ]})
+        elif message["role"] == "tool":
+            translated.append({"role": "tool", "tool_call_id": message["tool_call_id"], "content": message["content"]})
+        else:
+            translated.append({"role": message["role"], "content": message["content"]})
+    return translated
+
+
+def ollama_messages(messages):
+    translated = []
+    for message in messages:
+        if message["role"] == "assistant" and message.get("tool_calls"):
+            translated.append({"role": "assistant", "content": message["content"], "tool_calls": [
+                {"function": {"name": call["name"], "arguments": call["arguments"]}} for call in message["tool_calls"]
+            ]})
+        elif message["role"] == "tool":
+            translated.append({"role": "tool", "tool_name": message["name"], "content": message["content"]})
+        else:
+            translated.append({"role": message["role"], "content": message["content"]})
+    return translated
+
+
+def openai_tools(tools):
+    return [{"type": "function", "function": t} for t in tools]

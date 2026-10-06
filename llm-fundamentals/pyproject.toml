@@ -1,5 +1,5 @@
 [project]
-name = "llm-fundamentals-day-1"
+name = "llm-fundamentals"
 version = "0.1.0"
 description = "LLM Fundamentals, day 1: rounds R0 to R2 and the context window"
 requires-python = ">=3.11"

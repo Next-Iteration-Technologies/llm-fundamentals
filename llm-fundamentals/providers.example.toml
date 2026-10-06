@@ -22,3 +22,10 @@ kind = "ollama"
 base_url = "http://localhost:11434"
 model = "llama3.2:1b-text-q4_K_M"   # ollama pull llama3.2:1b-text-q4_K_M
 input_price_per_million = 0
+
+[ollama-chat]                  # R4 on a local model: a chat model that can call tools
+kind = "ollama"
+base_url = "http://localhost:11434"
+model = "qwen3:8b"             # ollama pull qwen3:8b  (5 GB; any Ollama model tagged "tools" works)
+think = false                  # answer straight away, no long reasoning first
+input_price_per_million = 0

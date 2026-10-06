@@ -22,14 +22,32 @@ def header(call_number, reply):
     return f"--- what we sent to the model | call {call_number} | {reply.model}{replay_note} ---"
 
 
-def show_request(call_number, messages, reply, system=None, dropped=0):
+def call_text(call):
+    arguments = ", ".join(f"{name}={value!r}" for name, value in call["arguments"].items())
+    return f"{call['name']}({arguments})"
+
+
+def message_text(message):
+    """One line per message. Tool calls and tool results get their own look."""
+    if message.get("tool_calls"):
+        calls = ", ".join(call_text(call) for call in message["tool_calls"])
+        before = f"{message['content']} " if message["content"] else ""
+        return shorten(f"{before}-> please run {calls}")
+    if message["role"] == "tool":
+        return shorten(f"{message['name']} returned {message['content']}")
+    return shorten(message["content"])
+
+
+def show_request(call_number, messages, reply, system=None, dropped=0, tools=None):
     """Print the conversation we sent, one line per message, and its size in tokens."""
     print(header(call_number, reply))
     print(f"system prompt   {shorten(system) if system else '(none)'}")
+    if tools is not None:
+        print(f"tools offered   {', '.join(tool['name'] for tool in tools) if tools else '(none)'}")
     dropped_note = f"   ({dropped} older messages not sent)" if dropped else ""
     print(f"conversation    {len(messages)} message{'s' if len(messages) != 1 else ''}{dropped_note}")
     for position, message in enumerate(messages):
-        print(f"   [{position}] {message['role']:<9}  {shorten(message['content'])}")
+        print(f"   [{position}] {message['role']:<9}  {message_text(message)}")
     print(f"input tokens    {tokens(reply.input_tokens)}")
     print()
 

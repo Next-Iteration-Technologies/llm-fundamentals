@@ -263,7 +263,7 @@ wheels = [
 ]
 
 [[package]]
-name = "llm-fundamentals-day-1"
+name = "llm-fundamentals"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
