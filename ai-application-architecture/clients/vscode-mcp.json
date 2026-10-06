@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "loda-archive": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--directory", "${workspaceFolder}/ai-application-architecture", "step6_mcp_server.py"]
+    }
+  }
+}
