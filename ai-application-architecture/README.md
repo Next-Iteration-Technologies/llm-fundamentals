@@ -20,7 +20,6 @@ You can run every step in two ways:
    ```bash
    git clone https://github.com/Next-Iteration-Technologies/llm-fundamentals.git
    cd llm-fundamentals
-   git checkout ai-application-architecture
    cd ai-application-architecture
    ```
 3. Check your laptop:
@@ -42,6 +41,16 @@ You can run every step in two ways:
 | 3. Retrieval with a sample file | `uv run step3_retrieval.py --demo` | A sixth tool that searches `data/known_issues.json` |
 
 Add `--replay` to play back the trainer's answers instead of calling a model. Without `--demo` you type the questions yourself; type `exit` to stop.
+
+## Browser UI
+
+The same steps 1 to 3, with a chat window on the left and the request/tool-call printout on the right, live, instead of reading the terminal.
+
+```bash
+uv run web_app.py
+```
+
+Then open `http://127.0.0.1:8000`. Use the tabs at the top to switch steps; each keeps its own conversation. "Reset" clears the current step's conversation.
 
 ## What each step teaches
 
@@ -68,6 +77,7 @@ Add `--replay` to play back the trainer's answers instead of calling a model. Wi
 | `llm_client.py` | Which model is used, and how recording and replay work | Blue |
 | `check_setup.py` | The laptop check | |
 | `tests/` | Tests that run without a model: `uv run pytest` | |
+| `web_app.py`, `web/`, `web_static/` | The browser UI: `uv run web_app.py` | |
 
 Blue is plain software engineering; the green parts are the system prompt, the tool descriptions and the model's decisions.
 
