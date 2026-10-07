@@ -11,8 +11,15 @@ Project Gutenberg's Aesop's Fables or Grimm's Fairy Tales work well.
 """
 
 import json
+import re
 import sys
 from collections import Counter
+
+
+# Before any merging, the text is cut into pieces: words, numbers, punctuation, spaces.
+# Merges only happen inside a piece, so a token never spans two words.
+# A space can only sit at the start of a token (" the"), never at the end ("e ").
+SPLIT = re.compile(r"""[’'](?:[sdmt]|ll|ve|re)| ?[^\W\d_]+| ?\d+| ?(?:[^\s\w]|_)+|\s+(?!\S)|\s+""")
 
 
 # ---------------------------------------------------------------------------
@@ -46,24 +53,31 @@ def train(text, num_merges=300, verbose=True):
     Learn BPE merges from `text`.
 
     Starting alphabet = the 256 possible byte values.
-    Each merge glues the most frequent adjacent pair into one new token.
+    The text is cut into pieces (SPLIT), and each merge glues the most frequent
+    adjacent pair *inside a piece* into one new token.
     Returns (merges, vocab):
         merges: ordered list of ((a, b), new_id) - the recipe for encoding later
         vocab:  dict id -> bytes, so we can decode and print tokens
     """
-    ids = list(text.encode("utf-8"))      # text -> UTF-8 bytes -> list of ints 0..255
+    # Each distinct piece is stored once, with how often it occurs: " the" -> 9000.
+    piece_counts = Counter(SPLIT.findall(text))
+    pieces = [list(p.encode("utf-8")) for p in piece_counts]   # piece -> UTF-8 bytes -> ints 0..255
+    freqs = list(piece_counts.values())
     vocab = {i: bytes([i]) for i in range(256)}
     merges = []
 
     for step in range(num_merges):
-        counts = get_pair_counts(ids)
+        counts = Counter()
+        for ids, freq in zip(pieces, freqs):
+            for pair, n in get_pair_counts(ids).items():
+                counts[pair] += n * freq
         if not counts:
             break
         pair, freq = counts.most_common(1)[0]
         if freq < 2:
             break                          # nothing repeats any more; stop early
         new_id = 256 + step
-        ids = apply_merge(ids, pair, new_id)
+        pieces = [apply_merge(ids, pair, new_id) for ids in pieces]
         merges.append((pair, new_id))
         vocab[new_id] = vocab[pair[0]] + vocab[pair[1]]
         if verbose and step < 20:
@@ -71,8 +85,9 @@ def train(text, num_merges=300, verbose=True):
                   f"-> {vocab[new_id]!r}   (id {new_id}, seen {freq} times)")
 
     if verbose:
+        n_tokens = sum(len(ids) * f for ids, f in zip(pieces, freqs))
         print(f"\nTraining done. Vocabulary size: {len(vocab)} tokens. "
-              f"Text went from {len(text.encode('utf-8'))} bytes to {len(ids)} tokens.")
+              f"Text went from {len(text.encode('utf-8'))} bytes to {n_tokens} tokens.")
     return merges, vocab
 
 
@@ -81,10 +96,16 @@ def train(text, num_merges=300, verbose=True):
 # ---------------------------------------------------------------------------
 
 def encode(text, merges):
-    """Text -> list of token IDs, by replaying the learned merges in order."""
-    ids = list(text.encode("utf-8"))
-    for pair, new_id in merges:
-        ids = apply_merge(ids, pair, new_id)
+    """Text -> list of token IDs: cut into pieces, then replay the learned merges on each piece."""
+    cache = {}                             # the same word is only worked out once
+    ids = []
+    for piece in SPLIT.findall(text):
+        if piece not in cache:
+            piece_ids = list(piece.encode("utf-8"))
+            for pair, new_id in merges:
+                piece_ids = apply_merge(piece_ids, pair, new_id)
+            cache[piece] = piece_ids
+        ids.extend(cache[piece])
     return ids
 
 

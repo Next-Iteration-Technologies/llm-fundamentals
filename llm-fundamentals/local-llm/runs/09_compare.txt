@@ -1,96 +1,160 @@
-$ uv run explore.py compare "Once upon a ti"
+$ uv run explore.py compare "Once upon a"
 
-[UNTRAINED]  Prompt: "Once upon a ti"
+[UNTRAINED]  Prompt: "Once upon a"
 Top-5 next tokens:
-   0.007  'ook'
-   0.006  '�'
-   0.006  'wi'
-   0.006  '7'
-   0.006  '}'
+   0.010  '^'
+   0.008  ' no'
+   0.007  '�'
+   0.006  ' as'
+   0.006  ' B'
    (confidence of best guess: 1%)
-Continuation: 'Once upon a ti,’Ιke fromse�ion9\x03Wto��st �ill�theK?ould \r� d�The  h�sp: ‘�. The � mfbe degainran'
+Continuation: 'Once upon aryidce willeredThe�b�\x03ail\u202e my����astK� so�it\x1f st his ofAare��ant�kfself de abess'
 
-[3,000 STEPS]  Prompt: "Once upon a ti"
+[3,000 STEPS]  Prompt: "Once upon a"
 Top-5 next tokens:
-   0.652  'me '
-   0.090  'me'
-   0.086  'm'
-   0.030  'll'
-   0.017  'c'
-   (confidence of best guess: 65%)
-Continuation: 'Once upon a tione, it had her althe\nold town and dest. He food-eath, and swent up, eatecing them chat'
+   0.075  'fter'
+   0.046  ' great'
+   0.045  'c'
+   0.044  '\n'
+   0.041  ' l'
+   (confidence of best guess: 7%)
+Continuation: 'Once upon addmind at the wolf\nshelvice consnselay being straw.\n\nThe Werefow and the W'
 
-[model.pt]  Prompt: "Once upon a ti"
+[model.pt]  Prompt: "Once upon a"
 Top-5 next tokens:
-   0.647  'me '
-   0.072  'me'
-   0.065  'm'
-   0.032  'on'
-   0.028  'p'
-   (confidence of best guess: 65%)
-Continuation: 'Once upon a tione, it was\nset upon\nhis towood exching the fox, feather it down these each you must foot'
+   0.092  '\n'
+   0.062  ' f'
+   0.058  ' c'
+   0.049  ' p'
+   0.044  ' l'
+   (confidence of best guess: 9%)
+Continuation: 'Once upon a siddle of the voice of finding\nthe master?” The entered his eyes citant still. She thought'
+
+$ uv run explore.py compare "Little Red"
+
+[UNTRAINED]  Prompt: "Little Red"
+Top-5 next tokens:
+   0.008  '\x17'
+   0.007  ' but'
+   0.007  ' e'
+   0.006  '�'
+   0.006  '�'
+   (confidence of best guess: 1%)
+Continuation: 'Little Redself�ce willeredThe�b�ck\x06 W� my����astK� so�it\x1f st his ofAare��ant�kfself de abess'
+
+[3,000 STEPS]  Prompt: "Little Red"
+Top-5 next tokens:
+   0.259  '-'
+   0.143  ','
+   0.072  ' to'
+   0.037  'i'
+   0.032  ' the'
+   (confidence of best guess: 26%)
+Continuation: 'Little Rediourneent at the dog,\nshe found father, and said, ‘I will kings of a\nmiter, the endfful'
+
+[model.pt]  Prompt: "Little Red"
+Top-5 next tokens:
+   0.688  '-'
+   0.122  ','
+   0.019  'i'
+   0.018  '.'
+   0.015  ' to'
+   (confidence of best guess: 69%)
+Continuation: 'Little Red-Cap, at the Shepherd blindeather-take him so that\ninquied.\n\nThe Woof and the Tra'
 
 $ uv run explore.py compare "in the mor"
 
 [UNTRAINED]  Prompt: "in the mor"
 Top-5 next tokens:
-   0.010  'om'
-   0.008  '�'
-   0.008  'ge '
-   0.007  'ce '
-   0.007  '�'
+   0.008  '7'
+   0.007  'The'
+   0.007  'es'
+   0.006  'an'
+   0.006  'ry'
    (confidence of best guess: 1%)
-Continuation: 'in the morge omit ke fromse�ion9 and the Pough� p��y �the��ould �eaoun�The hiAsp: ‘�. The J\x08fbe deesswas '
+Continuation: 'in the morryid? willeredThe� had as\x03\x06 W� my����astK? soleit’s st f� awayareenditant�\x08fself de� but'
 
 [3,000 STEPS]  Prompt: "in the mor"
 Top-5 next tokens:
-   0.706  'n'
-   0.033  'e '
-   0.022  'r'
-   0.020  'row'
-   0.017  's'
-   (confidence of best guess: 71%)
-Continuation: 'in the morning, saw althe\nold toneie. Now the fox behead him and hile he meattting them conqu'
+   0.259  'row'
+   0.191  'd'
+   0.109  't'
+   0.102  'k'
+   0.047  'se'
+   (confidence of best guess: 26%)
+Continuation: 'in the morrying in the carespeck, blinding for the mastlew so that\nple his end.\n\nThe Wofow and the W'
 
 [model.pt]  Prompt: "in the mor"
 Top-5 next tokens:
-   0.843  'n'
-   0.038  'e '
-   0.019  'ne'
-   0.013  'row'
-   0.011  'k'
-   (confidence of best guess: 84%)
-Continuation: 'in the morning, saw alther old, and the thief. He fearly feaule shibbling up tooken cont'
+   0.349  't'
+   0.218  'row'
+   0.120  'ry'
+   0.077  'ing'
+   0.049  'ter'
+   (confidence of best guess: 35%)
+Continuation: 'in the morry me?” The voped “Plane! Now you?” “I king\nwhat citantime the empty'
+
+$ uv run explore.py compare "Once upon a ti"
+
+[UNTRAINED]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.007  '@'
+   0.006  ' so'
+   0.006  ' see'
+   0.006  'st'
+   0.006  '�'
+   (confidence of best guess: 1%)
+Continuation: 'Once upon a titerΙ willeredThe� whi9\x03W\u202e�hen� C�astK? so\r� k� hised�areend oant�ayfself de abess'
+
+[3,000 STEPS]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.143  'es'
+   0.127  'ce'
+   0.072  'z'
+   0.068  've'
+   0.066  'ly'
+   (confidence of best guess: 14%)
+Continuation: 'Once upon a ties\nfruess had as heard blindected with afful. The Shesed\nwending him with thefab and than'
+
+[model.pt]  Prompt: "Once upon a ti"
+Top-5 next tokens:
+   0.378  'red'
+   0.267  'ed'
+   0.113  'es'
+   0.068  'g'
+   0.032  'est'
+   (confidence of best guess: 38%)
+Continuation: 'Once upon a tired of the fat. So he\nof the teets, and said, “I will kill free!’\nme steconaid, ‘'
 
 $ uv run explore.py compare "The quantum "
 
 [UNTRAINED]  Prompt: "The quantum "
 Top-5 next tokens:
-   0.008  'lea'
-   0.006  '}'
-   0.006  'ma'
-   0.006  '”'
-   0.006  'litt'
+   0.013  ' as'
+   0.007  'ght'
+   0.006  '�'
+   0.006  'nd'
+   0.006  'ide'
    (confidence of best guess: 1%)
-Continuation: 'The quantum ,’Ιke fromse�ion9\x03Wto��st �ill�theK?ould \r� d�The  h�sp: ‘�. The � mfbe degainran'
+Continuation: 'The quantum thoxce willeredThe� had�ck\x06 W� myhen� su�ast�H me��’s� his ofAareend oant�ayfself de5�'
 
 [3,000 STEPS]  Prompt: "The quantum "
 Top-5 next tokens:
-   0.060  'ti'
-   0.051  'up'
-   0.050  'on'
-   0.047  'o'
-   0.039  'it'
-   (confidence of best guess: 6%)
-Continuation: 'The quantum once it had beenso up, and stoney and dy to a f? If live\nwho\nmy your must the as'
+   0.180  'P'
+   0.137  'D'
+   0.126  'K'
+   0.117  'J'
+   0.078  'en'
+   (confidence of best guess: 18%)
+Continuation: 'The quantum ought\n\n\nA FOMAG, blaying them conted him so that he was straw.\n\n\nThe Wof and the Tra'
 
 [model.pt]  Prompt: "The quantum "
 Top-5 next tokens:
-   0.055  'li'
-   0.053  'up'
-   0.049  'la'
-   0.041  't'
-   0.032  'un'
-   (confidence of best guess: 5%)
-Continuation: 'The quantum on it was\nselve, and the town and do nothing so meap of hise while that they had be decri'
+   0.174  'en'
+   0.094  'P'
+   0.087  'D'
+   0.086  'K'
+   0.085  'v'
+   (confidence of best guess: 17%)
+Continuation: 'The quantum ought by the Mices had asso blindeather--fundessit’s\nswhich or I peaving what'
 

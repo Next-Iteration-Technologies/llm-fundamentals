@@ -39,7 +39,7 @@ Note the zeros above the diagonal: no token can see the future.
 The numbers are meaningless until training; only the shapes matter now.
 ```
 
-The demo feeds in six made-up token IDs, `[300, 412, 275, 301, 389, 412]`. With our tokenizer these are `'it'`, `' wa'`, `'on'`, `'om'`, `' c'`, `' wa'`. They're not a real sentence; the demo only cares about the shapes.
+The demo feeds in six made-up token IDs, `[300, 412, 275, 301, 389, 412]`. With our tokenizer these are `'ow'`, `' into'`, `'at'`, `'id'`, `'ood'`, `' into'`. They're not a real sentence; the demo only cares about the shapes.
 
 ## Line 1: after embedding `(1, 6, 32)`
 
@@ -58,7 +58,7 @@ The `Embedding` class holds two tables:
 | `token_table` | 556 × 32 | token ID | "what this token is" |
 | `position_table` | 64 × 32 | position 0–63 | "where in the sentence it is" |
 
-For each token it looks up its row in each table and **adds the two rows together**. Token `' wa'` appears twice (positions 1 and 5). Both copies get the same token row but different position rows, so the model can tell them apart.
+For each token it looks up its row in each table and **adds the two rows together**. Token `' into'` appears twice (positions 1 and 5). Both copies get the same token row but different position rows, so the model can tell them apart.
 
 Both tables start as random numbers. Training changes them until tokens that behave alike end up with similar rows. Training saves the learned tables inside `model.pt`. [explore_wiki.md](explore_wiki.md) shows how to open them.
 
@@ -83,20 +83,20 @@ The `/ sqrt(head_dim)` keeps the scores from getting huge. Without it, softmax w
 Row *i* is token *i* asking. Column *j* is token *j* being listened to.
 
 ```
-             it    ' wa'   on     om    ' c'   ' wa'
-it         1.00   0.00   0.00   0.00   0.00   0.00
-' wa'      0.61   0.39   0.00   0.00   0.00   0.00
-on         0.56   0.20   0.23   0.00   0.00   0.00
-om         0.24   0.26   0.11   0.39   0.00   0.00
-' c'       0.13   0.15   0.21   0.15   0.36   0.00
-' wa'      0.26   0.10   0.25   0.09   0.17   0.13
+             ow   ' into'   at     id    ood   ' into'
+ow         1.00   0.00   0.00   0.00   0.00   0.00
+' into'    0.61   0.39   0.00   0.00   0.00   0.00
+at         0.56   0.20   0.23   0.00   0.00   0.00
+id         0.24   0.26   0.11   0.39   0.00   0.00
+ood        0.13   0.15   0.21   0.15   0.36   0.00
+' into'    0.26   0.10   0.25   0.09   0.17   0.13
 ```
 
 Three things to notice:
 
-1. **Everything above the diagonal is 0.** That's the mask (step 3). Token 2 (`on`) can listen to tokens 0, 1 and 2, but not to 3, 4 or 5. A language model predicts the *next* token, so letting it peek at the next token would be cheating.
+1. **Everything above the diagonal is 0.** That's the mask (step 3). Token 2 (`at`) can listen to tokens 0, 1 and 2, but not to 3, 4 or 5. A language model predicts the *next* token, so letting it peek at the next token would be cheating.
 2. **The first row is `1.00` then zeros.** The first token has nobody before it, so it gives all its attention to itself.
-3. **Every row adds up to 1** (the `each row sums to` line). Softmax shares out one unit of attention. Row 4 (`' c'`) spreads it fairly evenly: 0.13, 0.15, 0.21, 0.15, 0.36.
+3. **Every row adds up to 1** (the `each row sums to` line). Softmax shares out one unit of attention. Row 4 (`ood`) spreads it fairly evenly: 0.13, 0.15, 0.21, 0.15, 0.36.
 
 The *values* are random, because the tables and `Wq`, `Wk`, `Wv` are random. After training, rows become lopsided: a token puts most of its attention on the one or two earlier tokens that help predict what comes next. [explore_wiki.md](explore_wiki.md#attention-in-the-trained-model) shows this on a real sentence.
 
@@ -112,7 +112,7 @@ The *values* are random, because the tables and `Wq`, `Wk`, `Wv` are random. Aft
 
 ## Try this
 
-1. Change the demo IDs to `[79, 110, 401, 334, 275, 316]`, which is "Once upon a" from the tokenizer wiki. Same shapes, different random numbers.
+1. Change the demo IDs to `[79, 110, 345, 491, 258]`, which is "Once upon a" from the tokenizer wiki. Same shapes, different random numbers.
 2. Set `MAX_POS = 4` and run it. What error do you get, and why? (Hint: the position table has only 4 rows.)
 3. Remove the `masked_fill` line and run again. What happens to the upper triangle?
 4. Change `HEAD_DIM` to 4 and to 64. Which shape changes, and which doesn't?

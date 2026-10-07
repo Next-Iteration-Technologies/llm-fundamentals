@@ -1,20 +1,20 @@
 
 Prompt: "Once upon a"
 Top-5 next tokens:
-   0.095  'b'
-   0.093  '\n'
-   0.089  'f'
-   0.083  ' s'
-   0.072  ' b'
-   (confidence of best guess: 9%)
-Continuation: 'Once upon about astanter and ster, beak, aging, she said, “I Oxes, who\nfull by.’\n\nSo he '
+   0.075  'fter'
+   0.046  ' great'
+   0.045  'c'
+   0.044  '\n'
+   0.041  ' l'
+   (confidence of best guess: 7%)
+Continuation: 'Once upon a sk in a gotting of the mastle, and night\nnat presoormbed themselves. The giants len'
 
 Prompt: "The quantum"
 Top-5 next tokens:
-   0.214  'p'
-   0.082  'er'
-   0.058  'ed'
-   0.048  'ed '
-   0.036  'en'
-   (confidence of best guess: 21%)
-Continuation: 'The quantumer and cause up, the murd the mountags of onevalninging him alway. The little very cren, rod the bea'
+   0.170  'p'
+   0.113  'er'
+   0.082  'n'
+   0.081  'ent'
+   0.076  'b'
+   (confidence of best guess: 17%)
+Continuation: 'The quantumpiteeny with one where abouting to bure that he like with this\ndistained and the poor, and then foot'

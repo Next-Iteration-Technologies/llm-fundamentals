@@ -105,7 +105,7 @@ def cmd_embeddings(prompts, model_path):
     print(f"Stored in {model_path} -> ['state']['embed.position_table.weight']  shape {tuple(positions.shape)}")
     print("\nNearest tokens by cosine similarity (1.0 = same direction, 0 = unrelated):")
 
-    for word in [" him", "she ", "king", "down", "when"]:
+    for word in [" him", " she", " went", " down", " when"]:
         ids = encode(word, merges)
         tid = ids[0]
         print(f"\n{decode([tid], vocab)!r}  (id {tid})  first 4 numbers: "
