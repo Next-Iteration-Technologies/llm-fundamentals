@@ -1,0 +1,21 @@
+Untrained model (random weights, seed 0). Saved as model_untrained.pt
+
+Prompt: "Once upon a"
+Top-5 next tokens:
+   0.010  '^'
+   0.008  ' no'
+   0.007  '�'
+   0.006  ' as'
+   0.006  ' B'
+   (confidence of best guess: 1%)
+Continuation: 'Once upon aryidce willeredThe�b�\x03ail\u202e my����astK� so�it\x1f st his ofAare��ant�kfself de abess'
+
+Prompt: "The quantum"
+Top-5 next tokens:
+   0.006  'red'
+   0.006  'id'
+   0.006  ' but'
+   0.006  't'
+   0.006  'se'
+   (confidence of best guess: 1%)
+Continuation: 'The quantumryidce willeredThe�b�\x03ail\u202e my����astK� so�it\x1f st his ofAare��ant�kfself de abess'

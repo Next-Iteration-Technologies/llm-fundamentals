@@ -1,0 +1,20 @@
+
+Prompt: "Once upon a"
+Top-5 next tokens:
+   0.092  '\n'
+   0.062  ' f'
+   0.058  ' c'
+   0.049  ' p'
+   0.044  ' l'
+   (confidence of best guess: 9%)
+Continuation: 'Once upon a first. When the asons of the lening his teears\nove-jumped, and refused: “Tat'
+
+Prompt: "The quantum"
+Top-5 next tokens:
+   0.542  'p'
+   0.171  'ent'
+   0.087  'b'
+   0.041  'm'
+   0.017  'er'
+   (confidence of best guess: 54%)
+Continuation: 'The quantument\n\nSOVETRE, tried gave him. As he menniful him the forest and was the\nshe to a sm'

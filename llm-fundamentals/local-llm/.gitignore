@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+
+# Made by train.py (data.pt on its first run, model.pt at the end). Not committed: run train.py to get them.
+data.pt
+model.pt

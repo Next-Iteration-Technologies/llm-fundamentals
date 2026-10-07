@@ -1,0 +1,7 @@
+$ uv run explore.py temperature "Little Red"
+
+temperature 0.5: 'Little Red-Cap, “Theen had you\nsared to find the tree, and soon being stole.\n\nThe Wolf and the Sheep'
+
+temperature 0.8: 'Little Red-Cap, at the Shepherd blindeather-take him so that\ninquied.\n\nThe Woof and the Tra'
+
+temperature 1.2: 'Little Red-Cap, at the Serpose blindeat cellast, and sofiting stied.\n\nThe Weof and and Tra'

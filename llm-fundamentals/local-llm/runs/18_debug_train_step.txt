@@ -1,0 +1,52 @@
+$ uv run debug.py train-step
+One training step, exactly like one turn of train.py's loop (on a copy: model.pt is not changed).
+Batch: 32 random windows of 64 tokens from the training stories (seed 0).
+
+1. FORWARD. Loss 3.005: on average the right next token got e^-3.005 = 5.0% of the chance.
+   First window, token by token (the chance it gave to the real next token):
+          '·of' -> '·g'           0.5%   surprise  5.38  
+           '·g' -> 'u'            4.1%   surprise  3.19  █
+            'u' -> 'est'          2.3%   surprise  3.78  █
+          'est' -> 's'           13.0%   surprise  2.04  ████
+            's' -> ','           19.2%   surprise  1.65  ██████
+            ',' -> '·for'         1.2%   surprise  4.38  
+         '·for' -> '·the'        18.2%   surprise  1.71  █████
+         '·the' -> '·m'           2.4%   surprise  3.71  █
+           '·m' -> 'ill'          0.5%   surprise  5.26  
+          'ill' -> 'er'          13.5%   surprise  2.00  ████
+           'er' -> '·had'         0.3%   surprise  5.71  
+         '·had' -> '·t'           1.9%   surprise  3.95  █
+           '·t' -> 'ak'           3.8%   surprise  3.28  █
+           'ak' -> 'en'          90.5%   surprise  0.10  ███████████████████████████
+           'en' -> '⏎'            4.3%   surprise  3.15  █
+            '⏎' -> 'c'            4.5%   surprise  3.09  █
+            'c' -> 'are'          6.5%   surprise  2.74  ██
+          'are' -> '·to'          1.9%   surprise  3.95  █
+          '·to' -> '·in'          0.2%   surprise  6.03  
+          '·in' -> 'v'            0.7%   surprise  4.96  
+
+2. BACKWARD. Every knob gets a gradient: which way to turn to lower the loss.
+   The 10 groups with the biggest gradient, and how far one AdamW step moved them:
+   layer 0 feed-forward shrink        gradient  0.3532   moved  0.1920
+   layer 0 feed-forward widen         gradient  0.3138   moved  0.1920
+   layer 1 feed-forward widen         gradient  0.2694   moved  0.1920
+   prediction head                    gradient  0.2461   moved  0.3540
+   layer 1 feed-forward shrink        gradient  0.2394   moved  0.1920
+   layer 0 stitch (proj)              gradient  0.2025   moved  0.0960
+   layer 0 head 1 value               gradient  0.1570   moved  0.0480
+   seat cards                         gradient  0.1543   moved  0.1358
+   layer 1 stitch (proj)              gradient  0.1452   moved  0.0960
+   token cards                        gradient  0.1439   moved  0.3074
+
+   Token cards with a gradient: 328 of 556 (only tokens that appear in the batch).
+   The cards pulled hardest: 'i' 0.034  'o' 0.033  '·g' 0.032  '⏎' 0.027  'p' 0.024  'an' 0.023  't' 0.022  '·' 0.022
+
+3. STEP. Loss on the same batch: 3.005 -> 2.789
+   Prompt "Once upon a time there was a little girl. Her name was Little Red":  '-' 79.3% -> 75.0%
+   top 5 before: '-' 79%  ',' 6%  'ge' 3%  '·and' 1%  '.' 1%
+   top 5 after:  '-' 75%  ',' 7%  'ge' 5%  '·and' 2%  '.' 2%
+
+   (train.py did not save its optimizer's memory, so this step starts AdamW fresh.
+   A fresh AdamW moves every knob it touches by about the learning rate, 0.003, which is a
+   bigger jump than a step late in training. The loss is measured on the same batch the step
+   was made for, so it falls more than it would on new text.)

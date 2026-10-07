@@ -1,0 +1,2 @@
+ToyGPT built: 63,468 parameters
+logits shape: (1, 10, 556) (batch, tokens, vocab)

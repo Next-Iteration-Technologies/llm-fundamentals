@@ -1,0 +1,23 @@
+Encoding stories.txt (one-time, may take a minute)...
+195,262 tokens, vocabulary 556
+model: 63,468 parameters
+random-guess loss would be ln(556) = 6.32
+
+step     0  train loss 6.490  val loss 6.492  (0s)
+step   200  train loss 4.339  val loss 4.412  (5s)
+step   400  train loss 3.981  val loss 4.051  (10s)
+step   600  train loss 3.832  val loss 3.952  (14s)
+step   800  train loss 3.754  val loss 3.907  (19s)
+step  1000  train loss 3.697  val loss 3.810  (24s)
+step  1200  train loss 3.631  val loss 3.791  (28s)
+step  1400  train loss 3.574  val loss 3.721  (33s)
+step  1600  train loss 3.554  val loss 3.726  (37s)
+step  1800  train loss 3.507  val loss 3.709  (42s)
+step  2000  train loss 3.477  val loss 3.720  (46s)
+step  2200  train loss 3.436  val loss 3.692  (52s)
+step  2400  train loss 3.408  val loss 3.660  (56s)
+step  2600  train loss 3.366  val loss 3.630  (61s)
+step  2800  train loss 3.351  val loss 3.600  (67s)
+step  3000  train loss 3.353  val loss 3.593  (71s)
+
+saved model.pt  -> now run: uv run generate.py "Once upon a"

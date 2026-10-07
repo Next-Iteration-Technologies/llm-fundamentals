@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toy GPT Debugger</title>
+<!-- Template for debug.py --html. debug.py replaces the data placeholder below with the trace. -->
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --ink: #1d1f24; --dim: #6b6f78; --line: #e2e2de;
+  --accent: #c2410c; --pos: #c2410c; --neg: #1d4ed8; --bar: #c2410c; --chip: #f0efeb;
+  --mask: #ececea;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161b; --panel: #1c1f26; --ink: #e8e8e4; --dim: #9a9ea8; --line: #2c3039;
+    --accent: #fb923c; --pos: #fb923c; --neg: #60a5fa; --bar: #fb923c; --chip: #262a33; --mask: #22252c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161b; --panel: #1c1f26; --ink: #e8e8e4; --dim: #9a9ea8; --line: #2c3039;
+  --accent: #fb923c; --pos: #fb923c; --neg: #60a5fa; --bar: #fb923c; --chip: #262a33; --mask: #22252c;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding-bottom: 70px; }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 22px; margin: 4px 0 2px; }
+h2 { font-size: 17px; margin: 0 0 8px; }
+h3 { font-size: 14px; margin: 14px 0 6px; color: var(--dim); text-transform: uppercase; letter-spacing: .04em; }
+.sub { color: var(--dim); font-size: 13px; }
+.mono, .tok, .cell, td.num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tabs button, .tokens button, .toggle {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px;
+  padding: 5px 10px; cursor: pointer; font: inherit; }
+.tabs button.on, .tokens button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tokens button { font-family: ui-monospace, Menlo, monospace; font-size: 13px; padding: 3px 7px; }
+.tokens button small { display: block; font-size: 10px; opacity: .7; }
+.strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 12px 0; }
+.card { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; cursor: pointer; }
+.card.on { outline: 2px solid var(--accent); }
+.card .name { font-weight: 600; font-size: 13px; }
+.card .what { overflow-wrap: anywhere; font-size: 12px; color: var(--dim); margin: 2px 0 6px; min-height: 2.6em; }
+.panel { min-width: 0; overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 10px 0; }
+.tok { background: var(--chip); border-radius: 5px; padding: 0 5px; white-space: pre; }
+.bars { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 8px; align-items: center; font-size: 13px; }
+.bars .b { height: 10px; background: var(--bar); border-radius: 3px; min-width: 1px; }
+.bars .v { color: var(--dim); font-family: ui-monospace, Menlo, monospace; font-size: 12px; text-align: right; }
+.mini .bars { font-size: 12px; } .mini .b { height: 7px; }
+.vec { display: grid; gap: 2px; margin: 4px 0; }
+.vec .label { font-size: 12px; color: var(--dim); }
+.cells { display: flex; flex-wrap: wrap; gap: 1px; }
+.cell { width: 22px; height: 22px; border-radius: 3px; font-size: 8px; display: flex; align-items: center;
+  justify-content: center; color: var(--ink); cursor: crosshair; }
+.cells.wide .cell { width: 8px; height: 22px; }
+.reading { overflow-wrap: anywhere; font-size: 13px; margin: 2px 0 8px; }
+.reading b { font-weight: 600; }
+.heads { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 10px; }
+.head { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 12px; }
+td, th { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+td.num { text-align: right; }
+.heat td { width: 34px; height: 24px; text-align: center; border: 1px solid var(--bg); font-size: 10px; padding: 0; }
+.heat th { font-weight: 400; font-family: ui-monospace, Menlo, monospace; font-size: 11px; white-space: pre; }
+.heat th.top { writing-mode: vertical-rl; transform: rotate(180deg); height: 70px; }
+.heat tr.sel th { color: var(--accent); font-weight: 700; }
+.drop { height: 10px; background: var(--bar); border-radius: 3px; margin-top: 3px; }
+.lift { font-family: ui-monospace, Menlo, monospace; font-weight: 600; }
+.up { color: var(--pos); } .down { color: var(--neg); }
+.note { font-size: 12px; color: var(--dim); }
+#info { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line);
+  padding: 8px 16px; font-size: 13px; min-height: 40px; }
+details > summary { cursor: pointer; color: var(--dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<main id="app"></main>
+<div id="info" class="mono">Tap or hover any number to see what it is.</div>
+<script>
+const PAGE = /*DATA*/null;
+
+const $ = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+};
+const pct = v => (v * 100).toFixed(v < 0.1 ? 1 : 0) + "%";
+const sgn = v => (v >= 0 ? "+" : "") + v.toFixed(2);
+const info = text => { document.getElementById("info").textContent = text; };
+const tip = (el, text) => { el.addEventListener("mouseenter", () => info(text)); el.addEventListener("click", e => { e.stopPropagation(); info(text); }); return el; };
+const tok = t => $("span", { class: "tok" }, t);
+const chances = items => $("span", {}, items.map(([t, v]) => $("span", {}, tok(t), " ", $("span", { class: "sub" }, pct(v)), "  ")));
+const toks = (items, signed) => $("span", {}, items.map(([t, v]) => $("span", {}, tok(t), " ", $("span", { class: "sub" }, signed ? sgn(v) : v.toFixed(2)), "  ")));
+
+function bars(items, max) {
+  max = max || Math.max(...items.map(i => i[1]));
+  return $("div", { class: "bars" }, items.flatMap(([t, v]) => [
+    tok(t), $("div", {}, $("div", { class: "b", style: `width:${Math.max(0.5, 100 * v / max)}%` })),
+    $("span", { class: "v" }, pct(v))]));
+}
+
+function colour(v, max) {
+  const a = Math.min(1, Math.abs(v) / (max || 1));
+  return `color-mix(in srgb, var(${v >= 0 ? "--pos" : "--neg"}) ${Math.round(a * 85)}%, transparent)`;
+}
+
+// A vector as a row of coloured cells: orange = positive, blue = negative.
+function vec(label, values, describe, wide) {
+  const max = Math.max(...values.map(Math.abs));
+  return $("div", { class: "vec" },
+    $("span", { class: "label" }, `${label} (${values.length} numbers)`),
+    $("div", { class: "cells" + (wide ? " wide" : "") }, values.map((v, i) => tip(
+      $("span", { class: "cell", style: `background:${colour(v, max)}` }, wide ? "" : (Math.abs(v) >= 1 ? v.toFixed(0) : "")),
+      `${label} #${i} = ${sgn(v)}${describe ? "   " + describe(i, v) : ""}`))));
+}
+
+function pushLine(p, lift, win) {
+  return $("div", { class: "reading" },
+    $("b", {}, "pushes up "), toks(p.up, true), $("b", {}, " down "), toks(p.down, true),
+    lift == null ? null : $("span", {}, " · for the winner ", tok(win), " ", $("span", { class: "lift " + (lift >= 0 ? "up" : "down") }, sgn(lift))));
+}
+
+let state = { report: 0, pos: null, stage: null, all: false };
+
+function render() {
+  const app = document.getElementById("app");
+  app.replaceChildren();
+  const R = PAGE.reports[state.report];
+  const T = R.tokens.length;
+  if (state.pos == null || state.pos >= T) state.pos = T - 1;
+  const i = state.pos, P = R.positions[i];
+
+  app.append($("h1", {}, "Inside the toy GPT"),
+    $("div", { class: "sub" }, `“${R.prompt}” · ${R.label} · trace = model() within ${R.check.toExponential(1)}`));
+
+  if (PAGE.reports.length > 1)
+    app.append($("div", { class: "row tabs", style: "margin-top:10px" }, PAGE.reports.map((r, k) =>
+      $("button", { class: k === state.report ? "on" : "", onclick: () => { state.report = k; render(); } }, r.label))));
+
+  app.append($("h3", {}, "1 · Tokens: pick the one to follow"),
+    $("div", { class: "row tokens" }, R.tokens.map((t, k) =>
+      $("button", { class: k === i ? "on" : "", onclick: () => { state.pos = k; render(); } },
+        t.text, $("small", {}, `#${t.id}`)))),
+    $("div", { class: "note" }, i === T - 1 ? "The last token makes the prediction for what comes next."
+      : `Token ${i} predicts what follows it (here: ${R.tokens[i + 1].text}).`));
+
+  // Overview strip: one card per stage.
+  const stages = [["embed", "Embedding", `card + seat ${i}`, P.embed.guess]];
+  P.layers.forEach((Ly, L) => {
+    const listen = Ly.heads.map((h, H) => { const j = h.weights.indexOf(Math.max(...h.weights)); return `h${H}→${j === i ? "self" : R.tokens[j].text}`; }).join(" ");
+    stages.push([`a${L}`, `Layer ${L} · attention`, listen, Ly.guess_attn]);
+    stages.push([`f${L}`, `Layer ${L} · feed-forward`, `${Ly.firing}/128 neurons fire`, Ly.guess_ff]);
+  });
+  stages.push(["final", "Prediction", `best: ${P.final[0][0]} ${pct(P.final[0][1])}`, P.final]);
+
+  app.append($("h3", {}, "2 · Overview: tap a stage for every number"),
+    $("label", { class: "note" }, $("input", Object.assign({ type: "checkbox", onchange: e => { state.all = e.target.checked; render(); } }, state.all ? { checked: "" } : {})), " show all stages in full"),
+    $("div", { class: "strip" }, stages.map(([key, name, what, guess]) =>
+      $("div", { class: "card" + (state.stage === key ? " on" : ""), onclick: () => { state.stage = state.stage === key ? null : key; render(); } },
+        $("div", { class: "name" }, name), $("div", { class: "what mono" }, what),
+        $("div", { class: "mini" }, $("div", { class: "note" }, "if it stopped here"), bars(guess.slice(0, 3), 1))))));
+
+  const show = state.all ? stages.map(s => s[0]) : (state.stage ? [state.stage] : []);
+  for (const key of show) app.append(detail(R, i, key));
+  if (PAGE.off) app.append(offPanel(PAGE.off));
+  if (PAGE.train) app.append(trainPanel(PAGE.train));
+  app.append(glossary());
+}
+
+function detail(R, i, key) {
+  const P = R.positions[i], name = R.tokens[i].text;
+  if (key === "embed") {
+    const e = P.embed;
+    return $("div", { class: "panel" }, $("h2", {}, `Embedding · ${name}`),
+      vec("token card", e.tok), vec(`seat ${i} card`, e.pos), vec("sum (what goes upstairs)", e.sum),
+      $("div", { class: "reading" }, $("b", {}, "means: "), "nearest cards ", toks(e.near)),
+      $("h3", {}, "if it stopped here"), bars(e.guess));
+  }
+  if (key === "final") {
+    return $("div", { class: "panel" }, $("h2", {}, "Prediction"),
+      $("div", { class: "reading" }, "ln_final → 556 raw scores. Highest: ", toks(P.logits.slice(0, 5), true)),
+      $("div", { class: "reading" }, "softmax turns raw scores into chances that add up to 100%:"),
+      bars([...P.final, ["other 546", P.rest]], P.final[0][1]));
+  }
+  const L = +key.slice(1), Ly = P.layers[L];
+  if (key[0] === "a") {
+    const approx = L > 0 ? " (approximate: each token alone, without neighbours)" : "";
+    return $("div", { class: "panel" }, $("h2", {}, `Layer ${L} · attention · ${name}`),
+      $("div", { class: "reading" }, `Steadying (ln1): mean ${sgn(Ly.ln1.before[0])}, spread ${Ly.ln1.before[1].toFixed(2)} → mean ${sgn(Ly.ln1.after[0])}, spread ${Ly.ln1.after[1].toFixed(2)}`),
+      vec("steadied", Ly.ln1.vec),
+      $("div", { class: "heads" }, Ly.heads.map((h, H) => $("div", { class: "head" },
+        $("h2", {}, `Head ${H}`),
+        vec("query: the question", h.q), $("div", { class: "reading" }, $("b", {}, "looks for "), toks(h.looks_for), $("span", { class: "note" }, approx)),
+        vec("key: the badge", h.k), $("div", { class: "reading" }, $("b", {}, "answers "), toks(h.answers)),
+        vec("value: what it says", h.v), $("div", { class: "reading" }, $("b", {}, "passes on "), toks(h.passes_on.up, true)),
+        $("h3", {}, "Q·K score ÷ √8 → share of attention"),
+        $("div", { class: "bars" }, h.weights.flatMap((w, j) => [tok(j === i ? R.tokens[j].text + " (self)" : R.tokens[j].text),
+          tip($("div", {}, $("div", { class: "b", style: `width:${Math.max(0.5, w * 100)}%` })), `score ${sgn(h.scores[j])} → share ${w.toFixed(3)}`),
+          $("span", { class: "v" }, `${sgn(h.scores[j])} → ${w.toFixed(2)}`)])),
+        R.tokens.length > i + 1 ? $("div", { class: "note" }, `${R.tokens.length - i - 1} later token(s) hidden by the mask`) : null,
+        vec("blend of values", h.out), pushLine(h.out_push, h.lift, P.win),
+        $("details", {}, $("summary", {}, "whole attention table for this head"), heat(R, L, H, i))))),
+      $("h3", {}, "Stitch 4 × 8 → 32 (proj), then add to what it had"),
+      vec("change", Ly.attn), pushLine(Ly.attn_push, Ly.attn_lift, P.win),
+      $("h3", {}, "if it stopped here"), bars(Ly.guess_attn));
+  }
+  return $("div", { class: "panel" }, $("h2", {}, `Layer ${L} · feed-forward · ${name}`),
+    vec("in, steadied (ln2)", Ly.ff_in),
+    $("h3", {}, `Widen 32 → 128 neurons, cut negatives: ${Ly.firing} fire`),
+    vec("neurons", Ly.wide, (n, v) => v > 0 ? "fires" : "silent", true),
+    $("h3", {}, `Neurons that move the winner ${P.win} most`),
+    $("div", { class: "scroll" }, $("table", {},
+      $("tr", {}, ["neuron", "fires", `for ${P.win}`, "fires hardest at (in the stories)", "its output pushes"].map(h => $("th", {}, h))),
+      Ly.neurons.map(n => $("tr", {}, $("td", { class: "num" }, `#${n.n}`), $("td", { class: "num" }, n.act.toFixed(2)),
+        $("td", { class: "num lift " + (n.lift >= 0 ? "up" : "down") }, sgn(n.lift)),
+        $("td", { class: "mono" }, n.fires_for.join("   ")), $("td", {}, toks(n.pushes.up, true)))))),
+    $("h3", {}, "Shrink 128 → 32, then add to what it had"),
+    vec("change", Ly.ff), pushLine(Ly.ff_push, Ly.ff_lift, P.win),
+    $("h3", {}, "if it stopped here"), bars(Ly.guess_ff));
+}
+
+function heat(R, L, H, sel) {
+  const t = R.tokens;
+  return $("div", { class: "scroll" }, $("table", { class: "heat" },
+    $("tr", {}, $("th", {}), t.map(x => $("th", { class: "top" }, x.text))),
+    t.map((x, r) => $("tr", { class: r === sel ? "sel" : "" }, $("th", {}, x.text),
+      t.map((_, c) => {
+        if (c > r) return $("td", { style: "background:var(--mask)" });
+        const w = R.positions[r].layers[L].heads[H].weights[c];
+        return tip($("td", { style: `background:${colour(w, 1)}` }, w >= 0.1 ? w.toFixed(1) : ""),
+          `layer ${L} head ${H}: ${x.text} gives ${w.toFixed(3)} of its attention to ${t[c].text}`);
+      })))));
+}
+
+function offPanel(o) {
+  const rows = o.single ? [o.single] : o.heads;
+  return $("div", { class: "panel" }, $("h2", {}, `Switch parts off · what happens to ${o.best} (${pct(o.best_p)})`),
+    $("div", { class: "reading" }, "normal top 5: ", chances(o.base)),
+    $("div", { class: "scroll" }, $("table", {},
+      $("tr", {}, ["switched off", `${o.best} now`, "", "new top 3"].map(h => $("th", {}, h))),
+      [...rows, ...(o.neurons || [])].map(r => $("tr", {}, $("td", {}, r.name), $("td", { class: "num" }, pct(r.best_now)),
+        $("td", { style: "width:120px" }, $("div", { class: "drop", style: `width:${Math.max(0, 100 * r.drop / o.best_p)}%` })),
+        $("td", {}, chances(r.top.slice(0, 3))))))));
+}
+
+function trainPanel(t) {
+  return $("div", { class: "panel" }, $("h2", {}, "One training step (on a copy; model.pt unchanged)"),
+    $("div", { class: "reading" }, `Loss ${t.loss}: the right next token got ${pct(Math.exp(-t.loss))} of the chance, on average.`),
+    $("h3", {}, "First window: chance given to the real next token"),
+    $("div", { class: "bars" }, t.window.flatMap(w => [$("span", {}, tok(w.in), " → ", tok(w.next)),
+      $("div", {}, $("div", { class: "b", style: `width:${Math.max(0.5, w.p * 100)}%` })), $("span", { class: "v" }, pct(w.p))])),
+    $("h3", {}, "Biggest gradients, and how far one AdamW step moved them"),
+    $("table", {}, $("tr", {}, ["group", "gradient", "moved"].map(h => $("th", {}, h))),
+      t.grads.map(([n, g, m]) => $("tr", {}, $("td", {}, n), $("td", { class: "num" }, g.toFixed(4)), $("td", { class: "num" }, m.toFixed(4))))),
+    $("div", { class: "reading" }, `${t.n_cards} of 556 token cards got a gradient. Pulled hardest: `, toks(t.cards)),
+    $("div", { class: "reading" }, `Loss on the same batch: ${t.loss} → ${t.loss_after}. ${t.best}: ${pct(t.best_before)} → ${pct(t.best_after)}`),
+    $("div", { class: "row" }, $("div", { style: "flex:1;min-width:220px" }, $("h3", {}, "before"), bars(t.before, 1)),
+      $("div", { style: "flex:1;min-width:220px" }, $("h3", {}, "after"), bars(t.after, 1))));
+}
+
+function glossary() {
+  const items = [
+    ["query", "the question a token asks; read as the tokens whose keys it matches best"],
+    ["key", "the badge a token wears; read as the tokens whose queries match it best"],
+    ["value", "what a token says when listened to; read as the next tokens it pushes up"],
+    ["pushes", "a straight-line reading: the change, passed through the final steadying and the prediction head (a direction, not exact %)"],
+    ["for the winner", "how much this part raises the raw score of the token that ends up predicted"],
+    ["if it stopped here", "the final steadying and prediction head applied early (the logit lens)"],
+    ["colours", "orange = positive number, blue = negative; stronger colour = bigger"],
+    ["tokens shown", "readings list only tokens that appear at least 20 times in the stories"],
+  ];
+  return $("div", { class: "panel" }, $("h2", {}, "How to read this page"),
+    $("table", {}, items.map(([k, v]) => $("tr", {}, $("td", {}, $("b", {}, k)), $("td", {}, v)))));
+}
+
+render();
+</script>
+</body>
+</html>

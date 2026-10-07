@@ -1,0 +1,214 @@
+$ uv run debug.py trace "Little Red"
+Prompt "Little Red"   model: model.pt
+Check: this trace and model() agree to within 9.5e-06
+
+====================================================================================================
+TOKEN 4: 'ed'   (id 271)   <- makes the prediction
+====================================================================================================
+
+--- EMBEDDING: look up the token card and the seat card, add them ---
+token card  +0.64 +0.93 +0.71 -0.06 -0.98 +0.38 -0.55 +0.89 -0.19 +0.51 -0.52 +0.07 -0.01 -0.55 -0.79 +2.04
+            +0.91 +0.84 +1.42 -0.99 +1.80 -1.37 -0.48 +0.98 -0.88 -0.60 -0.89 -0.67 -0.52 -0.22 -2.02 -0.78
+seat 4      -0.38 +0.50 -0.16 -0.54 -0.51 -0.23 +1.43 -0.11 -0.10 +0.34 -0.68 +0.22 +0.79 +0.16 +0.06 +0.21
+            +0.41 +0.06 -0.40 +0.87 +0.49 -0.43 -0.20 +0.85 -0.08 +0.81 +0.32 -0.44 +0.23 -0.72 +0.05 +1.59
+sum         +0.26 +1.43 +0.55 -0.60 -1.49 +0.15 +0.88 +0.78 -0.29 +0.86 -1.20 +0.29 +0.78 -0.39 -0.73 +2.25
+            +1.32 +0.89 +1.02 -0.12 +2.29 -1.79 -0.68 +1.83 -0.96 +0.21 -0.57 -1.11 -0.29 -0.94 -1.98 +0.82
+meaning: nearest cards to 'ed' (cosine, 1 = same direction): 'ack' +0.60  'ght' +0.53  'ing' +0.52  'ved' +0.52  'hed' +0.50
+if it stopped here: ':' 15%  '·and' 14%  '·upon' 13%  '·into' 4%  '·his' 4%
+
+--- LAYER 0 · STEADYING (ln1): mean +0.11, spread 1.12  ->  mean -0.13, spread 0.71 ---
+steadied    -0.00 +0.60 -0.01 -0.50 -1.21 +0.01 +0.23 +0.56 -0.25 +0.12 -1.12 +0.02 +0.56 -0.23 -0.33 +1.10
+            +0.75 +0.39 +0.61 -0.88 +0.92 -1.18 -0.48 +1.04 -0.36 -0.28 -0.27 -0.74 -0.09 -1.21 -1.78 -0.13
+
+--- LAYER 0 · HEAD 0 ---
+query       -1.21 +0.41 +1.57 +2.63 -1.36 -0.04 -0.31 +6.36   looks for: ']' -10.70  '·H' -11.95  '·T' -12.05  '·su' -12.06  '·ha' -12.19
+key         +2.68 -0.96 -2.55 -1.90 +1.34 -1.47 -1.74 -4.43   answers:   '·my' +3.26  '·was' +2.05  '·are' +1.65  '·will' +1.30  '·ro' +1.05
+value       -0.71 -0.90 -1.15 +0.00 +0.01 +0.75 +0.37 -0.21   passes on: 'ch' +4.13  'ut' +3.54  'v' +3.27  'et' +2.98  'ved' +2.68
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -19.70  ->  0.002 
+        'ittle'  score -17.27  ->  0.019 █
+            '·'  score -16.26  ->  0.051 ██
+            'R'  score -13.61  ->  0.723 ██████████████████████
+           'ed'  score -14.87  ->  0.205 ██████
+blend       -0.21 +0.18 -0.36 -0.44 +1.03 -0.32 +0.43 +0.19   (the values, mixed by those shares)
+this head pushes: up 'on' +2.71  'ch' +2.71  'i' +2.57  '·H' +2.42  'le' +2.34   down 'ard' -4.61  'ght' -4.21  ⟨98⟩ -4.15
+for the winner '-': +1.04
+
+--- LAYER 0 · HEAD 1 ---
+query       -1.88 -6.46 +1.31 +1.03 +1.23 +1.12 +1.61 +0.26   looks for: '·ha' -10.07  'rom' -10.23  '·d' -10.29  '·se' -10.45  'ri' -10.46
+key         +3.22 +3.77 -1.80 -0.78 -1.21 -1.74 -1.00 -1.12   answers:   '·when' +1.94  '·but' +1.31  '·The' +1.20  '·should' +1.16  '.”' +1.07
+value       -0.39 +0.92 +0.32 +0.20 -0.05 +0.77 +0.03 +0.33   passes on: 'ittle' +2.47  'ain' +2.37  'ct' +2.06  'f' +1.99  'p' +1.92
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -16.77  ->  0.008 
+        'ittle'  score -14.75  ->  0.060 ██
+            '·'  score -12.83  ->  0.411 ████████████
+            'R'  score -12.97  ->  0.358 ███████████
+           'ed'  score -13.76  ->  0.162 █████
+blend       -0.21 +1.41 +0.10 +0.23 +0.36 -0.26 +0.41 -0.40   (the values, mixed by those shares)
+this head pushes: up 'ant' +3.34  'are' +3.30  'ep' +3.27  'ack' +3.26  'e' +3.22   down 'ind' -3.92  '·day' -3.13  'd' -2.69
+for the winner '-': -0.10
+
+--- LAYER 0 · HEAD 2 ---
+query       +3.08 -0.14 +1.91 -1.69 +0.48 -0.33 +1.28 +2.04   looks for: '·h' -4.12  '·ch' -4.45  '·d' -4.60  '·qu' -4.81  '·re' -4.86
+key         -3.35 +1.24 -1.93 +0.45 -0.90 +1.08 -0.52 -2.70   answers:   '·my' +1.21  '·th' +0.23  'T' -0.38  '·L' -0.42  '·they' -0.50
+value       +1.17 +1.08 +0.32 +0.34 -0.04 -0.34 +0.58 +0.36   passes on: 'ard' +4.21  'ind' +3.74  '·me' +3.52  'ing' +3.50  '·my' +3.36
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score  -9.29  ->  0.045 █
+        'ittle'  score  -8.83  ->  0.071 ██
+            '·'  score  -6.88  ->  0.500 ███████████████
+            'R'  score  -7.93  ->  0.174 █████
+           'ed'  score  -7.74  ->  0.210 ██████
+blend       +0.07 -0.01 +0.25 +0.30 +0.23 -0.47 +0.17 +0.46   (the values, mixed by those shares)
+this head pushes: up 'ard' +1.60  'R' +1.20  ']' +1.16  'Y' +1.13  'G' +1.09   down 'le' -1.45  'ak' -1.19  'er' -1.15
+for the winner '-': -0.04
+
+--- LAYER 0 · HEAD 3 ---
+query       +0.27 +0.68 +2.41 -3.12 +4.00 -0.32 -2.48 -2.17   looks for: ']' -8.43  '.”' -10.67  '!' -11.17  '·wor' -11.18  '?' -11.22
+key         +1.55 +1.90 -3.99 +1.95 -4.21 +2.28 +2.20 +2.44   answers:   '!’' +3.41  ',’' +2.01  '.’' +1.87  'ried' +0.72  '”' +0.59
+value       +0.84 +0.41 -0.44 -0.15 +0.89 +0.43 -0.15 +0.16   passes on: 'ul' +2.76  '(' +2.37  'ered' +2.26  'er' +2.17  'i' +2.08
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -16.51  ->  0.026 █
+        'ittle'  score -15.84  ->  0.051 ██
+            '·'  score -13.85  ->  0.371 ███████████
+            'R'  score -13.71  ->  0.429 █████████████
+           'ed'  score -14.95  ->  0.124 ████
+blend       -0.07 +0.04 -0.28 +0.27 +0.02 -0.09 +0.16 +0.59   (the values, mixed by those shares)
+this head pushes: up ']' +1.25  'hen' +1.12  'ave' +1.03  'self' +1.02  'ell' +1.01   down 'y' -1.50  'ss' -1.28  'x' -1.25
+for the winner '-': +0.14
+
+--- LAYER 0 · STITCH 4 heads x 8 -> 32 (proj), then ADD to the input ---
+change      +0.30 +0.12 -0.82 -0.34 -0.71 +0.02 +0.27 -0.33 -0.14 +0.69 +0.30 +0.17 +0.08 +0.73 -1.20 +0.17
+            +0.23 -0.04 +0.80 +0.22 +0.98 +0.33 +0.81 -0.54 +0.99 -0.91 +0.16 +0.04 +0.27 -0.49 -0.00 +0.72
+pushes: up 'i' +5.68  'ant' +5.31  'lf' +4.65  'ould' +4.32  '·H' +4.25   down 'gh' -6.65  ⟨98⟩ -6.28  'ind' -6.02
+for the winner '-': +0.94
+if it stopped here: '·and' 16%  'ed' 11%  'i' 10%  ':' 8%  'as' 6%
+
+--- LAYER 0 · FEED-FORWARD: steady (ln2), widen 32 -> 128, cut negatives, shrink 128 -> 32 ---
+in (32)     +0.04 +0.87 -0.27 -0.62 -1.32 -0.05 +0.46 +0.14 -0.47 +0.76 -0.69 +0.33 +0.40 +0.02 -1.07 +1.22
+            +0.60 +0.25 +1.22 -0.30 +1.64 -0.93 +0.01 +0.59 -0.14 -0.57 -0.23 -0.65 -0.16 -0.68 -1.03 +0.77
+widened (128 neurons, after cutting negatives): 46 fire
+   |  ▁     ▁ ▄     ▃ ▂ ▄      ▇█     ▅▁▁▅ ▂ ▃▃ ▄ ▂▃▄ ▂▆  ▁    ▁     ▃ ▆          ▂▃▁   ▁       ▂    ▁      ▂▂ ▃ ▂▃▂  ▁      ▂  ▁   |
+the neurons that move the winner '-' most (firing x output):
+   #20  fires 0.97  -> -1.32 for '-'   fires hardest at: … It would[ not]  …t does[ not]  … give it[ not]
+              pushes: 'ry' +3.36  'her' +3.03  'hed' +2.86
+   #67  fires 1.75  -> +1.25 for '-'   fires hardest at: … he was [ve]  …s were [ve]  …l for a[ fe]
+              pushes: 'ime' +2.25  'ep' +1.89  'it' +1.74
+   #28  fires 2.21  -> +1.17 for '-'   fires hardest at: …Good⏎[la]  …, and⏎[la]  …y⏎d[rin]
+              pushes: 'd' +1.25  'e' +1.20  'm' +1.19
+   #34  fires 1.27  -> +0.88 for '-'   fires hardest at: …an ser[ved]  … to the w[ind]  … that, came[ up]
+              pushes: '”' +1.75  't' +1.64  'urn' +1.63
+   #42  fires 0.85  -> +0.73 for '-'   fires hardest at: …⏎⏎The[n]  …⏎⏎The[n]  …⏎⏎The[n]
+              pushes: '(' +2.93  'ough' +2.41  '[' +2.29
+   #107 fires 0.85  -> +0.70 for '-'   fires hardest at: … would bre[ak]  …ess mone[y]  … at⏎l[ast]
+              pushes: 'ime' +3.08  'nt' +2.84  'ind' +2.40
+shrunk (32) -1.80 +0.82 +0.09 +0.53 +0.55 -1.06 -0.09 +0.13 -0.18 -0.83 +0.56 -0.75 -0.43 +3.02 +1.51 -1.37
+            +1.91 +0.20 +0.60 +2.23 -1.65 +1.53 -1.93 +0.81 -1.02 +0.18 -0.08 +0.63 -1.03 -2.91 -2.28 +0.81
+pushes: up ',’' +11.95  '·you' +11.02  '·me' +9.91  'e' +9.47  '·your' +9.17   down ']' -23.85  '[' -18.62  'ss' -18.51
+for the winner '-': +4.11
+if it stopped here: 'e' 40%  '·the' 14%  'i' 14%  ',' 8%  '·to' 3%
+
+--- LAYER 1 · STEADYING (ln1): mean +0.16, spread 1.84  ->  mean +0.01, spread 0.74 ---
+steadied    -0.61 +1.04 +0.03 +0.08 -0.69 -0.52 +0.35 -0.05 -0.34 +0.01 -0.26 +0.02 +0.14 +1.17 -0.45 +0.21
+            +1.19 +0.42 +1.07 +0.72 +0.49 -0.08 -0.67 +0.68 -0.43 -0.46 -0.37 -0.03 -0.39 -1.60 -1.77 +1.47
+
+--- LAYER 1 · HEAD 0 ---   (approx: each token alone, without neighbours)
+query       -1.09 -0.92 +1.27 -0.10 -1.79 +0.63 +2.86 -0.20   looks for: '[' -0.65  '⏎' -1.21  '·an' -1.55  '·W' -1.57  'G' -1.69
+key         +3.67 +1.04 +1.19 -0.30 +1.17 -2.35 -1.25 +1.53   answers:   'g' +0.41  '·k' +0.27  'oo' +0.16  '·p' +0.15  '·re' +0.05
+value       +0.03 +0.59 -1.50 +0.70 -0.23 -0.03 +0.84 +0.35   passes on: '[' +6.97  ']' +6.64  '⏎' +5.47  '”' +3.87  '·The' +3.43
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score  -6.13  ->  0.019 █
+        'ittle'  score  -5.89  ->  0.024 █
+            '·'  score  -3.94  ->  0.168 █████
+            'R'  score  -2.65  ->  0.606 ██████████████████
+           'ed'  score  -3.85  ->  0.184 ██████
+blend       -0.36 +0.02 -0.19 +0.86 -0.17 -0.04 -0.05 +0.24   (the values, mixed by those shares)
+this head pushes: up '[' +2.79  'T' +2.75  '⏎' +2.69  ']' +2.57  '1' +2.35   down 'ittle' -3.08  'ife' -2.77  'rin' -2.53
+for the winner '-': +0.34
+
+--- LAYER 1 · HEAD 1 ---   (approx: each token alone, without neighbours)
+query       +2.34 +0.81 +1.23 +1.47 -1.71 -1.99 +1.75 +2.38   looks for: ']' -7.91  ',’' -7.93  '!’' -8.02  'The' -8.40  'ittle' -8.54
+key         -3.12 +0.36 -0.58 -4.16 +3.57 +2.81 -1.08 -1.63   answers:   '·go' -0.69  '·very' -1.22  '·no' -1.23  '.' -1.28  ':' -1.46
+value       -0.83 -0.09 +0.96 -0.06 +1.51 +0.23 -0.29 -1.33   passes on: 'ough' +6.24  'us' +6.11  'Y' +5.06  'M' +4.69  'z' +4.69
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -13.11  ->  0.033 █
+        'ittle'  score -10.74  ->  0.353 ███████████
+            '·'  score -12.62  ->  0.054 ██
+            'R'  score -10.88  ->  0.306 █████████
+           'ed'  score -11.06  ->  0.255 ████████
+blend       -0.56 -0.20 +0.32 +0.05 +0.09 +0.63 +0.14 -1.18   (the values, mixed by those shares)
+this head pushes: up 'M' +3.41  'ne' +3.23  'se' +3.04  'hed' +2.99  's' +2.98   down 'her' -4.92  'one' -3.85  '”' -3.09
+for the winner '-': +0.23
+
+--- LAYER 1 · HEAD 2 ---   (approx: each token alone, without neighbours)
+query       +1.62 +1.72 -1.16 -1.00 +0.25 -2.45 -0.25 +0.90   looks for: '!’' -3.59  '.’' -3.62  '·‘' -3.66  ',’' -3.80  ⟨98⟩ -3.82
+key         -3.11 -3.73 +0.70 +2.93 +0.76 +3.91 +1.05 -2.40   answers:   'very' -2.45  '·no' -2.66  '.' -3.03  '·very' -3.37  '·other' -3.74
+value       +0.04 +0.72 +0.64 -0.08 -0.47 +1.45 +0.22 +0.73   passes on: '[' +8.30  ']' +6.48  ')' +4.90  '1' +4.43  'ck' +3.79
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -10.80  ->  0.022 █
+        'ittle'  score  -9.19  ->  0.111 ███
+            '·'  score  -7.37  ->  0.687 █████████████████████
+            'R'  score  -9.27  ->  0.103 ███
+           'ed'  score  -9.56  ->  0.077 ██
+blend       +0.31 +1.69 -0.06 -1.14 -0.83 +0.19 +0.06 +0.58   (the values, mixed by those shares)
+this head pushes: up '[' +10.86  '”' +7.43  ')' +6.63  ']' +6.34  '!' +4.63   down 'ered' -7.05  'an' -5.32  'ard' -5.01
+for the winner '-': +0.42
+
+--- LAYER 1 · HEAD 3 ---   (approx: each token alone, without neighbours)
+query       +1.99 +1.54 +1.57 -1.35 +0.65 -2.98 +2.12 +2.57   looks for: '[' -6.86  '·M' -6.98  '?' -7.64  '·I' -7.68  '·W' -7.76
+key         -2.63 -2.83 -2.51 +1.02 -2.79 +2.21 -1.40 -2.83   answers:   '·li' +0.10  '·n' -1.50  'ro' -1.70  'ra' -1.87  '·she' -2.17
+value       +0.07 -0.35 +0.27 -0.97 -0.18 -0.84 -0.23 -1.34   passes on: 'ne' +3.51  'ep' +2.89  'ent' +2.34  'if' +2.14  '·off' +1.94
+Q·K score (÷√8) and share of attention for each token so far:
+            'L'  score -13.71  ->  0.011 
+        'ittle'  score -12.29  ->  0.045 █
+            '·'  score  -9.93  ->  0.473 ██████████████
+            'R'  score -10.09  ->  0.403 ████████████
+           'ed'  score -11.86  ->  0.068 ██
+blend       +1.54 -0.11 +1.18 +0.65 -0.48 -0.05 -0.92 +0.45   (the values, mixed by those shares)
+this head pushes: up 'C' +7.96  'U' +7.86  '(' +7.46  ']' +7.23  'V' +6.61   down 'k' -5.82  'ess' -5.50  'ife' -5.39
+for the winner '-': +1.95
+
+--- LAYER 1 · STITCH 4 heads x 8 -> 32 (proj), then ADD to the input ---
+change      +2.39 +0.05 +0.98 +0.71 +1.35 +0.11 -1.67 -1.56 -0.30 -1.27 +0.28 -1.38 -2.15 +0.57 +0.28 -0.04
+            -0.82 +0.37 +0.21 -1.01 -0.78 +0.66 +1.98 -2.09 +1.18 -1.95 -0.15 +1.82 -0.35 +0.98 -0.31 -2.02
+pushes: up '[' +22.58  ']' +19.58  '(' +14.82  'M' +13.96  'nt' +13.80   down 'ess' -11.40  'ell' -11.17  'ered' -11.08
+for the winner '-': +2.20
+if it stopped here: 'i' 44%  '·to' 9%  'it' 5%  ',' 4%  'le' 4%
+
+--- LAYER 1 · FEED-FORWARD: steady (ln2), widen 32 -> 128, cut negatives, shrink 128 -> 32 ---
+in (32)     +0.83 +1.35 +0.31 +0.39 -0.17 -0.97 -0.44 -0.63 -0.55 -0.41 -0.10 -1.24 -1.33 +2.29 -0.36 +0.61
+            +1.70 +0.67 +1.63 +0.47 +0.73 +0.54 +0.22 -0.35 +0.04 -1.79 -0.91 +1.04 -0.79 -1.39 -3.04 +0.09
+widened (128 neurons, after cutting negatives): 36 fire
+   | ▃  ▄ ▄▂  ▄ ▂         ▆    ▅            ▆  ▄      ▁   ▄   ▂ ▆▁         ▂  ▅▁  ▃▁ ▂   ▃   ▇ ▁           ▂    █▆▂ ▂ ▂▂       ▁ ▇ ▁|
+the neurons that move the winner '-' most (firing x output):
+   #108 fires 2.65  -> +3.76 for '-'   fires hardest at: … OLD[ M]  … RO[L]  …LTS[K]
+              pushes: '·into' +2.40  '·off' +2.33  '·up' +2.27
+   #89  fires 2.39  -> -2.63 for '-'   fires hardest at: …’s no p[la]  …irst p[la]  …ne of the[ w]
+              pushes: 'own' +3.20  'ck' +3.15  'other' +3.05
+   #27  fires 1.82  -> -1.98 for '-'   fires hardest at: … Ne[ver]  …⏎Gret[el]  … went the whe[el]
+              pushes: 'ard' +3.57  'ife' +3.47  'the' +2.82
+   #6   fires 1.47  -> +1.98 for '-'   fires hardest at: …BOD[,]  …MIN[,]  …THY[,]
+              pushes: 'as' +1.99  'ime' +1.91  'o' +1.84
+   #10  fires 1.28  -> +1.54 for '-'   fires hardest at: … to turn[ br]  … to look[ br]  …on’t[ br]
+              pushes: 'self' +2.14  'M' +2.08  'C' +1.99
+   #54  fires 1.40  -> +1.15 for '-'   fires hardest at: …autif[ul]  …aithf[ul]  …autif[ul]
+              pushes: ']' +3.47  'gh' +2.73  'nt' +2.16
+shrunk (32) -2.26 +0.92 +0.13 +0.18 -0.88 +0.45 -0.99 +1.99 +0.16 +1.44 -1.87 -0.62 -0.10 -1.00 +2.01 -0.08
+            -2.49 +1.09 +0.51 +0.63 -0.72 -1.23 +1.10 +0.33 +0.46 -0.36 -1.59 +0.92 -0.04 +0.56 +3.06 -1.01
+pushes: up 'ore' +13.92  'd' +12.84  'self' +12.39  'st' +11.57  'T' +11.02   down 'ut' -14.33  'hen' -13.62  'ter' -13.30
+for the winner '-': +6.99
+if it stopped here: '-' 69%  ',' 12%  'i' 2%  '.' 2%  '·to' 1%
+
+--- PREDICTION: steady (ln_final), 556 raw scores, softmax -> chances ---
+highest raw scores: '-' +10.62  ',' +8.89  'i' +7.02  '.' +6.99  '·to' +6.79
+            '-'   68.8% ████████████████████████████
+            ','   12.2% █████
+            'i'    1.9% █
+            '.'    1.8% █
+          '·to'    1.5% █
+         '·and'    1.4% █
+            's'    1.3% █
+            '·'    1.1% 
+            ';'    0.9% 
+           'as'    0.8% 
+      other 546    8.2%
+
