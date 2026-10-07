@@ -1,0 +1,23 @@
+$ uv run debug.py off
+Prompt "Once upon a time there was a little girl. One day Little Red"   model: model.pt
+Normal best guess: '-' 81.2%   top 5: '-' 81%  ',' 8%  'ge' 1%  'i' 1%  '.' 1%
+
+Switch off one head at a time. How much does '-' lose?
+   layer 0 head 0     81.2% -> 25.6%  █████████████████████████████████   now: '-' 26%  'i' 23%  'ge' 7%
+   layer 0 head 1     81.2% -> 56.5%  ███████████████   now: '-' 56%  ',' 13%  'i' 5%
+   layer 0 head 2     81.2% -> 81.2%     now: '-' 81%  ',' 9%  ':' 1%
+   layer 0 head 3     81.2% -> 80.1%  █   now: '-' 80%  ',' 6%  '·and' 2%
+   layer 1 head 0     81.2% -> 85.0%     now: '-' 85%  ',' 5%  'i' 1%
+   layer 1 head 1     81.2% -> 78.6%  ██   now: '-' 79%  ',' 5%  'ge' 5%
+   layer 1 head 2     81.2% -> 76.1%  ███   now: '-' 76%  ',' 5%  'i' 3%
+   layer 1 head 3     81.2% -> 12.3%  █████████████████████████████████████████   now: 'i' 50%  '-' 12%  ',' 7%
+
+The 8 neurons (of 256) whose silence hurts '-' most:
+   layer 1 neuron #60     81.2% -> 24.2%   now: 'ge' 61%  '-' 24%  ',' 5%
+   layer 1 neuron #108    81.2% -> 24.7%   now: 'i' 32%  '-' 25%  'ge' 13%
+   layer 0 neuron #28     81.2% -> 50.1%   now: '-' 50%  ',' 12%  '·' 5%
+   layer 0 neuron #34     81.2% -> 52.3%   now: '-' 52%  ',' 21%  '.' 5%
+   layer 0 neuron #67     81.2% -> 53.2%   now: '-' 53%  ',' 25%  'i' 3%
+   layer 1 neuron #40     81.2% -> 64.3%   now: '-' 64%  ',' 11%  'i' 4%
+   layer 1 neuron #4      81.2% -> 67.2%   now: '-' 67%  ',' 14%  'i' 2%
+   layer 1 neuron #6      81.2% -> 68.9%   now: '-' 69%  'ge' 10%  ',' 7%

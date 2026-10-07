@@ -1,0 +1,16 @@
+$ uv run debug.py overview
+Prompt "Once upon a time there was a little girl. One day Little Red"   model: model.pt
+Check: this trace and model() agree to within 0.0e+00
+
+TOKENS        'O' 'n' 'ce' '·upon' '·a' '·t' 'ime' '·there' '·was' '·a' '·little' '·g' 'ir' 'l' '.' '·O' 'ne' '·day' '·L' 'ittle' '·' 'R' 'ed'   ids [79, 110, 345, 491, 258, 257, 503, 477, 321, 258, 486, 295, 327, 108, 46, 531, 525, 520, 455, 460, 32, 82, 271]
+EMBEDDING     'ed' = card #271 + seat 22.  Nearest cards: 'ack' +0.60  'ght' +0.53  'ing' +0.52  'ved' +0.52  'hed' +0.50
+                 if it stopped here: ':' 23%  '·upon' 17%  '·into' 12%  '·and' 7%  '·away' 5%
+L0 ATTENTION  'ed' listens: h0 → 'R' 0.79 · h1 → '·' 0.44 · h2 → '·' 0.39 · h3 → 'R' 0.40
+                 if it stopped here: 'i' 14%  ':' 12%  'al' 12%  '·and' 11%  'ed' 8%
+L0 FEED-FWD   48 of 128 neurons fire; key neuron #67 (+1.3 for '-', fires for … he was [ve])
+                 if it stopped here: 'e' 52%  'i' 20%  ',' 6%  '·to' 4%  '·the' 4%
+L1 ATTENTION  'ed' listens: h0 → 'R' 0.67 · h1 → 'ittle' 0.54 · h2 → '·' 0.44 · h3 → 'R' 0.48
+                 if it stopped here: 'i' 68%  'it' 4%  'le' 3%  '·to' 2%  ',' 2%
+L1 FEED-FWD   38 of 128 neurons fire; key neuron #108 (+4.0 for '-', fires for … OLD[ M])
+                 if it stopped here: '-' 81%  ',' 8%  'ge' 1%  'i' 1%  '.' 1%
+PREDICTION    '-' 81%  ',' 8%  'ge' 1%  'i' 1%  '.' 1%   (other 551 tokens share 8%)

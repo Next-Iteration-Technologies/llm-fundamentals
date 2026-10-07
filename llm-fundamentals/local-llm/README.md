@@ -29,8 +29,9 @@ uv sync
 | 2 | `attention.py` | Embeddings and **one** attention head, every line spelled out | `uv run attention.py` | [attention_wiki.md](attention_wiki.md) |
 | 3 | `model.py` | The full transformer: multi-head attention, feed-forward, layers | `uv run model.py` | [model_wiki.md](model_wiki.md) |
 | 4 | `train.py` | Trains the model on the stories and writes `model.pt` | `uv run train.py` | [train_wiki.md](train_wiki.md) |
-| 5 | `generate.py` | Shows next-token probabilities and lets the model keep writing | `uv run generate.py "in the mor"` | [generate_wiki.md](generate_wiki.md) |
-| + | `explore.py` | Untrained vs trained: predictions, temperature, embeddings, attention | `uv run explore.py compare "in the mor"` | [explore_wiki.md](explore_wiki.md) |
+| 5 | `generate.py` | Shows next-token probabilities and lets the model keep writing | `uv run generate.py "Little Red"` | [generate_wiki.md](generate_wiki.md) |
+| + | `explore.py` | Untrained vs trained: predictions, temperature, embeddings, attention | `uv run explore.py compare "Little Red"` | [explore_wiki.md](explore_wiki.md) |
+| + | `debug.py` | Follows one prompt through every stage: every number, and what it means in words | `uv run debug.py overview "Little Red"` | [debug_wiki.md](debug_wiki.md) |
 
 The wikis quote real output from our runs. Every log is saved in [`runs/`](runs/), numbered in pipeline order.
 
@@ -38,7 +39,7 @@ Run them in order the first time. Every output is already in the repo (`tokenize
 
 ### 1. Tokenizer
 
-Turns text into a list of numbers. It starts with the 256 byte values and adds 300 merged tokens, giving a vocabulary of 556. The tokenizer has its own page, which explains every line of its output: [bpe_tokenizer_wiki.md](bpe_tokenizer_wiki.md).
+Turns text into a list of numbers. It starts with the 256 byte values and adds 300 merged tokens, giving a vocabulary of 556. It first splits the text into words, so a token never spans two words and a space can only start a token (` upon`, ` little`). The tokenizer has its own page, which explains every line of its output: [bpe_tokenizer_wiki.md](bpe_tokenizer_wiki.md).
 
 ### 2. Attention
 
@@ -87,20 +88,31 @@ Our results on an Intel MacBook Pro (CPU only), from [runs/](runs/):
 
 | Steps | Time | Final train loss | Final val loss |
 |---|---|---|---|
-| 3,000 | 79 s (+ about 17 s of one-time encoding) | 3.44 | 3.62 |
-| 10,000 | 287 s | 3.06 | 3.42 |
+| 3,000 | 71 s (+ a few seconds of one-time encoding) | 3.35 | 3.59 |
+| 10,000 | 267 s | 2.94 | 3.42 |
 
-The val loss stops improving at about 7,000 steps: that is as far as this small model goes on this much text. Details in [train_wiki.md](train_wiki.md).
+The val loss nearly stops improving after about 7,000 steps: that is about as far as this small model goes on this much text. Details in [train_wiki.md](train_wiki.md).
 
 ### 5. Generation
 
 ```bash
-uv run generate.py "in the mor"     # 84% sure the next token is 'n' (morning): one tall bar
-uv run generate.py "The quantum "   # about 5% at best: many small bars
+uv run generate.py "Little Red"     # 69% sure the next token is '-' (Little Red-Cap): one tall bar
+uv run generate.py "Once upon a"    # 9% at best: many small bars, each one the start of a word
 uv run generate.py                  # the two built-in prompts
 ```
 
-For each prompt you see the five most likely next tokens with their probabilities, then 40 more tokens written by the model. The built-in prompt `"Once upon a"` gives a surprise; [generate_wiki.md](generate_wiki.md#the-built-in-prompts-a-surprise) explains why. A language model never refuses to guess; it always gives a spread of probabilities. **A match looks like one tall bar; no match looks like many small ones.**
+For each prompt you see the five most likely next tokens with their probabilities, then 40 more tokens written by the model. End your prompt on a whole word: a prompt cut mid-word, like `"in the mor"`, ends on a token the model rarely saw there, and the guesses go wrong. [generate_wiki.md](generate_wiki.md#the-trap-prompts-that-stop-mid-word) explains why. A language model never refuses to guess; it always gives a spread of probabilities. **A match looks like one tall bar; no match looks like many small ones.**
+
+### Debugger
+
+```bash
+uv run debug.py overview "Little Red"     # one line per stage: watch the guess form
+uv run debug.py trace "Little Red"        # every number: query, key, value, scores, neurons, prediction
+uv run debug.py off "Little Red"          # switch off heads and neurons one at a time
+uv run debug.py overview "Little Red" --html page.html    # the same, as a page to click through
+```
+
+The vectors have no labels, so `debug.py` reads each one by what it matches or what it pushes the prediction towards: a query "looks for" certain tokens, a value "passes on" a push towards others, a neuron "fires hardest at" certain places in the stories. For `"Little Red"`, the answer `'-'` (Red-Cap) only appears in the last step, layer 1's feed-forward. It also has `full`, `compare` (untrained vs trained) and `train-step` (one training step in slow motion). Details in [debug_wiki.md](debug_wiki.md).
 
 ## Files
 
@@ -110,11 +122,13 @@ Everything the pipeline makes is committed, so you can inspect any stage without
 |------|---------|------------|
 | `stories.txt` | `build_stories.py` | About 446 KB of Aesop, Peter Rabbit and Grimm from Project Gutenberg, licence text removed |
 | `tokenizer.json` | step 1 | Merges and vocabulary (556 tokens) |
-| `data.pt` | step 4 | The whole of `stories.txt` as 200,797 token IDs. **Not** the embedding table |
+| `data.pt` | step 4 | The whole of `stories.txt` as 195,262 token IDs. **Not** the embedding table |
 | `model_untrained.pt` | `explore.py untrained` | Random starting weights, the same ones training starts from |
 | `model_3k.pt` | step 4, 3,000 steps | Trained weights, including the embedding tables |
 | `model.pt` | step 4, 10,000 steps | Trained weights, including the embedding tables. Used by `generate.py` |
 | `runs/*.txt` | every step | The output of each run, quoted in the wikis |
+| `runs/19_debug_page.html` | `debug.py --html` | The debugger's interactive page for the default prompt |
+| `debug_page.html` | | The template `debug.py --html` fills in |
 | `pyproject.toml`, `uv.lock` | | This folder's own environment (PyTorch) |
 
 The embedding tables live inside the model files: `torch.load("model.pt")["state"]["embed.token_table.weight"]`. See [explore_wiki.md](explore_wiki.md#where-the-embedding-table-is-stored).
@@ -123,7 +137,7 @@ Running `train.py` overwrites `model.pt`. `git restore model.pt` brings back the
 
 ## Try this
 
-1. Run `uv run explore.py compare "Peter Rab"`. How much surer is the 10,000-step model than the 3,000-step one?
+1. Run `uv run explore.py compare "Hansel and"`. How much surer is the 10,000-step model than the 3,000-step one?
 2. In `train.py`, raise `DIM` to 64 and `N_LAYERS` to 4. How many parameters is that now, and how much slower does training get?
 3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help? (`git restore tokenizer.json data.pt model.pt` puts everything back.)
 4. Run `generate.py` with a sentence from the stories, and then with a sentence from your own work. Compare how confident the model is about each.
