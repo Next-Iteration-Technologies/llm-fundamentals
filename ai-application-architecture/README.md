@@ -19,7 +19,6 @@ You can run every step in two ways:
 
    ```bash
    git clone https://github.com/Next-Iteration-Technologies/llm-fundamentals.git
-   cd llm-fundamentals
    cd ai-application-architecture
    ```
 3. Check your laptop:
