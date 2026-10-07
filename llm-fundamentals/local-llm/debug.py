@@ -40,7 +40,7 @@ import torch.nn.functional as F
 from bpe_tokenizer import encode, decode
 from explore import load_model, merges, vocab
 
-DEFAULT_PROMPT = "Once upon a time there was a little girl. One day Little Red"
+DEFAULT_PROMPT = "Once upon a time there was a little girl. Her name was Little Red"
 TOP = 5            # how many tokens each reading lists
 TOP_NEURONS = 6    # strongest neurons shown per token and layer
 BLOCKS = " ▁▂▃▄▅▆▇█"

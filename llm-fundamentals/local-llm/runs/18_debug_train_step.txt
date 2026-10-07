@@ -42,9 +42,9 @@ Batch: 32 random windows of 64 tokens from the training stories (seed 0).
    The cards pulled hardest: 'i' 0.034  'o' 0.033  '·g' 0.032  '⏎' 0.027  'p' 0.024  'an' 0.023  't' 0.022  '·' 0.022
 
 3. STEP. Loss on the same batch: 3.005 -> 2.789
-   Prompt "Once upon a time there was a little girl. One day Little Red":  '-' 81.2% -> 79.4%
-   top 5 before: '-' 81%  ',' 8%  'ge' 1%  'i' 1%  '.' 1%
-   top 5 after:  '-' 79%  ',' 8%  'ge' 2%  '.' 2%  '·and' 1%
+   Prompt "Once upon a time there was a little girl. Her name was Little Red":  '-' 79.3% -> 75.0%
+   top 5 before: '-' 79%  ',' 6%  'ge' 3%  '·and' 1%  '.' 1%
+   top 5 after:  '-' 75%  ',' 7%  'ge' 5%  '·and' 2%  '.' 2%
 
    (train.py did not save its optimizer's memory, so this step starts AdamW fresh.
    A fresh AdamW moves every knob it touches by about the learning rate, 0.003, which is a
