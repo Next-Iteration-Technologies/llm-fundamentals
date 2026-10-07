@@ -97,12 +97,23 @@ def memory_flags() -> argparse.Namespace:
     parser.add_argument("--session", default="priya")
     parser.add_argument("--no-history", action="store_true")
     parser.add_argument("--forget", action="store_true")
+    parser.add_argument("--dump", action="store_true")
     flags, _ = parser.parse_known_args()
     return flags
 
 
+def dump_session(session_id: str):
+    """Print every stored message of a session as JSON: what is really in conversations.db."""
+    messages = ConversationStore().load(session_id)
+    print(f"Session '{session_id}': {len(messages)} stored message(s) in {DEFAULT_DATABASE.name}\n")
+    print(json.dumps(messages, indent=2, ensure_ascii=False))
+
+
 def run_chat():
     flags = memory_flags()
+    if flags.dump:
+        dump_session(flags.session)
+        return
     llm = llm_client.Session("step4_conversation_store", DEMO_LINES)
     if flags.no_history:
         chat_without_memory(llm, TOOLS, SYSTEM_PROMPT)
