@@ -35,7 +35,7 @@ uv sync
 
 The wikis quote real output from our runs. Every log is saved in [`runs/`](runs/), numbered in pipeline order.
 
-Run them in order the first time. Every output is already in the repo (`tokenizer.json`, `data.pt`, the trained models), so you can start at any step. On a slow laptop, skip training and go straight to step 5.
+Run them in order the first time. `tokenizer.json`, `model_untrained.pt` and `model_3k.pt` are in the repo, but `data.pt` and `model.pt` are not: `train.py` makes both (about 5 minutes for 10,000 steps on a laptop CPU). `generate.py`, `explore.py` and `debug.py` need them.
 
 ### 1. Tokenizer
 
@@ -116,16 +116,16 @@ The vectors have no labels, so `debug.py` reads each one by what it matches or w
 
 ## Files
 
-Everything the pipeline makes is committed, so you can inspect any stage without rerunning it.
+Everything the pipeline makes is committed, except `data.pt` and `model.pt` (in `.gitignore`). Run `uv run train.py 10000` to make them.
 
 | File | Made by | What it is |
 |------|---------|------------|
 | `stories.txt` | `build_stories.py` | About 446 KB of Aesop, Peter Rabbit and Grimm from Project Gutenberg, licence text removed |
 | `tokenizer.json` | step 1 | Merges and vocabulary (556 tokens) |
-| `data.pt` | step 4 | The whole of `stories.txt` as 195,262 token IDs. **Not** the embedding table |
+| `data.pt` | step 4 | The whole of `stories.txt` as 195,262 token IDs. **Not** the embedding table. Not committed |
 | `model_untrained.pt` | `explore.py untrained` | Random starting weights, the same ones training starts from |
 | `model_3k.pt` | step 4, 3,000 steps | Trained weights, including the embedding tables |
-| `model.pt` | step 4, 10,000 steps | Trained weights, including the embedding tables. Used by `generate.py` |
+| `model.pt` | step 4, 10,000 steps | Trained weights, including the embedding tables. Used by `generate.py`. Not committed |
 | `runs/*.txt` | every step | The output of each run, quoted in the wikis |
 | `runs/19_debug_page.html` | `debug.py --html` | The debugger's interactive page for the default prompt |
 | `debug_page.html` | | The template `debug.py --html` fills in |
@@ -133,11 +133,11 @@ Everything the pipeline makes is committed, so you can inspect any stage without
 
 The embedding tables live inside the model files: `torch.load("model.pt")["state"]["embed.token_table.weight"]`. See [explore_wiki.md](explore_wiki.md#where-the-embedding-table-is-stored).
 
-Running `train.py` overwrites `model.pt`. `git restore model.pt` brings back the committed one.
+Running `train.py` overwrites `model.pt`. With the same settings and seed, `uv run train.py 10000` makes the same model again on the same machine.
 
 ## Try this
 
 1. Run `uv run explore.py compare "Hansel and"`. How much surer is the 10,000-step model than the 3,000-step one?
 2. In `train.py`, raise `DIM` to 64 and `N_LAYERS` to 4. How many parameters is that now, and how much slower does training get?
-3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help? (`git restore tokenizer.json data.pt model.pt` puts everything back.)
+3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help? (`git restore tokenizer.json`, then delete `data.pt` and run `uv run train.py 10000`, puts everything back.)
 4. Run `generate.py` with a sentence from the stories, and then with a sentence from your own work. Compare how confident the model is about each.

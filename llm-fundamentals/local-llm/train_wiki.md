@@ -134,7 +134,7 @@ ckpt["state"]    # every weight, by name: 'embed.token_table.weight', 'layers.0.
 
 ## Try this
 
-Every training run overwrites `model.pt`. To get the 10,000-step model back afterwards, run `git restore model.pt`.
+Every training run overwrites `model.pt`. `model.pt` is not committed; to get the 10,000-step model back afterwards, run `uv run train.py 10000` again (same seed, same model on the same machine).
 
 1. Run `uv run train.py 1000`. Compare its last line with the step-1000 line in the logs above. (It should match, because of the seed.)
 2. Change `LR = 3e-3` to `3e-2`, then to `3e-4`. Which learns faster, and which goes wrong?
