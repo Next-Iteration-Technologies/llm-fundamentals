@@ -343,8 +343,11 @@ def retrieve(question, a, asker="sam"):
         global _reranker
         try:
             if _reranker is None:
+                import platform
                 from sentence_transformers import CrossEncoder
-                _reranker = CrossEncoder("BAAI/bge-reranker-base")
+                # Intel Macs: torch 2.2.2 on MPS (the AMD GPU) returns wrong scores, so rerank on the CPU there.
+                device = "cpu" if sys.platform == "darwin" and platform.machine() == "x86_64" else None
+                _reranker = CrossEncoder("BAAI/bge-reranker-base", device=device)
             for c, r in zip(cand, _reranker.predict([(question, c["text"]) for c in cand])):
                 c["score"] = round(float(r), 4)
             cand.sort(key=lambda c: c["score"], reverse=True)
