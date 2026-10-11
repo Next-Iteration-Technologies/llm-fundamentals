@@ -1,5 +1,6 @@
 """Contoso RAG lab, Python rung. All data is fictional (../contoso-pack).
 
+  python setup.py                                              first time; `python setup.py provider` switches the model
   python rag.py check   [--chat NAME] [--embed NAME]          can this laptop reach the chosen models?
   python rag.py ingest  [--naive|--children] [--contextual] [--incremental] [--dry]
   python rag.py ask "why did we drop vendor A?" [--as sam|priya|vendor] [--no-rerank] [--semantic-only|--keyword-only]
@@ -16,6 +17,25 @@ Every ask and agent run appends one line to .store/trace.jsonl.
 import argparse, csv, email, hashlib, json, math, os, re, sys, time, uuid
 from email import policy
 from pathlib import Path
+
+
+def use_venv():
+    """Run inside .venv (made by setup.py), so nobody has to activate it."""
+    venv = Path(__file__).resolve().parent / ".venv"
+    py = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    if py.exists() and Path(sys.prefix).resolve() != venv.resolve():
+        import subprocess
+        try:
+            sys.exit(subprocess.call([str(py), str(Path(__file__).resolve()), *sys.argv[1:]]))
+        except KeyboardInterrupt:
+            sys.exit(130)
+    try:
+        import numpy, qdrant_client, rank_bm25  # noqa: F401
+    except ModuleNotFoundError as e:
+        sys.exit(f"{e.name} is not installed. Run the setup first:  python setup.py")
+
+
+use_venv()
 
 import numpy as np
 from qdrant_client import QdrantClient
@@ -275,9 +295,17 @@ def transform(question, a):
     return qs
 
 
+def load_store(name):
+    """The index that ingest wrote, or a clear message if ingest has not run yet."""
+    f = STORE / f"{name}.json"
+    if not f.exists():
+        sys.exit(f"! no index at {f}\n  Run `python rag.py ingest` first (same --embed block as you will query with).")
+    return json.loads(f.read_text())
+
+
 def retrieve(question, a, asker="sam"):
     name = collection(a)
-    store = json.loads((STORE / f"{name}.json").read_text())
+    store = load_store(name)
     chunks, embedder, parents = store["chunks"], store["embedder"], store.get("parents") or {}
     if embedder != "hash:hash" and embedder != models.embedder_id(EMBED):
         sys.exit(f"! the index was built with {embedder}, but --embed is {models.embedder_id(EMBED)}: "
@@ -425,7 +453,7 @@ def run_tool(name, args, a):
             hits = [h for h in hits if h.get("platform") == args["platform"]]
         return hits[:a.k]
     if name == "find_tickets":
-        store = json.loads((STORE / f"{collection(a)}.json").read_text())
+        store = load_store(collection(a))
         return sorted((c for c in store["chunks"] if c["type"] == "ticket" and c.get("tenant") == args.get("tenant")
                        and set(c["access"]) & set(ROLES[a.asker])), key=lambda c: c["date"])
     if name == "jira_search":

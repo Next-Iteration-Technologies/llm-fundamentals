@@ -19,19 +19,48 @@ Load the pack as described in `../contoso-pack/README.md` (SharePoint library "C
 
 ### Rung 4: Python (no Docker, no Ollama)
 
+One script does the setup, on Windows and macOS alike:
+
 ```
 cd rag-exercises/python
-python -m venv .venv
-.venv\Scripts\activate          # Windows      (macOS: source .venv/bin/activate)
-pip install -r requirements.txt
-copy providers.example.toml providers.toml     # macOS: cp
-copy .env.example .env                         # put NEXUS_API_KEY=... in it
-python rag.py check                            # can this laptop reach the chat and embed blocks?
+python setup.py
+```
+
+On macOS, type `python3` instead of `python`, here and in every command below.
+
+To skip the question, name the provider:
+
+```
+python3 setup.py anthropic
+python3 setup.py nexus
+```
+
+On Windows, type `python` instead of `python3`.
+
+The script creates a virtual environment in `.venv`, installs the packages (a few minutes the first time), and creates `providers.toml` and `.env`. Then it asks which model to use, asks for the key if that model needs one, and runs `python rag.py check`. There is nothing to activate: `rag.py` uses `.venv` by itself.
+
+| Provider | What it is | Asks for |
+|---|---|---|
+| `nexus` | The company gateway, the room's default | Base URL, chat and embedding model names, `NEXUS_API_KEY` |
+| `anthropic` | Claude | `ANTHROPIC_API_KEY`. Anthropic has no embeddings, so Ollama embeds if it runs, otherwise the hashed stand-in |
+| `ollama` | A local model | Nothing; Ollama must be running |
+| `offline` | No model: retrieval only | Nothing; add `--dry` to every command |
+
+To switch the model later, or to replace a key:
+
+```
+python setup.py provider
+python setup.py provider ollama
+```
+
+Then:
+
+```
 python rag.py ingest
 python rag.py ask "why did we drop vendor A?"
 ```
 
-`providers.toml` holds one block per model: `nexus` and `nexus-embed` (default), `anthropic`, `ollama` and `ollama-embed`, `hash` (no model). Every command takes `--chat NAME --embed NAME`, or set `LLM_CHAT` / `LLM_EMBED`. Edit the two `VERIFY` lines in the `nexus` blocks first: base URL and model names. Each chat block carries `where` (local, tenant, external), which is the data-class policy of E9. Anthropic has no embeddings endpoint, so `--chat anthropic` pairs with `--embed nexus-embed`, `ollama-embed` or `hash`. The index remembers which embed block built it; query it with the same one, or re-ingest.
+`providers.toml` holds one block per model: `nexus` and `nexus-embed` (default), `anthropic`, `ollama` and `ollama-embed`, `hash` (no model). `python setup.py provider` sets the two defaults at the top of the file. One command can still use another block with `--chat NAME --embed NAME`, or with `LLM_CHAT` / `LLM_EMBED`. Each chat block carries `where` (local, tenant, external), which is the data-class policy of E9. Anthropic has no embeddings endpoint, so `--chat anthropic` pairs with `--embed nexus-embed`, `ollama-embed` or `hash`. The index remembers which embed block built it; query it with the same one, or re-ingest. The setup script says so when a switch changes the embed block.
 
 Qdrant runs in-process (local path mode, `python/.store/`): no server needed. How the code works, stage by stage: `python/WIKI.md`. The first `ask` downloads the reranker `BAAI/bge-reranker-base` (~1.1 GB); add `--no-rerank` to skip it. With Nexus an answer takes a few seconds; on a laptop CPU with Ollama 10 s (3B model) to several minutes (8B thinking model).
 
@@ -137,11 +166,19 @@ python rag.py ask "Is vendor B's pricing answer still open?" --live-jira http://
 
 Expected: from the index, the answer says Open (the nightly snapshot of 2026-10-06 and the 2026-10-01 minutes). With the live tool, `jira_search` returns POC-12 **Done**, updated 2026-10-07, and the answer follows it. Flip it to see the tool really is live:
 
+**Windows (PowerShell):**
+
 ```
-curl -X PUT http://localhost:8080/rest/api/2/issue/POC-12 -H "Content-Type: application/json" -d "{\"fields\":{\"status\":{\"name\":\"Open\"}}}"
+Invoke-RestMethod -Method Put -Uri http://localhost:8080/rest/api/2/issue/POC-12 -ContentType "application/json" -Body '{"fields":{"status":{"name":"Open"}}}'
 ```
 
-Restart `jira-mock/server.py` to reset. In n8n, ask the agent the same question and open the execution: the `jira_search` call and its JQL are visible. The flip there is `GET <your n8n>/webhook/jira/set?key=POC-12&status=Open` (the `jira-mock` workflow must be active), and `?reset=1` clears it.
+**macOS:**
+
+```
+curl -X PUT http://localhost:8080/rest/api/2/issue/POC-12 -H "Content-Type: application/json" -d '{"fields":{"status":{"name":"Open"}}}'
+```
+
+Then ask the `--live-jira` question again: the answer now says Open. Restart `jira-mock/server.py` to reset. In n8n, ask the agent the same question and open the execution: the `jira_search` call and its JQL are visible. The flip there is `GET <your n8n>/webhook/jira/set?key=POC-12&status=Open` (the `jira-mock` workflow must be active), and `?reset=1` clears it.
 
 ### E6. Permissions and injection (flow 9)
 
@@ -186,16 +223,59 @@ python rag.py ask "transfer TIMEOUT 7f3a-91c2" --no-rerank --chat nexus        #
 python rag.py ask "transfer TIMEOUT 7f3a-91c2" --no-rerank --chat anthropic    # external: Public only
 ```
 
-Each chunk carries its class from the pack (`class:` front matter; logs and config are Confidential). Each chat block in `providers.toml` carries `where`: where that model runs. The policy is the slide's: Public goes anywhere, Internal only to the tenant's model, Confidential only to a local one. Passages the model may not read are dropped before the prompt is built, and printed as `withheld`. With `anthropic` every log line is withheld, and the right answer is "I don't find this". `--contextual` follows the same rule: it doesn't send a chunk to a model that may not read it. `CHAT_MODEL_WHERE=local|tenant|external` overrides the block (Windows: `set CHAT_MODEL_WHERE=tenant` first), so one block can play all three roles. Note the consequence for every other exercise: with the default `nexus` block, log lines are withheld from the answer in E2 as well, which is the policy working, not a bug. Under `--dry` nothing is withheld, since no model reads anything.
+Each chunk carries its class from the pack (`class:` front matter; logs and config are Confidential). Each chat block in `providers.toml` carries `where`: where that model runs. The policy is the slide's: Public goes anywhere, Internal only to the tenant's model, Confidential only to a local one. Passages the model may not read are dropped before the prompt is built, and printed as `withheld`. With `anthropic` every log line is withheld, and the right answer is "I don't find this". `--contextual` follows the same rule: it doesn't send a chunk to a model that may not read it. The variable `CHAT_MODEL_WHERE` (`local`, `tenant` or `external`) overrides the block, so one block can play all three roles. Set it in the same window, then ask again.
+
+**Windows (PowerShell):**
+
+```
+$env:CHAT_MODEL_WHERE = "tenant"
+python rag.py ask "transfer TIMEOUT 7f3a-91c2" --no-rerank
+Remove-Item Env:CHAT_MODEL_WHERE
+```
+
+**macOS:**
+
+```
+export CHAT_MODEL_WHERE=tenant
+python rag.py ask "transfer TIMEOUT 7f3a-91c2" --no-rerank
+unset CHAT_MODEL_WHERE
+```
+
+Note the consequence for every other exercise: with the default `nexus` block, log lines are withheld from the answer in E2 as well, which is the policy working, not a bug. Under `--dry` nothing is withheld, since no model reads anything.
 
 ### E10. Keeping the index current (flow 3.4)
 
+Work on a copy, so the pack itself stays as it is. The steps are the same on both systems:
+
+1. Copy the pack and run an incremental ingest: 0 added, 0 changed, 0 removed.
+2. In the copy, edit `contenthub/SOP-OPS-02.md`: change "14 days" to "30 days". Delete one file from `mail/`.
+3. Ingest from the copy: 0 added, 1 changed, 1 removed. Only that chunk is embedded again.
+4. Ingest from the real pack again: 1 added, 1 changed.
+
+**Windows (PowerShell):**
+
 ```
-cp -r ../contoso-pack /tmp/pack                       # a copy: the pack itself stays as it is
-python rag.py ingest --incremental                        # 0 added, 0 changed, 0 removed
-# edit /tmp/pack/contenthub/SOP-OPS-02.md: "14 days" -> "30 days"; delete one file from /tmp/pack/mail/
-CONTOSO_PACK=/tmp/pack python rag.py ingest --incremental # 0 added, 1 changed, 1 removed: only that chunk is re-embedded
-python rag.py ingest --incremental                        # back to the real pack: 1 added, 1 changed
+Copy-Item -Recurse ..\contoso-pack $env:TEMP\pack
+python rag.py ingest --incremental
+notepad $env:TEMP\pack\contenthub\SOP-OPS-02.md
+Remove-Item $env:TEMP\pack\mail\2026-10-07_sam_re-re-re-pricing.eml
+$env:CONTOSO_PACK = "$env:TEMP\pack"
+python rag.py ingest --incremental
+Remove-Item Env:CONTOSO_PACK
+python rag.py ingest --incremental
+```
+
+**macOS:**
+
+```
+cp -r ../contoso-pack /tmp/pack
+python rag.py ingest --incremental
+open -e /tmp/pack/contenthub/SOP-OPS-02.md
+rm /tmp/pack/mail/2026-10-07_sam_re-re-re-pricing.eml
+export CONTOSO_PACK=/tmp/pack
+python rag.py ingest --incremental
+unset CONTOSO_PACK
+python rag.py ingest --incremental
 ```
 
 Each chunk's id comes from its file and section, and a hash of its text is stored with it. Only new or changed chunks are embedded again (and given a new `--contextual` prefix), and deleted ones are removed from Qdrant. Without `--incremental`, ingest rebuilds everything. The index is still only as current as the last run: that's why Jira is a live tool (E5, E7).
@@ -218,4 +298,5 @@ python rag.py eval --children --no-rerank
 - One full `ask` with a local chat model (Ollama, `qwen3:8b`, CPU) and the Jira mock: "Is vendor B's pricing answer still open?" with `--live-jira` answered "No... POC-12 Done, updated 2026-10-07" with citations. A thinking 8B model on CPU took 4 to 5 minutes per answer; `LLM_TIMEOUT` or a `timeout` key in the block (default 900 s) controls the client timeout.
 - The Jira mock: search with project/status/text filters and PUT, tested with curl.
 - 2026-10-11, provider-selectable models (`models.py`, `providers.toml`): `check` against `ollama`/`ollama-embed` (ok), `anthropic` and `nexus` (report the missing key correctly); `ingest --dry` 289 chunks with `hash:hash`; `eval --dry --no-rerank` R@5 0.676, MRR 0.752, nDCG@5 0.664, unchanged; `ingest --embed ollama-embed` 289 chunks in 60 s; `ask` on `llama3.2:3b` answers with citations; querying a nomic index with `--embed hash` is refused with the mismatch message. The agent loop on Ollama runs the neutral tool format (one `jira_search` call seen).
+- 2026-10-12, `setup.py` on macOS, in a scratch copy with the packages minus torch: first run with `offline`, then `provider ollama`, `provider anthropic` (key prompt, prefix warning, Ollama picked to embed) and `provider nexus` (base URL and model names written to both Nexus blocks). `rag.py` run with a Python that lacks the packages uses `.venv` by itself; without `.venv` it says to run `setup.py`. Not run on Windows.
 - **Not verified here:** Nexus itself (no key on the build machine: base URL, model names, whether its chat endpoint exposes tools and whether it serves `/models` are the VERIFY lines), the Anthropic block live, the hosted n8n imports (`rag-lab.json`, `jira-mock.json`: node versions and parameter names are written for n8n 1.x AI nodes and may need a re-pick; the in-memory store's per-workflow scope and the static-data flip are VERIFY on the hosted plan), Docker Compose, `--contextual`, RAGAS, the reranker together with `--children` and `--transform`.
