@@ -1,0 +1,58 @@
+# server CH-APP-02 transfer.log (Content Hub). Fictional.
+2026-10-05 22:10:23 transfer doc-id 6ff1-771f ok, bytes=864151, result=OK
+2026-10-05 22:16:24 transfer doc-id 876f-163f ok, bytes=300746, result=OK
+2026-10-05 22:20:17 transfer doc-id d860-ae35 ok, bytes=614731, result=OK
+2026-10-05 22:31:05 transfer doc-id 5347-bd88 ok, bytes=349963, result=OK
+2026-10-05 22:36:13 transfer doc-id c29f-8e52 ok, bytes=543481, result=OK
+2026-10-05 22:42:55 transfer doc-id 7071-a608 ok, bytes=694079, result=OK
+2026-10-05 22:50:09 transfer doc-id e5fe-8e6f ok, bytes=297746, result=OK
+2026-10-05 22:54:40 transfer doc-id 8e45-4f9b ok, bytes=801177, result=OK
+2026-10-05 23:02:47 transfer doc-id 1776-74af ok, bytes=295504, result=OK
+2026-10-05 23:12:29 transfer doc-id 942a-28da ok, bytes=469245, result=OK
+2026-10-05 23:23:28 transfer doc-id 942a-28da ok, bytes=438801, result=OK
+2026-10-05 23:29:53 transfer doc-id 8e45-4f9b ok, bytes=165051, result=OK
+2026-10-05 23:37:33 transfer doc-id 961b-b928 ok, bytes=115325, result=OK
+2026-10-05 23:47:19 transfer doc-id 6ff1-771f ok, bytes=134975, result=OK
+2026-10-05 23:51:57 transfer doc-id c29f-8e52 ok, bytes=187753, result=OK
+2026-10-06 00:02:02 transfer doc-id e825-bacb ok, bytes=462666, result=OK
+2026-10-06 00:10:27 transfer doc-id 0d96-65ce ok, bytes=423457, result=OK
+2026-10-06 00:17:02 transfer doc-id 7730-33b6 ok, bytes=510785, result=OK
+2026-10-06 00:24:52 transfer doc-id 6e3d-ac56 ok, bytes=600099, result=OK
+2026-10-06 00:35:32 transfer doc-id 0f41-2ff8 ok, bytes=733328, result=OK
+2026-10-06 00:45:01 transfer doc-id d6cb-70dd ok, bytes=734825, result=OK
+2026-10-06 00:55:54 transfer doc-id 1776-74af ok, bytes=807352, result=OK
+2026-10-06 01:01:30 transfer doc-id 88b1-248e ok, bytes=692097, result=OK
+2026-10-06 01:07:44 transfer doc-id d6cb-70dd ok, bytes=327757, result=OK
+2026-10-06 01:14:46 transfer doc-id 0353-51be ok, bytes=495763, result=OK
+2026-10-06 01:18:07 transfer doc-id b5e6-6b44 ok, bytes=774639, result=OK
+2026-10-06 01:23:41 transfer doc-id 6273-239c ok, bytes=818975, result=OK
+2026-10-06 01:28:32 transfer doc-id 6273-239c ok, bytes=131579, result=OK
+2026-10-06 01:39:17 transfer doc-id c29f-8e52 ok, bytes=332942, result=OK
+2026-10-06 01:49:47 transfer doc-id c29f-8e52 ok, bytes=552323, result=OK
+2026-10-06 01:58:18 transfer doc-id d860-ae35 ok, bytes=180263, result=OK
+2026-10-06 02:04:49 transfer doc-id 88b1-248e ok, bytes=189396, result=OK
+2026-10-06 02:09:44 transfer doc-id 9d41-6a0e target busy, retry 3/3 failed, result=TIMEOUT
+2026-10-06 02:11:20 transfer doc-id b2e0-17f4 target busy, retry 3/3 failed, result=TIMEOUT
+2026-10-06 02:13:12 transfer doc-id 7f3a-91c2 target busy, retry 1/3, result=RETRY
+2026-10-06 02:13:40 transfer doc-id 7f3a-91c2 target busy, retry 2/3, result=RETRY
+2026-10-06 02:13:51 transfer doc-id 5c11-04ad target busy, retry 1/3, result=RETRY
+2026-10-06 02:14:07 transfer doc-id 7f3a-91c2 target busy, retry 3/3 failed, result=TIMEOUT
+2026-10-06 02:14:29 transfer doc-id 5c11-04ad target busy, retry 2/3, result=RETRY
+2026-10-06 02:14:52 transfer doc-id 5c11-04ad ok, bytes=482113, result=OK
+2026-10-06 02:16:31 transfer doc-id e7c3-58b1 target busy, retry 3/3 failed, result=TIMEOUT
+2026-10-06 02:19:01 transfer doc-id 88b1-248e ok, bytes=576116, result=OK
+2026-10-06 02:24:01 transfer doc-id 7730-33b6 ok, bytes=359902, result=OK
+2026-10-06 02:37:21 transfer doc-id 0f41-2ff8 ok, bytes=137301, result=OK
+2026-10-06 02:48:32 transfer doc-id 7071-a608 ok, bytes=892064, result=OK
+2026-10-06 02:58:46 transfer doc-id 8e45-4f9b ok, bytes=80738, result=OK
+2026-10-06 03:07:52 transfer doc-id 7071-a608 ok, bytes=614916, result=OK
+2026-10-06 03:14:12 transfer doc-id 0d96-65ce ok, bytes=787460, result=OK
+2026-10-06 03:27:29 transfer doc-id 53a9-ecad ok, bytes=92574, result=OK
+2026-10-06 03:41:34 transfer doc-id 88b1-248e ok, bytes=151869, result=OK
+2026-10-06 03:48:45 transfer doc-id e825-bacb ok, bytes=518369, result=OK
+2026-10-06 04:03:07 transfer doc-id 0353-51be ok, bytes=297932, result=OK
+2026-10-06 04:17:07 transfer doc-id c247-8a36 ok, bytes=656059, result=OK
+2026-10-06 04:29:20 transfer doc-id d860-ae35 ok, bytes=585492, result=OK
+2026-10-06 04:37:45 transfer doc-id 5347-bd88 ok, bytes=346858, result=OK
+2026-10-06 04:49:33 transfer doc-id e825-bacb ok, bytes=701446, result=OK
+2026-10-06 05:00:55 transfer doc-id c1cf-2858 ok, bytes=562717, result=OK

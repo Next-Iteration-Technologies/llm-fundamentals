@@ -1,0 +1,212 @@
+[
+  {
+    "file": "2026-07-23_lee_capture-batch.eml",
+    "from": "Lee <lee@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-07-23T16:00:00+02:00",
+    "subject": "Capture batch stuck at site Harbour"
+  },
+  {
+    "file": "2026-09-08_jonas_change-window.eml",
+    "from": "Jonas <jonas@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-09-08T12:00:00+02:00",
+    "subject": "Change window Saturday 2026-09-12"
+  },
+  {
+    "file": "2026-09-15_jonas_retention-reminder.eml",
+    "from": "Jonas <jonas@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-09-15T10:00:00+02:00",
+    "subject": "Reminder: retention policy POL-RET-01"
+  },
+  {
+    "file": "2026-09-17_sam_on-prem-parser.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "Dana (vendor A) <dana@vendor-a.example>",
+    "date": "2026-09-17T15:40:00+02:00",
+    "subject": "on-prem parser?"
+  },
+  {
+    "file": "2026-09-19_vendor-a_re-on-prem-parser.eml",
+    "from": "Dana (vendor A) <dana@vendor-a.example>",
+    "to": "Sam <sam@contoso.example>",
+    "date": "2026-09-19T10:05:00+02:00",
+    "subject": "Re: on-prem parser?"
+  },
+  {
+    "file": "2026-09-21_noor_fabrikam-search.eml",
+    "from": "Noor <noor@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-09-21T09:45:00+02:00",
+    "subject": "Fabrikam Legal: search empty again?"
+  },
+  {
+    "file": "2026-09-22_priya_re-fabrikam-search.eml",
+    "from": "Priya <priya@contoso.example>",
+    "to": "Noor <noor@contoso.example>",
+    "date": "2026-09-22T08:15:00+02:00",
+    "subject": "Re: Fabrikam Legal: search empty again?"
+  },
+  {
+    "file": "2026-09-24_sam_vendor-b-pricing.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "Marek (vendor B) <marek@vendor-b.example>",
+    "date": "2026-09-24T16:30:00+02:00",
+    "subject": "Pricing at 200 GB per day"
+  },
+  {
+    "file": "2026-09-25_sam_re-re-on-prem-parser.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "Dana (vendor A) <dana@vendor-a.example>",
+    "date": "2026-09-25T09:12:00+02:00",
+    "subject": "Re: Re: on-prem parser?"
+  },
+  {
+    "file": "2026-09-26_vendor-b_re-pricing.eml",
+    "from": "Marek (vendor B) <marek@vendor-b.example>",
+    "to": "Sam <sam@contoso.example>",
+    "date": "2026-09-26T11:02:00+02:00",
+    "subject": "Re: Pricing at 200 GB per day"
+  },
+  {
+    "file": "2026-09-29_0205_alert_5e90-a3f7.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-09-29T02:05:00+02:00",
+    "subject": "ALERT doc-id 5e90-a3f7 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+    "from": "Dana (vendor A) <dana@vendor-a.example>",
+    "to": "Sam <sam@contoso.example>",
+    "date": "2026-09-30T17:48:00+02:00",
+    "subject": "Re: Re: Re: on-prem parser?"
+  },
+  {
+    "file": "2026-10-01_sam_minutes-approved.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-01T17:05:00+02:00",
+    "subject": "Minutes 2026-10-01 approved"
+  },
+  {
+    "file": "2026-10-02_noor_fwd-transcript-vendor-c.eml",
+    "from": "Noor <noor@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-02T09:30:00+02:00",
+    "subject": "Fwd: transcript vendor C intro"
+  },
+  {
+    "file": "2026-10-02_lee_vendor-b-server-versions.eml",
+    "from": "Lee <lee@contoso.example>",
+    "to": "Marek (vendor B) <marek@vendor-b.example>",
+    "date": "2026-10-02T14:15:00+02:00",
+    "subject": "Server versions for the POC"
+  },
+  {
+    "file": "2026-10-02_2340_alert_c4d8-2b16.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-02T23:40:00+02:00",
+    "subject": "ALERT doc-id c4d8-2b16 stage=render result=FAILED"
+  },
+  {
+    "file": "2026-10-03_sam_vendor-c-demo-invite.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "Ines (vendor C) <ines@vendor-c.example>, archive-ops@contoso.example",
+    "date": "2026-10-03T08:55:00+02:00",
+    "subject": "Vendor C demo 2026-10-15"
+  },
+  {
+    "file": "2026-10-04_0231_alert_a19e-77d0.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-04T02:31:00+02:00",
+    "subject": "ALERT doc-id a19e-77d0 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-05_0148_alert_0f6b-ce23.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-05T01:48:00+02:00",
+    "subject": "ALERT doc-id 0f6b-ce23 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-05_priya_on-call-handover.eml",
+    "from": "Priya <priya@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-05T08:30:00+02:00",
+    "subject": "On-call handover week 41"
+  },
+  {
+    "file": "2026-10-06_0209_alert_9d41-6a0e.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T02:09:00+02:00",
+    "subject": "ALERT doc-id 9d41-6a0e stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-06_0211_alert_b2e0-17f4.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T02:11:00+02:00",
+    "subject": "ALERT doc-id b2e0-17f4 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-06_0214_alert_7f3a-91c2.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T02:14:00+02:00",
+    "subject": "ALERT doc-id 7f3a-91c2 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-06_0216_alert_e7c3-58b1.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T02:16:00+02:00",
+    "subject": "ALERT doc-id e7c3-58b1 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-06_0302_alert_41aa-0c9d.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T03:02:00+02:00",
+    "subject": "ALERT doc-id 41aa-0c9d stage=index result=FAILED"
+  },
+  {
+    "file": "2026-10-06_sam_re-night-alerts.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T07:10:00+02:00",
+    "subject": "Night alerts 2026-10-06"
+  },
+  {
+    "file": "2026-10-06_noor_legacy-viewer.eml",
+    "from": "Noor <noor@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-06T11:20:00+02:00",
+    "subject": "Legacy Archive viewer slow"
+  },
+  {
+    "file": "2026-10-07_0222_alert_3b7c-e104.eml",
+    "from": "Content Hub Monitoring <alerts@contoso.example>",
+    "to": "archive-ops@contoso.example",
+    "date": "2026-10-07T02:22:00+02:00",
+    "subject": "ALERT doc-id 3b7c-e104 stage=transfer result=TIMEOUT"
+  },
+  {
+    "file": "2026-10-07_vendor-b_re-re-pricing.eml",
+    "from": "Marek (vendor B) <marek@vendor-b.example>",
+    "to": "Sam <sam@contoso.example>",
+    "date": "2026-10-07T10:20:00+02:00",
+    "subject": "Re: Re: Pricing at 200 GB per day"
+  },
+  {
+    "file": "2026-10-07_sam_re-re-re-pricing.eml",
+    "from": "Sam <sam@contoso.example>",
+    "to": "Lee <lee@contoso.example>, Priya <priya@contoso.example>",
+    "date": "2026-10-07T10:41:00+02:00",
+    "subject": "Fwd: Re: Re: Pricing at 200 GB per day"
+  }
+]

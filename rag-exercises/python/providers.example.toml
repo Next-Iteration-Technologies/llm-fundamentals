@@ -1,0 +1,49 @@
+# Which model the lab talks to. Copy this file to providers.toml and edit it there.
+# Pick a block with:  --chat NAME  --embed NAME   (or LLM_CHAT=NAME, LLM_EMBED=NAME)
+# The same shape as ai-application-architecture/providers.toml in the earlier track.
+
+chat = "nexus"            # default chat block: answers, contextual prefixes, query rewrites, judge, agent
+embed = "nexus-embed"     # default embed block: what the chunks and questions are turned into
+
+# ---------- chat blocks ----------
+# `where` is flow 9.4: where this model runs, and so which data classes it may read.
+#   local    -> Public, Internal, Confidential
+#   tenant   -> Public, Internal
+#   external -> Public
+# CHAT_MODEL_WHERE=... overrides it.
+
+[nexus]                   # the room's laptops: the company gateway
+kind = "openai"           # VERIFY: assumes Nexus speaks the OpenAI chat-completions format
+base_url = "https://nexus.example.internal/v1"   # VERIFY
+model = "MODEL-NAME"      # VERIFY: `agent` needs a model that calls tools
+api_key_env = "NEXUS_API_KEY"
+where = "tenant"
+
+[anthropic]               # the trainer's machine
+kind = "anthropic"
+model = "claude-opus-5-5"
+api_key_env = "ANTHROPIC_API_KEY"
+where = "external"
+
+[ollama]                  # all local; the all-Docker path uses it too
+kind = "ollama"
+base_url = "http://localhost:11434"
+model = "llama3.2:3b"     # ollama pull llama3.2:3b   (qwen2.5:7b chooses tools better)
+where = "local"
+
+# ---------- embed blocks ----------
+# Anthropic has no embeddings endpoint: pair `--chat anthropic` with nexus-embed, ollama-embed or hash.
+
+[nexus-embed]
+kind = "openai"
+base_url = "https://nexus.example.internal/v1"   # VERIFY
+model = "EMBED-MODEL-NAME"                       # VERIFY
+api_key_env = "NEXUS_API_KEY"
+
+[ollama-embed]
+kind = "ollama"
+base_url = "http://localhost:11434"
+model = "nomic-embed-text"   # ollama pull nomic-embed-text
+
+[hash]
+kind = "hash"             # no model at all: a lexical stand-in. --dry falls back to this.

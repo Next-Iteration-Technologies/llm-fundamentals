@@ -1,0 +1,31 @@
+# Optional, all-local path: n8n plus Ollama on one laptop, when there is no hosted n8n or no Nexus.
+# The hosted-n8n path (README.md, rung 3) needs none of this. The Python rung never needs it.
+# Start:  docker compose up -d      Stop: docker compose down      Reset data: docker compose down -v
+# Then import n8n/rag-lab.json and n8n/jira-mock.json, swap the two Nexus nodes for their Ollama nodes
+# (base URL http://ollama:11434), and keep PACK_URL pointing at the published pack: the workflows fetch over HTTP.
+# All data is fictional (contoso-pack/).
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    ports: ["5678:5678"]
+    environment:
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on: [ollama]
+
+  ollama:
+    image: ollama/ollama:latest
+    ports: ["11434:11434"]
+    volumes:
+      - ollama_data:/root/.ollama
+    # GPU (Windows with an NVIDIA card): uncomment
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+volumes:
+  n8n_data:
+  ollama_data:

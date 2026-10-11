@@ -1,0 +1,270 @@
+{
+ "about": "Every text file of the pack, for an ingest that fetches over HTTP (the hosted n8n rung). access is the coarse tag the n8n ingest stores; the Python rung reads front matter instead.",
+ "files": [
+  {
+   "path": "contenthub/POL-RET-01.md",
+   "access": "team",
+   "bytes": 939
+  },
+  {
+   "path": "contenthub/SD-CH-02.md",
+   "access": "team",
+   "bytes": 954
+  },
+  {
+   "path": "contenthub/SD-LOG-01.md",
+   "access": "team",
+   "bytes": 1063
+  },
+  {
+   "path": "contenthub/SOP-CAP-01.md",
+   "access": "team",
+   "bytes": 732
+  },
+  {
+   "path": "contenthub/SOP-CH-03.md",
+   "access": "team",
+   "bytes": 1037
+  },
+  {
+   "path": "contenthub/SOP-CH-07.md",
+   "access": "team",
+   "bytes": 1182
+  },
+  {
+   "path": "contenthub/SOP-LA-02.md",
+   "access": "team",
+   "bytes": 737
+  },
+  {
+   "path": "contenthub/SOP-OPS-02.md",
+   "access": "team",
+   "bytes": 636
+  },
+  {
+   "path": "contenthub/config/contenthub-cleanup.xml",
+   "access": "team",
+   "bytes": 440
+  },
+  {
+   "path": "jira/issues.json",
+   "access": "team",
+   "bytes": 5047
+  },
+  {
+   "path": "jira/snapshot-2026-10-06.json",
+   "access": "team",
+   "bytes": 6060
+  },
+  {
+   "path": "known-issues.csv",
+   "access": "team",
+   "bytes": 2551
+  },
+  {
+   "path": "logs/index.log",
+   "access": "team",
+   "bytes": 4467
+  },
+  {
+   "path": "logs/transfer.log",
+   "access": "team",
+   "bytes": 4382
+  },
+  {
+   "path": "mail/2026-07-23_lee_capture-batch.eml",
+   "access": "team",
+   "bytes": 403
+  },
+  {
+   "path": "mail/2026-09-08_jonas_change-window.eml",
+   "access": "team",
+   "bytes": 432
+  },
+  {
+   "path": "mail/2026-09-15_jonas_retention-reminder.eml",
+   "access": "team",
+   "bytes": 511
+  },
+  {
+   "path": "mail/2026-09-17_sam_on-prem-parser.eml",
+   "access": "team",
+   "bytes": 579
+  },
+  {
+   "path": "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
+   "access": "team",
+   "bytes": 824
+  },
+  {
+   "path": "mail/2026-09-21_noor_fabrikam-search.eml",
+   "access": "team",
+   "bytes": 447
+  },
+  {
+   "path": "mail/2026-09-22_priya_re-fabrikam-search.eml",
+   "access": "priya",
+   "bytes": 505
+  },
+  {
+   "path": "mail/2026-09-24_sam_vendor-b-pricing.eml",
+   "access": "team",
+   "bytes": 563
+  },
+  {
+   "path": "mail/2026-09-25_sam_re-re-on-prem-parser.eml",
+   "access": "team",
+   "bytes": 824
+  },
+  {
+   "path": "mail/2026-09-26_vendor-b_re-pricing.eml",
+   "access": "team",
+   "bytes": 634
+  },
+  {
+   "path": "mail/2026-09-29_0205_alert_5e90-a3f7.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+   "access": "team",
+   "bytes": 1207
+  },
+  {
+   "path": "mail/2026-10-01_sam_minutes-approved.eml",
+   "access": "team",
+   "bytes": 467
+  },
+  {
+   "path": "mail/2026-10-02_2340_alert_c4d8-2b16.eml",
+   "access": "team",
+   "bytes": 511
+  },
+  {
+   "path": "mail/2026-10-02_lee_vendor-b-server-versions.eml",
+   "access": "team",
+   "bytes": 557
+  },
+  {
+   "path": "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+   "access": "team",
+   "bytes": 871
+  },
+  {
+   "path": "mail/2026-10-03_sam_vendor-c-demo-invite.eml",
+   "access": "team",
+   "bytes": 535
+  },
+  {
+   "path": "mail/2026-10-04_0231_alert_a19e-77d0.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-05_0148_alert_0f6b-ce23.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-05_priya_on-call-handover.eml",
+   "access": "priya",
+   "bytes": 476
+  },
+  {
+   "path": "mail/2026-10-06_0209_alert_9d41-6a0e.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-06_0211_alert_b2e0-17f4.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-06_0216_alert_e7c3-58b1.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-06_0302_alert_41aa-0c9d.eml",
+   "access": "team",
+   "bytes": 509
+  },
+  {
+   "path": "mail/2026-10-06_noor_legacy-viewer.eml",
+   "access": "team",
+   "bytes": 419
+  },
+  {
+   "path": "mail/2026-10-06_sam_re-night-alerts.eml",
+   "access": "team",
+   "bytes": 411
+  },
+  {
+   "path": "mail/2026-10-07_0222_alert_3b7c-e104.eml",
+   "access": "team",
+   "bytes": 517
+  },
+  {
+   "path": "mail/2026-10-07_sam_re-re-re-pricing.eml",
+   "access": "team",
+   "bytes": 690
+  },
+  {
+   "path": "mail/2026-10-07_vendor-b_re-re-pricing.eml",
+   "access": "team",
+   "bytes": 846
+  },
+  {
+   "path": "mail/index.json",
+   "access": "team",
+   "bytes": 7574
+  },
+  {
+   "path": "minutes/2026-09-03.md",
+   "access": "team",
+   "bytes": 1012
+  },
+  {
+   "path": "minutes/2026-09-17.md",
+   "access": "team",
+   "bytes": 835
+  },
+  {
+   "path": "minutes/2026-09-24.md",
+   "access": "team",
+   "bytes": 994
+  },
+  {
+   "path": "minutes/2026-10-01.md",
+   "access": "team",
+   "bytes": 932
+  },
+  {
+   "path": "onedrive/priya-notes/capture-remote-sites.md",
+   "access": "priya",
+   "bytes": 416
+  },
+  {
+   "path": "onedrive/priya-notes/index-worker-fix.md",
+   "access": "priya",
+   "bytes": 562
+  },
+  {
+   "path": "onedrive/priya-notes/on-call-cheatsheet.md",
+   "access": "priya",
+   "bytes": 467
+  },
+  {
+   "path": "tickets/tickets.json",
+   "access": "team",
+   "bytes": 19759
+  }
+ ]
+}

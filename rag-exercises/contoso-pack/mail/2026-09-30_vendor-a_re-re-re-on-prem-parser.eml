@@ -1,0 +1,24 @@
+From: Dana (vendor A) <dana@vendor-a.example>
+To: Sam <sam@contoso.example>
+Cc: Priya <priya@contoso.example>
+Date: Wed, 30 Sep 2026 17:48:00 +0200
+Subject: Re: Re: Re: on-prem parser?
+Message-ID: <2026-09-30_vendor-a_re-re-re-on-prem-parser@contoso.example>
+In-Reply-To: <2026-09-25_sam_re-re-on-prem-parser@contoso.example>
+References: <2026-09-25_sam_re-re-on-prem-parser@contoso.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+From vendor A: Thanks for your patience. Unfortunately an on-premise parser is not on our roadmap before next year. Parsing runs in our cloud service only.
+
+Best,
+Dana
+--
+This message may contain confidential information. If you are not the intended recipient, please delete it. Vendor A Ltd., registered office: 1 Example Way.
+
+> On 25 Sep Sam wrote: friendly reminder, the answer was due yesterday.
+> On 19 Sep Dana wrote: good question, I am checking with our product team and come back to you.
+> On 17 Sep Sam wrote: Could you confirm whether an on-premise parser exists?
+> On 17 Sep Sam wrote: Could you confirm whether an on-premise parser exists?
+> Kind regards, Sam, Contoso Archive Services

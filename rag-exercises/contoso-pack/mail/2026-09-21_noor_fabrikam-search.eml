@@ -1,0 +1,12 @@
+From: Noor <noor@contoso.example>
+To: archive-ops@contoso.example
+Date: Mon, 21 Sep 2026 09:45:00 +0200
+Subject: Fabrikam Legal: search empty again?
+Message-ID: <2026-09-21_noor_fabrikam-search@contoso.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Fabrikam Legal says search returns nothing for documents from last week. Ticket TCK-4512. Isn't this what Priya fixed in July?
+
+Noor

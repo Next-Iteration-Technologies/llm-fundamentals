@@ -1,0 +1,242 @@
+{
+  "source": "Nightly index snapshot, taken 2026-10-06 23:00. Stale by design.",
+  "issues": [
+    {
+      "key": "POC-1",
+      "fields": {
+        "summary": "Central log platform POC",
+        "status": {
+          "name": "In Progress"
+        },
+        "updated": "2026-10-07T10:45:00+02:00",
+        "issuetype": {
+          "name": "Epic"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "Evaluate vendors A, B and C. Content Hub server logs first."
+      },
+      "text": "POC-1 Central log platform POC. Status: In Progress. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-10",
+      "fields": {
+        "summary": "Book demo slots with vendors A, B and C",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-09-10T09:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-10 Book demo slots with vendors A, B and C. Status: Done. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-11",
+      "fields": {
+        "summary": "Ask vendor A: does an on-premise parser exist?",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-09-30T18:02:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "Answered 2026-09-30: not before next year.",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-11 Ask vendor A: does an on-premise parser exist?. Status: Done. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-12",
+      "fields": {
+        "summary": "Ask vendor B: pricing per GB at 200 GB/day",
+        "status": {
+          "name": "Open"
+        },
+        "updated": "2026-09-24T17:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-12 Ask vendor B: pricing per GB at 200 GB/day. Status: Open. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-13",
+      "fields": {
+        "summary": "Vendor B asked: Windows Server 2019?",
+        "status": {
+          "name": "Open"
+        },
+        "updated": "2026-09-24T17:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Lee"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-13 Vendor B asked: Windows Server 2019?. Status: Open. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-14",
+      "fields": {
+        "summary": "Send vendor B the server versions",
+        "status": {
+          "name": "In Progress"
+        },
+        "updated": "2026-10-02T14:20:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Lee"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-14 Send vendor B the server versions. Status: In Progress. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-15",
+      "fields": {
+        "summary": "Vendor C demo",
+        "status": {
+          "name": "Scheduled"
+        },
+        "updated": "2026-10-03T09:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "Scheduled 2026-10-15 10:00.",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-15 Vendor C demo. Status: Scheduled. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-16",
+      "fields": {
+        "summary": "Solution design SD-LOG-01",
+        "status": {
+          "name": "In Progress"
+        },
+        "updated": "2026-09-10T16:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-16 Solution design SD-LOG-01. Status: In Progress. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-17",
+      "fields": {
+        "summary": "Decision record: vendor A dropped",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-10-01T17:10:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-17 Decision record: vendor A dropped. Status: Done. (Nightly index snapshot.)"
+    },
+    {
+      "key": "POC-18",
+      "fields": {
+        "summary": "Define alert rules for known patterns (KI-022 first)",
+        "status": {
+          "name": "Open"
+        },
+        "updated": "2026-09-17T11:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "POC"
+        },
+        "assignee": {
+          "displayName": "Priya"
+        },
+        "description": "",
+        "parent": {
+          "key": "POC-1"
+        }
+      },
+      "text": "POC-18 Define alert rules for known patterns (KI-022 first). Status: Open. (Nightly index snapshot.)"
+    }
+  ]
+}
