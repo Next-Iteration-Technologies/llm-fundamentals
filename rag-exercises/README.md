@@ -1,23 +1,8 @@
 # RAG Fundamentals: the exercises
 
-All data is fictional: the Contoso pack in `contoso-pack/` (read its README first). The lab climbs the same tool ladder as the deck (flow 9.6). Each rung answers the same questions, so the room sees what each step up buys.
-
-| Rung | What you build | What you can see | Why move up |
-|---|---|---|---|
-| 1. Copilot chat | Nothing: ask over your own mail, OneDrive, SharePoint | The answer and its file links | Can't scope it, see the passages or measure it |
-| 2. Agent builder (Microsoft 365 Copilot) | An agent scoped to the "Contoso Archive Ops" library, with the grounding rules as instructions | Which files it cites | No custom chunking, no eval, Graph-only sources (no Jira, no tickets) |
-| 3. n8n (hosted) + Nexus | `n8n/rag-lab.json` and `n8n/jira-mock.json` | Every node's input and output, the tool calls, the live Jira tool | n8n can't express row-per-chunk, section-level access or an eval loop easily |
-| 4. Python + Nexus | `python/rag.py` | Every chunk, score and rank; Recall@5, MRR, faithfulness | Full control |
-
-Rungs 3 and 4 are separate: each one can be run without the other. Both talk to a model through a provider you choose: **Nexus** (the company gateway, the room's default), **Anthropic** (the trainer's key) or **Ollama** (a local model). No Docker is needed for either; `docker-compose.yml` is an optional all-local path.
+The hands-on lab is `python/rag.py`: you see every chunk, score and rank, and measure Recall@5, MRR and faithfulness. All data is fictional: the Contoso pack in `contoso-pack/` (read its README first). The same pack can also be used in Copilot and n8n; both are covered at the end.
 
 ## Setup
-
-### Rungs 1 and 2: the test tenant
-
-Load the pack as described in `../contoso-pack/README.md` (SharePoint library "Contoso Archive Ops", Priya's OneDrive, Sam's mailbox). Indexing by Microsoft 365 can take hours: do it the day before.
-
-### Rung 4: Python (no Docker, no Ollama)
 
 One script does the setup, on Windows and macOS alike:
 
@@ -31,27 +16,18 @@ On macOS, type `python3` instead of `python`, here and in every command below.
 To skip the question, name the provider:
 
 ```
-python3 setup.py anthropic
-python3 setup.py nexus
+python setup.py anthropic
+python setup.py nexus
 ```
 
-On Windows, type `python` instead of `python3`.
-
-The script creates a virtual environment in `.venv`, installs the packages (a few minutes the first time), and creates `providers.toml` and `.env`. Then it asks which model to use, asks for the key if that model needs one, and runs `python rag.py check`. There is nothing to activate: `rag.py` uses `.venv` by itself.
+The script creates a virtual environment in `.venv`, installs the packages (a few minutes the first time), and creates `providers.toml` and `.env`. Then it asks which model to use, asks for the key if that model needs one, and runs `python rag.py check`. There is nothing to activate: `rag.py` uses `.venv` by itself. No Docker is needed.
 
 | Provider | What it is | Asks for |
 |---|---|---|
 | `nexus` | The company gateway, the room's default | Base URL, chat and embedding model names, `NEXUS_API_KEY` |
-| `anthropic` | Claude | `ANTHROPIC_API_KEY`. Anthropic has no embeddings, so Ollama embeds if it runs, otherwise the hashed stand-in |
+| `anthropic` | Claude (the trainer's key) | `ANTHROPIC_API_KEY`. Anthropic has no embeddings, so Ollama embeds if it runs, otherwise the hashed stand-in |
 | `ollama` | A local model | Nothing; Ollama must be running |
 | `offline` | No model: retrieval only | Nothing; add `--dry` to every command |
-
-To switch the model later, or to replace a key:
-
-```
-python setup.py provider
-python setup.py provider ollama
-```
 
 Then:
 
@@ -60,54 +36,26 @@ python rag.py ingest
 python rag.py ask "why did we drop vendor A?"
 ```
 
-`providers.toml` holds one block per model: `nexus` and `nexus-embed` (default), `anthropic`, `ollama` and `ollama-embed`, `hash` (no model). `python setup.py provider` sets the two defaults at the top of the file. One command can still use another block with `--chat NAME --embed NAME`, or with `LLM_CHAT` / `LLM_EMBED`. Each chat block carries `where` (local, tenant, external), which is the data-class policy of E9. Anthropic has no embeddings endpoint, so `--chat anthropic` pairs with `--embed nexus-embed`, `ollama-embed` or `hash`. The index remembers which embed block built it; query it with the same one, or re-ingest. The setup script says so when a switch changes the embed block.
-
 Qdrant runs in-process (local path mode, `python/.store/`): no server needed. How the code works, stage by stage: `python/WIKI.md`. The first `ask` downloads the reranker `BAAI/bge-reranker-base` (~1.1 GB); add `--no-rerank` to skip it. With Nexus an answer takes a few seconds; on a laptop CPU with Ollama 10 s (3B model) to several minutes (8B thinking model).
 
 **No key, no model?** Every command takes `--dry`: no chat calls, and the hashed (lexical) embedding stands in for the embed model. Retrieval, ranks and Recall/MRR still work; semantic matches ("users can't find archived files" → KI-014) get weaker. A `--dry` run withholds nothing, since no model reads anything.
 
 **The Jira mock** for E5 and E7 is one file with no dependencies: `python jira-mock/server.py` from the `rag-exercises` folder (it reads `contoso-pack/jira/issues.json` next to it; set `ISSUES_FILE=` to point elsewhere). Stop it with Ctrl-C; restarting it resets every status flip.
 
-### Rung 3: the hosted n8n
+### Switching the model
 
-The hosted n8n cannot read a laptop's disk or reach `localhost`, so the workflows fetch the pack over HTTP and the Jira mock is a second workflow.
+To switch the model later, or to replace a key:
 
-1. Import `n8n/jira-mock.json`, then `n8n/rag-lab.json` (Workflows → Import from file). **Node versions may need a re-pick after import** (n8n changes AI node versions often): if a node shows a warning, open it, re-select the same option and save.
-2. One credential, type **OpenAI**, named `Nexus`: API key = your Nexus key, Base URL = the gateway's OpenAI-compatible root. Pick it in the three Nexus nodes (chat model, two embeddings). Type the model names if the dropdown stays empty (VERIFY: the dropdown reads `GET {base}/models`, which a gateway may not serve).
-3. In `rag-lab`, open **Settings** and set `PACK_URL` to where the pack is served (the published copy in the training repo, or any web server with the `contoso-pack` folder). The `jira-mock` workflow's **Fetch issues** node has the same URL.
-4. In the `jira_search` tool node, pick the imported `Contoso Jira mock` workflow.
-5. **Activate** `jira-mock` (the status flip in E5 only persists in production runs). Run **Run ingest** once per n8n restart: the store is in memory and scoped to this workflow, which is why ingest and chat sit in one file. Then open the chat and ask "What fixes KI-014?".
+```
+python setup.py provider
+python setup.py provider ollama
+```
 
-Trainer and all-local alternative: swap **Chat model (Nexus)** for an Anthropic Chat Model (`claude-opus-5-5`, Anthropic credential) or an Ollama Chat Model, and the two embeddings nodes for Embeddings Ollama (`nomic-embed-text`). `docker-compose.yml` starts n8n and Ollama locally for that; the workflows still fetch the pack over HTTP.
-
-## The n8n workflows (rung 3)
-
-To rebuild `rag-lab` by hand, these are the nodes. One workflow, two triggers:
-
-**Ingest branch** (Manual Trigger "Run ingest"):
-1. Edit Fields "Settings": `PACK_URL`
-2. HTTP Request: `{{PACK_URL}}/manifest.json` → Split Out `files` → Loop Over Items (batch 1)
-3. HTTP Request: `{{PACK_URL}}/{{path}}`, response format Text into `data` → Edit Fields: `path`, `access`, `data`
-4. In-Memory Vector Store: Insert Documents, memory key `contoso`, with sub-nodes:
-   - Embeddings OpenAI (credential Nexus): the Nexus embedding model
-   - Default Data Loader: type JSON, data `{{ $json.data }}`, text splitting Custom, metadata `source = {{ $json.path }}`, `access = {{ $json.access }}`
-     - Recursive Character Text Splitter: chunk size 800, overlap 100, split code Markdown
-5. Back to the loop.
-
-**Chat branch** (Chat Trigger):
-1. AI Agent, system message = the grounding rules (flow 5.2) plus when to use which tool, with sub-nodes:
-   - OpenAI Chat Model (credential Nexus), temperature 0.1
-   - Simple Memory (window buffer), 6 messages
-   - Tool `search_docs`: In-Memory Vector Store in mode "Retrieve Documents (As Tool for AI Agent)", memory key `contoso`, top K 5, plus its own Embeddings OpenAI
-   - Tool `jira_search`: Call n8n Workflow Tool → the `jira-mock` workflow, input `jql` filled by the model, description: "live Jira status for project POC; JQL such as `project = POC AND text ~ \"vendor B\"`"
-
-**`jira-mock`**: Execute Workflow Trigger (input `jql`) → HTTP Request `{{PACK_URL}}/jira/issues.json` → Code node (a port of `jira-mock/server.py`: `project =`, `status =`/`!=`, `text ~`, joined by AND only; anything else ignored). A second trigger, Webhook `GET /jira/set?key=POC-12&status=Open`, stores a status override in the workflow's static data; `?reset=1` clears it.
-
-What n8n can't do here without code: row-per-chunk for the CSV, stripping quoted mail replies, section-level access (the 2026-09-24 internal note), metadata filters on the in-memory store. The ingest treats each file as text and splits by size; that is the "naive" baseline the Python rung improves.
+`providers.toml` holds one block per model: `nexus` and `nexus-embed` (default), `anthropic`, `ollama` and `ollama-embed`, `hash` (no model). `python setup.py provider` sets the two defaults at the top of the file. One command can still use another block with `--chat NAME --embed NAME`, or with `LLM_CHAT` / `LLM_EMBED`. Each chat block carries `where` (local, tenant, external), which is the data-class policy of E9. Anthropic has no embeddings endpoint, so `--chat anthropic` pairs with `--embed nexus-embed`, `ollama-embed` or `hash`. The index remembers which embed block built it; query it with the same one, or re-ingest. The setup script says so when a switch changes the embed block.
 
 ## Exercises
 
-Each exercise names its flow. Expected results were checked with the Python rung on the hashed fallback embedding (`--dry`); with a real embedding model (Nexus or `nomic-embed-text`) the semantic side gets better, the shape stays the same. Where a result depends on which chat model answered, the paragraph says which one was used; Nexus and Claude will differ in wording and sometimes in the tool they pick.
+Each exercise names its flow. Expected results were checked on the hashed fallback embedding (`--dry`); with a real embedding model (Nexus or `nomic-embed-text`) the semantic side gets better, the shape stays the same. Where a result depends on which chat model answered, the paragraph says which one was used; Nexus and Claude will differ in wording and sometimes in the tool they pick.
 
 ### E1. Chunking two ways (flow 2)
 
@@ -118,7 +66,7 @@ python rag.py ask "What fixes KI-014?" --naive --dry --no-rerank
 python rag.py ask "What fixes KI-014?" --dry --no-rerank
 ```
 
-Expected: naive returns 500-character CSV slices that start mid-row (`...Move uploads before 22:00,2025-10-14 KI-014,Content Hub,...`) with no column names; structure-aware returns the KI-014 row whole, with its column names, at rank 1. Also try `ask "What did vendor A say about on-prem?" --naive`: the naive chunks are raw mail (headers, disclaimers, quoted replies), the forwarded vendor C transcript ranks first, and vendor A's actual answer is not in the top 5. In n8n: change the splitter's chunk size from 800 to 200 and re-run the ingest; look at where SOP-CH-03 §3 lands.
+Expected: naive returns 500-character CSV slices that start mid-row (`...Move uploads before 22:00,2025-10-14 KI-014,Content Hub,...`) with no column names; structure-aware returns the KI-014 row whole, with its column names, at rank 1. Also try `ask "What did vendor A say about on-prem?" --naive`: the naive chunks are raw mail (headers, disclaimers, quoted replies), the forwarded vendor C transcript ranks first, and vendor A's actual answer is not in the top 5.
 
 With `--contextual`, ingest asks the chat model for a one-sentence prefix per chunk (flow 2.6); compare `ask "Restart the index worker"` before and after.
 
@@ -178,7 +126,7 @@ Invoke-RestMethod -Method Put -Uri http://localhost:8080/rest/api/2/issue/POC-12
 curl -X PUT http://localhost:8080/rest/api/2/issue/POC-12 -H "Content-Type: application/json" -d '{"fields":{"status":{"name":"Open"}}}'
 ```
 
-Then ask the `--live-jira` question again: the answer now says Open. Restart `jira-mock/server.py` to reset. In n8n, ask the agent the same question and open the execution: the `jira_search` call and its JQL are visible. The flip there is `GET <your n8n>/webhook/jira/set?key=POC-12&status=Open` (the `jira-mock` workflow must be active), and `?reset=1` clears it.
+Then ask the `--live-jira` question again: the answer now says Open. Restart `jira-mock/server.py` to reset.
 
 ### E6. Permissions and injection (flow 9)
 
@@ -289,6 +237,59 @@ python rag.py eval --children --no-rerank
 ```
 
 `--children` cuts the longer sections (SOPs, designs, policy, minutes, notes) into sentence-sized pieces of about 12 words, searches those, and returns the whole section the hit came from. The pack's sections are short, so only a few dozen are cut (289 → 317 chunks); the effect is small here and grows with long documents. `eval` also prints nDCG@5 (graded: 3 = the answer, 2 = needed, 1 = background) and the time per question. Every `ask` and `agent` run appends one line to `.store/trace.jsonl` with the question, asker, flags, passages, withheld passages, tool calls, answer and milliseconds. That's the log box on the backbone, and the raw material for the next eval.
+
+## Copilot
+
+Load the pack as described in `contoso-pack/README.md` (SharePoint library "Contoso Archive Ops", Priya's OneDrive, Sam's mailbox). Indexing by Microsoft 365 can take hours: do it the day before.
+
+- **Copilot chat:** nothing to build; ask over your own mail, OneDrive and SharePoint. You see the answer and its file links, but you can't scope it, see the passages or measure it.
+- **Agent builder (Microsoft 365 Copilot):** build an agent scoped to the "Contoso Archive Ops" library, with the grounding rules as instructions. You see which files it cites. There is no custom chunking and no eval, and the sources are Graph only (no Jira, no tickets).
+
+## n8n
+
+The n8n lab is `n8n/rag-lab.json` and `n8n/jira-mock.json`. You see every node's input and output, the tool calls and the live Jira tool. It runs without the Python lab and talks to the model through Nexus by default.
+
+### Setup
+
+The hosted n8n cannot read a laptop's disk or reach `localhost`, so the workflows fetch the pack over HTTP and the Jira mock is a second workflow.
+
+1. Import `n8n/jira-mock.json`, then `n8n/rag-lab.json` (Workflows → Import from file). **Node versions may need a re-pick after import** (n8n changes AI node versions often): if a node shows a warning, open it, re-select the same option and save.
+2. One credential, type **OpenAI**, named `Nexus`: API key = your Nexus key, Base URL = the gateway's OpenAI-compatible root. Pick it in the three Nexus nodes (chat model, two embeddings). Type the model names if the dropdown stays empty (VERIFY: the dropdown reads `GET {base}/models`, which a gateway may not serve).
+3. In `rag-lab`, open **Settings** and set `PACK_URL` to where the pack is served (the published copy in the training repo, or any web server with the `contoso-pack` folder). The `jira-mock` workflow's **Fetch issues** node has the same URL.
+4. In the `jira_search` tool node, pick the imported `Contoso Jira mock` workflow.
+5. **Activate** `jira-mock` (the status flip in E5 only persists in production runs). Run **Run ingest** once per n8n restart: the store is in memory and scoped to this workflow, which is why ingest and chat sit in one file. Then open the chat and ask "What fixes KI-014?".
+
+Trainer and all-local alternative: swap **Chat model (Nexus)** for an Anthropic Chat Model (`claude-opus-5-5`, Anthropic credential) or an Ollama Chat Model, and the two embeddings nodes for Embeddings Ollama (`nomic-embed-text`). `docker-compose.yml` starts n8n and Ollama locally for that; the workflows still fetch the pack over HTTP.
+
+### Exercises in n8n
+
+- **E1:** change the splitter's chunk size from 800 to 200 and re-run the ingest; look at where SOP-CH-03 §3 lands.
+- **E5:** ask the agent "Is vendor B's pricing answer still open?" and open the execution: the `jira_search` call and its JQL are visible. The flip is `GET <your n8n>/webhook/jira/set?key=POC-12&status=Open` (the `jira-mock` workflow must be active), and `?reset=1` clears it.
+
+### The workflows, node by node
+
+To rebuild `rag-lab` by hand, these are the nodes. One workflow, two triggers:
+
+**Ingest branch** (Manual Trigger "Run ingest"):
+1. Edit Fields "Settings": `PACK_URL`
+2. HTTP Request: `{{PACK_URL}}/manifest.json` → Split Out `files` → Loop Over Items (batch 1)
+3. HTTP Request: `{{PACK_URL}}/{{path}}`, response format Text into `data` → Edit Fields: `path`, `access`, `data`
+4. In-Memory Vector Store: Insert Documents, memory key `contoso`, with sub-nodes:
+   - Embeddings OpenAI (credential Nexus): the Nexus embedding model
+   - Default Data Loader: type JSON, data `{{ $json.data }}`, text splitting Custom, metadata `source = {{ $json.path }}`, `access = {{ $json.access }}`
+     - Recursive Character Text Splitter: chunk size 800, overlap 100, split code Markdown
+5. Back to the loop.
+
+**Chat branch** (Chat Trigger):
+1. AI Agent, system message = the grounding rules (flow 5.2) plus when to use which tool, with sub-nodes:
+   - OpenAI Chat Model (credential Nexus), temperature 0.1
+   - Simple Memory (window buffer), 6 messages
+   - Tool `search_docs`: In-Memory Vector Store in mode "Retrieve Documents (As Tool for AI Agent)", memory key `contoso`, top K 5, plus its own Embeddings OpenAI
+   - Tool `jira_search`: Call n8n Workflow Tool → the `jira-mock` workflow, input `jql` filled by the model, description: "live Jira status for project POC; JQL such as `project = POC AND text ~ \"vendor B\"`"
+
+**`jira-mock`**: Execute Workflow Trigger (input `jql`) → HTTP Request `{{PACK_URL}}/jira/issues.json` → Code node (a port of `jira-mock/server.py`: `project =`, `status =`/`!=`, `text ~`, joined by AND only; anything else ignored). A second trigger, Webhook `GET /jira/set?key=POC-12&status=Open`, stores a status override in the workflow's static data; `?reset=1` clears it.
+
+What n8n can't do here without code: row-per-chunk for the CSV, stripping quoted mail replies, section-level access (the 2026-09-24 internal note), metadata filters on the in-memory store. The ingest treats each file as text and splits by size; that is the "naive" baseline the Python lab improves.
 
 ## What's verified
 
