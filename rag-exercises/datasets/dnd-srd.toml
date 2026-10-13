@@ -1,0 +1,10 @@
+# The D&D 5e System Reference Document 5.2.1, 20 markdown files, with the datapizza golden set (see dnd-srd/NOTICE.md).
+title = "D&D rulebook (SRD 5.2.1)"
+docs = "dnd-srd/docs"                    # relative to this file
+include = ["*.md"]
+questions = ["dnd-srd/qa/easy.json", "dnd-srd/qa/medium.json", "dnd-srd/qa/unanswerable.json"]
+format = "positions"                     # {question, answer, passages: [{document_path, start_char, end_char, content}]}
+chunking = "fixed-200"                   # the starting point; LAB chapter 3 compares the others
+embed = "bge-small"                      # used when neither --embed nor LLM_EMBED is set
+subject = "the rulebook"
+refusal = "I don't find this in the rulebook"

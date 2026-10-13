@@ -92,6 +92,20 @@ def _frozen():
         expect(got[k] == want[k], f"{k} changed: was {want[k]}, now {got[k]}")
 
 
+# ------------------------------------------------------------------ check 3: the data is right
+@check(1, "data: all 264 D&D gold passages at their positions; every Contoso expected chunk id found in its file")
+def _data():
+    out = rag("check-data", "--dataset", "dnd-srd")
+    expect("gold passages: 264 (264 position), 264 found at their positions, 0 failed" in out, out)
+    expect("(easy 25, medium 31, unanswerable 4)" in out, "D&D should have 56 golden questions plus 4 unanswerable:\n" + out)
+    out = rag("check-data", RAG_DATASET="")
+    expect("dataset contoso" in out and "questions: 18;" in out, "the default dataset should be contoso, 18 questions:\n" + out)
+    m = re.search(r"expected chunk ids: (\d+) distinct, (\d+) found", out)
+    expect(m and m.group(1) == m.group(2) and "not found" not in out, out)
+    out = rag("check-data", RAG_DATASET="dnd-srd")
+    expect("dataset dnd-srd" in out, "RAG_DATASET=dnd-srd should pick the rulebook:\n" + out)
+
+
 # ------------------------------------------------------------------ runner
 def run(upto=99, only=None):
     SCRATCH.mkdir(parents=True, exist_ok=True)
