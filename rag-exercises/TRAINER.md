@@ -337,3 +337,30 @@ The preview shows two figures: words and punctuation (low), and characters / 2.4
 
 **A good notebook line:** "Search when the documents don't fit, change often, or have to be cited and permissioned;
 everything when it's small, fixed, and questions need many parts at once."
+
+---
+
+## Chapter 10. Before and after
+
+**Goal:** put the chapters together: which choices made the biggest difference, in order.
+
+**What they see** (`walkthrough --question 1 --compare-with baseline`, D&D)
+
+| | Best setup (recursive, semantic, nomic) | Starting point (fixed-200, semantic, bge-small) |
+|---|---|---|
+| Gold passages sent (of 4) | **4** (ranks 1–4) | 3 (the Pit Fiend's at rank 10) |
+| Recall@3 / MRR | 1.00 / 1.00 | 0.67 / 1.00 |
+
+The best setup is "best by Recall@5 over the whole golden set". For one question it can lose, which is a good last
+reminder of Chapter 2.
+
+**Talking points**
+- On the rulebook the biggest step was the **chunking** (Ch. 3: fixed-200 → recursive, R@5 0.45 → 0.52), then the
+  **embedding model** (Ch. 5: hash → a real one doubles everything). Searching differently (Ch. 4) didn't beat plain
+  semantic search here. On Contoso, **hierarchical chunking** (0.61 → 0.80) mattered most, then the embedding model.
+- The answers (Ch. 7) moved less than retrieval. With a small local model, the model itself is the next bottleneck.
+- Running Chapters 2–4 on the other dataset: different winners (recursive vs hierarchical, rerank helps or hurts). The
+  method transfers, the choices don't.
+
+**A good notebook line:** "1. How to cut (recursive), 2. a real embedding model, 3. enough of the right passages in
+the prompt (half found was the top miss). Measure each one on your own golden set."

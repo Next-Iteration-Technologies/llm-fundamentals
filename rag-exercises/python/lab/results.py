@@ -254,5 +254,5 @@ def walkthrough_compare(a, ds, q, text, setup):
         print("=" * 100)
         walkthrough.walk(a, ds, q, text, s, title=title)
     print("=" * 100)
-    print(f"Compared: best setup {top['phase']}/{top['name']} ({setup_of(top).label()}) "
-          f"against {other['phase']}/{other['name']} ({setup_of(other).label()}).")
+    print(f"Compared: best setup {top['phase']}/{top['name']} ({setup_of(top).label()}, {top['setup'].get('embed')}) "
+          f"against {other['phase']}/{other['name']} ({setup_of(other).label()}, {other['setup'].get('embed')}).")

@@ -41,8 +41,10 @@ def walk(a, ds, q, text, setup, title=""):
     chat = None if a.dry else llm.chat_name(a.chat)
     print(f"WALKTHROUGH{title}  dataset {ds.name} ({ds.title})")
     print(f"  question{f' {q.n} ({q.id})' if q else ' (typed in)'}: {text}")
-    print(f"  setup: chunking {setup.chunking}, search {setup.retriever}{' + rerank' if setup.rerank else ''}, "
-          f"{setup.k} chunks sent" + (f", chat {llm.describe(chat)}" if chat else ", no chat model (--dry)"))
+    print(f"  setup: chunking {setup.chunking}, search {setup.retriever}{' + rerank' if setup.rerank else ''}"
+          + "".join(f", {k}={v}" for k, v in sorted(setup.filters.items()))
+          + f", embedding {pipeline.embed_name(ds, setup.embed or None)}, {setup.k} chunks sent"
+          + (f", chat {llm.describe(chat)}" if chat else ", no chat model (--dry)"))
 
     # 1. load
     chars = sum(len(t) for t in ds.docs.values())
