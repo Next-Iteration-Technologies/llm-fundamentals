@@ -63,6 +63,13 @@ Scores are per question, then averaged. R@k = Recall@k (of the right passages, h
 | prefer-newest | hierarchical | semantic, prefer_newest=True | ollama-embed | 17 | 0.34 | 0.80 | 0.44 | 0.50 | 0.65 | 0.62 | 1.00 | won 1, lost 0 |
 | asker+prefer-newest | hierarchical | semantic, asker=golden, prefer_newest=True | ollama-embed | 17 | 0.40 | 0.77 | 0.39 | 0.47 | 0.65 | 0.56 | 0.94 | won 1, lost 1 |
 
+### answers (RAG triad)
+
+| Run | Chat | Judge | Q | Context rel. | Faithfulness | Answer rel. | Must say | Refusals right |
+|---|---|---|---|---|---|---|---|---|
+| filters/platform | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 10 | 0.76 | 0.67 | 0.70 | 0.40 | 1 of 2 |
+| retrieval/hybrid-rerank | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 5 | 0.88 | 0.42 | 0.75 | 0.54 | 1 of 2 |
+
 ## dnd-srd
 
 ### eval
@@ -150,11 +157,14 @@ By level (R@3 / R@5 / MRR):
 | Run | Chat | Judge | Q | Context rel. | Faithfulness | Answer rel. | Must say | Refusals right |
 |---|---|---|---|---|---|---|---|---|
 | embedding/ollama-embed | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 10 | 0.54 | 0.69 | 0.75 |   -   | 1 of 1 |
+| eval/baseline | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 10 | 0.46 | 0.68 | 0.68 |   -   | 1 of 1 |
 
 ### final: RAG vs full context (same model, same judge)
 
 | Model | Row | Answered | Answer rel. | Faithful to right passages | Must say | Refusals right | Cites right file | Tokens / question | Seconds / question | Judge |
 |---|---|---|---|---|---|---|---|---|---|---|
+| anthropic (claude-opus-5-5) | RAG | 5 of 5 | 0.75 | 0.52 |   -   | 1.00 | 0.75 | 1,243 | 8.84 | anthropic (claude-opus-5-5) |
+| anthropic (claude-opus-5-5) | full context | 5 of 5 | 1.00 | 0.59 |   -   | 1.00 | 1.00 | 627,711 | 21.92 | anthropic (claude-opus-5-5) |
 | ollama (llama3.2:3b) | RAG | 1 of 1 | 0.75 | 0.50 |   -   |   -   | 0.00 | 750 | 114.70 | ollama (llama3.2:3b) |
 | ollama (llama3.2:3b) | full context | 0 of 1 (1 too big for the window) |   -   |   -   |   -   |   -   |   -   | 375,129 |   -   | ollama (llama3.2:3b) |
 RAG setup: embedding/ollama-embed.

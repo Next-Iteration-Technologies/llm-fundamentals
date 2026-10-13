@@ -142,7 +142,7 @@ def run(a):
     print("  answer relevance: does the answer actually answer the question? (the judge rates it; 1.00 = fully)")
     if s["must_say"] is not None:
         print("  must say: share of the facts the golden set says the answer must contain")
-    odd = [r for r in rows if r.get("context") is not None and (
+    odd = [r for r in rows if r.get("context") is not None and "refusal_ok" not in r and (
         (r["context"] == 0 and (r.get("answer_relevance") or 0) >= 0.75) or (r["context"] >= 0.99 and (r.get("answer_relevance") or 1) <= 0.25))]
     for r in odd:
         kind = "answered well with none of the right passages: from the model's own knowledge?" if r["context"] == 0 else \

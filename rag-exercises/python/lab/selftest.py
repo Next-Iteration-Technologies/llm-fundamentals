@@ -45,10 +45,10 @@ def env(**extra):
     return e
 
 
-def rag(*args, ok=True, timeout=3600, stdin="", **extra):
+def rag(*args, ok=True, timeout=3600, stdin="", cwd=None, **extra):
     """Run `python rag.py ARGS`; returns stdout+stderr. ok=True: a non-zero exit is a failure. stdin: what is typed."""
     t0 = time.time()
-    p = subprocess.run([sys.executable, str(PY / "rag.py"), *args], cwd=PY, env=env(**extra), capture_output=True,
+    p = subprocess.run([sys.executable, str(PY / "rag.py"), *args], cwd=cwd or PY, env=env(**extra), capture_output=True,
                        text=True, timeout=timeout, input=stdin)
     out = p.stdout + p.stderr
     if ok and p.returncode != 0:
@@ -90,6 +90,45 @@ def _frozen():
     got = legacy_numbers()
     for k in ("chunks", "means", "per_question"):
         expect(got[k] == want[k], f"{k} changed: was {want[k]}, now {got[k]}")
+
+
+# ------------------------------------------------------------------ check 6: the old exercises still run
+def readme_commands():
+    """Every `python rag.py ...` line in README.md's E1-E11, in order."""
+    import shlex
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    part = text[text.index("## Exercises"):text.index("## Copilot")]
+    cmds = []
+    for block in re.findall(r"```\n(.*?)```", part, re.S):
+        for line in block.splitlines():
+            line = line.split("  #")[0].strip()
+            if line.startswith("python rag.py"):
+                cmds.append(shlex.split(line, comments=True)[2:])
+    return cmds
+
+
+@check(0, "old exercises: every README E1-E11 command runs with --dry and exits cleanly (Jira mock on :8080)")
+def _old_exercises():
+    import urllib.request
+    cmds = readme_commands()
+    expect(len(cmds) > 30, f"found only {len(cmds)} commands in README E1-E11")
+    mock = None
+    try:
+        urllib.request.urlopen("http://localhost:8080/rest/api/2/search?jql=project%20%3D%20POC", timeout=2)
+    except Exception:
+        mock = subprocess.Popen([sys.executable, str(ROOT / "jira-mock" / "server.py")], cwd=ROOT,
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        time.sleep(1.5)
+    work = SCRATCH / "readme"   # eval --export writes its file here, not in python/
+    work.mkdir(parents=True, exist_ok=True)
+    try:
+        for c in cmds:
+            args = c + ([] if "--dry" in c or c[0] == "check" else ["--dry"])
+            rag(*args, RAG_DATASET="", RAG_STORE=str(SCRATCH / "readme-store"), cwd=work, timeout=1800)
+    finally:
+        if mock:
+            mock.terminate()
+    print(f"    ({len(cmds)} commands)")
 
 
 # ------------------------------------------------------------------ check 3: the data is right
@@ -411,7 +450,7 @@ def chapter_commands(n):
             line = line.split("  #")[0].strip()
             if line.startswith("python rag.py"):
                 import shlex
-                cmds.append(shlex.split(line)[2:])
+                cmds.append(shlex.split(line, comments=True)[2:])
     return cmds
 
 

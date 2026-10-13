@@ -19,6 +19,9 @@ from . import chunkers, datasets, llm, pipeline, results
 from .answers import REFUSED, judge_faith, judge_relevance, says, spread
 
 
+CHARS_PER_TOKEN = 2.4   # measured: the D&D full-context prompt, about 1.5 million characters, is 627,656 Claude tokens
+
+
 def corpus_passages(ds):
     """Every document, as the model gets it with full context: Contoso as rag.py reads it (so data classes are known),
     other datasets one passage per file."""
@@ -68,10 +71,15 @@ def run(a):
               f"{len(corpus) - len(corpus_ok)} of {len(corpus)} passages held back in both rows (E9). --ignore-data-class lifts it.")
     elif a.ignore_data_class:
         print("  --ignore-data-class: nothing held back (fictional pack only); the run is marked so.")
-    print(f"\n  tokens to send (about):     per question      all {len(qs)} questions")
-    print(f"    RAG                      {sum(rag_tok) // max(1, len(rag_tok)):>12,}   {sum(rag_tok):>16,}")
-    print(f"    full context             {full_tok:>12,}   {full_tok * len(qs):>16,}"
-          + ("   (cached after the first question: later ones read it at a fraction of the price)" if kind == "anthropic" else ""))
+    full_hi = int(len(fsys) / CHARS_PER_TOKEN)
+    rag_hi = [int((len(system) + len(pipeline.build_prompt(q.text, sent))) / CHARS_PER_TOKEN) for q, sent in plan]
+    print(f"\n  tokens to send (about):     per question                 all {len(qs)} questions")
+    print(f"    RAG                      {sum(rag_tok) // max(1, len(rag_tok)):>10,} to {sum(rag_hi) // max(1, len(rag_hi)):>9,}   "
+          f"{sum(rag_tok):>12,} to {sum(rag_hi):>11,}")
+    print(f"    full context             {full_tok:>10,} to {full_hi:>9,}   {full_tok * len(qs):>12,} to {full_hi * len(qs):>11,}"
+          + ("\n    (cached after the first question: later ones read it at a fraction of the price)" if kind == "anthropic" else ""))
+    print("    The low figure counts words and punctuation; the high one, characters / 2.4, is closer to what Claude counts")
+    print("    (the D&D rulebook measured 627,656 Claude tokens).")
     print("  Check current prices before a big run. The judge adds two short calls per answer.")
     if not a.yes:
         try:

@@ -235,3 +235,105 @@ real model matters; which real model matters less."
 
 **A good notebook line:** "The SOP says 14 days and is found first, but the 2026 config says 30. The answer is grounded
 and still out of date. Newest-first fixes this question but costs ranking everywhere else."
+
+---
+
+## Chapter 7. Right pages, wrong answer?
+
+**Goal:** separate "found the right passage" from "gave the right answer" (the RAG triad).
+
+**What they see** (`answers --best --limit 10`; overnight numbers with llama3.2:3b answering *and* judging, which is
+the weakest possible judge: re-run with the defaults, Sonnet answering and Opus judging, before quoting them)
+
+| | Context relevance | Faithfulness | Answer relevance | Must say | Refusals right |
+|---|---|---|---|---|---|
+| D&D best (recursive, semantic, nomic), 10 questions | 0.54 | 0.69 | 0.75 | — | 1 of 1 |
+| D&D starting point (`answers eval/baseline --limit 10`) | 0.46 | 0.68 | 0.68 | — | 1 of 1 |
+| Contoso best (hierarchical, semantic, platform filter), 10 questions | 0.76 | 0.67 | 0.70 | 0.40 | 1 of 2 |
+
+**Talking points**
+- **Retrieval got better (0.46 → 0.54); faithfulness didn't move (0.68 → 0.69).** Answers improve less than retrieval:
+  that's the chapter's point, and why the triad keeps the two apart.
+- **Wrong despite the right pages:** on D&D easy-7 (multiclassing prerequisites) the 3B model had half the right
+  passages and still answered "I don't find this in the rulebook". On Contoso it refused g03, g07 and g09 the same way.
+  Shown as `refused ✗` (it refused a question that has an answer).
+- **The judge matters.** llama3.2:3b gives almost every answer "4 of 5" (answer relevance 0.75 everywhere). A judge that
+  can't tell answers apart makes the score meaningless. Opus as the default judge, and `--judge sonnet` to cross-check,
+  is the spec's choice for this reason.
+- Right for the wrong reason: a popular topic like D&D is partly known to the model. A line starting with `!` marks an
+  answer rated well with none of the right passages sent: ask whether it came from the passages or from memory.
+- Must say (Contoso only) is checked without a model: 70% of a phrase's words must be in the answer.
+
+**A good notebook line:** "Question 8: the right passages were sent, but the model said it couldn't find the answer.
+Finding the pages isn't the same as answering from them."
+
+---
+
+## Chapter 8. Why does it still miss?
+
+**Goal:** read a miss and say which part of the pipeline caused it.
+
+**What they see** (`misses --best`)
+
+| | Misses | cut apart | half found | ranked too low | wrong document | not found at all |
+|---|---|---|---|---|---|---|
+| D&D best (recursive, semantic, nomic) | 35 of 55 | 8 | 18 | 8 | 1 | 0 |
+| D&D `retrieval/hybrid-rerank` | 39 of 55 | 7 | 24 | 8 | 0 | 0 |
+| Contoso best (hierarchical, semantic, platform filter, nomic) | 6 of 17 | 0 | 6 | 0 | 0 | 0 |
+
+**Talking points**
+- **"Half found" is the most common cause on both datasets.** The questions are multi-part (D&D medium questions have
+  up to 24 passages; "compare the Pit Fiend, Planetar, Rakshasa and Solar" needs four). Five chunks can't hold them all.
+  The fixes point back: bigger or hierarchical chunks (Ch. 3), more chunks sent, or a query rewrite that splits the
+  question (Ch. 4, `multi`).
+- "Cut apart" means no chunk holds even half of a passage: the D&D tables (Prismatic Wall layers, stat blocks) are
+  the typical case. Back to Chapter 3.
+- "Ranked too low" is what rerank is for (Ch. 4), and what more chunks sent would fix, at a cost in tokens.
+- Each miss gets exactly one label, the first that fits in the order of the table. A miss that is both "half found"
+  and "ranked too low" counts as half found.
+- Every miss line ends with a `show` command: open one and check the label against the text.
+
+**A good notebook line:** "Most common: half found. The questions need four passages and we send five chunks of
+which only two are right. Next fix: send more chunks or hand over whole sections."
+
+---
+
+## Chapter 9. Why not give it everything?
+
+**Goal:** decide when RAG is worth it compared with sending everything.
+
+**What they see** (`final --limit 5`): first the token preview, then one line per question and row.
+
+| D&D, per question | Tokens sent |
+|---|---|
+| RAG (best setup, 5 chunks) | about 700–1,300 |
+| Full context (all 20 files) | about 400,000–625,000 (Claude counted 627,656) |
+
+The preview shows two figures: words and punctuation (low), and characters / 2.4 (high, close to Claude's own count).
+
+- **With a model on the laptop (Ollama), the full-context row stops with "too big for the window"** and is recorded
+  that way; the RAG row answers. The rulebook is ~50 times the 8,192-token window we give llama3.2:3b. That *is* the
+  first answer to the chapter's question: on a small model, RAG isn't optional.
+- With Sonnet or Opus (1M-token window), both rows answer. One run exists from this machine (D&D, 5 questions, Opus
+  answering *and* judging, 2026-10-14; made outside the overnight build, see the build report):
+
+  | Opus, D&D, 5 questions | Answer relevance | Faithful to right passages | Cites right file | Tokens / question | Seconds / question |
+  |---|---|---|---|---|---|
+  | RAG | 0.75 | 0.52 | 0.75 | 1,243 | 8.8 |
+  | Full context | 1.00 | 0.59 | 1.00 | 627,711 | 21.9 |
+
+  Prompt caching worked: question 1 wrote 627,656 cached tokens, questions 2–5 read them back. Five questions are far
+  too few to pick a winner, and Opus judged itself; re-run with `--model sonnet` and the default Opus judge for the pair
+  the spec asks for. The shape matches the SPEC's expectation: full context answers a bit better on multi-part
+  questions, at about 500 times the tokens and 2–3 times the waiting.
+- Contoso with an external model: only Public passages may be sent (E9), in both rows. `--ignore-data-class` lifts it
+  for this fictional pack and marks the run.
+
+**Talking points**
+- A thousand times bigger (a company archive) doesn't fit any model: then RAG is the only option, and everything in
+  Chapters 3–8 is what decides the quality.
+- Cost and waiting time scale with what's sent. Ask: how many questions a day, at what price per question?
+- Citations: can the full-context answer still point to where it came from? Compare `cites right file`.
+
+**A good notebook line:** "Search when the documents don't fit, change often, or have to be cited and permissioned;
+everything when it's small, fixed, and questions need many parts at once."
