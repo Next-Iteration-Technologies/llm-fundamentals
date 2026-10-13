@@ -68,3 +68,61 @@ place in the file out."
 
 **A good notebook line:** "Starting point on the rulebook: Recall@3 0.44, MRR 0.58. Perfect = 1, random ≈ 0, so the
 test works. 55 questions: a 2% change is one question."
+
+---
+
+## Chapter 3. The answer was cut in half
+
+**Goal:** pick a chunking for a source and explain why, from what the chunks actually look like.
+
+**What they see**
+
+`show 3`: on D&D it's easy-2, the seven layers of a Prismatic Wall. The layers sit in a table, and fixed-size chunks
+cut through it. Some layers come at rank 19, and one chunk holds only 34% of the Green layer ("the cut went through it").
+On Contoso it's g03 ("What happened with 7f3a-91c2?").
+
+`chunks` (D&D):
+
+| Chunking | Chunks | Median tokens | Gold passages cut in two |
+|---|---|---|---|
+| fixed-200 | 1,999 | 200 | 144 of 264 (55%) |
+| recursive | 3,151 | 98 | 108 (41%) |
+| sentence | 6,197 | 59 | 191 (72%) |
+| semantic | 6,286 (bge-small) | 39 | 157 (59%) |
+| hierarchical | 2,806 sections, searched as 13,228 pieces | 93 | 100 (38%) |
+
+`compare --phase chunking` (semantic search, no rerank, 5 chunks):
+
+| D&D (bge-small) | R@3 | R@5 | MRR | R@~2k tok |
+|---|---|---|---|---|
+| fixed-200 | 0.44 | 0.45 | 0.58 | 0.51 |
+| **recursive** | **0.50** | **0.52** | **0.65** | **0.58** |
+| sentence | 0.37 | 0.43 | 0.55 | 0.53 |
+| semantic | 0.45 | 0.45 | 0.57 | 0.50 |
+| hierarchical | 0.38 | 0.41 | 0.52 | 0.48 |
+
+| Contoso (nomic) | R@3 | R@5 | MRR | R@~2k tok |
+|---|---|---|---|---|
+| structure | 0.58 | 0.61 | 0.69 | 0.89 |
+| naive-500 | 0.45 | 0.47 | 0.49 | 0.73 |
+| fixed-200 | 0.36 | 0.50 | 0.46 | 0.75 |
+| recursive | 0.52 | 0.60 | 0.61 | 0.74 |
+| sentence | 0.40 | 0.42 | 0.54 | 0.86 |
+| semantic | 0.59 | 0.64 | 0.67 | 0.87 |
+| **hierarchical** | **0.66** | **0.80** | **0.73** | 0.77 |
+
+**Talking points**
+- D&D: recursive wins. It cuts at headings and paragraphs, so a spell or monster entry stays together. Sentence chunks
+  are too small: a rule needs several sentences, and 72% of the gold passages get cut in two.
+- **Hierarchical doesn't win on D&D, and that's worth discussing.** The rulebook's headings include "Page 12" leftovers
+  from the PDF, so its "sections" are often a page, not a topic. Handing over a whole page brings noise and pushes the
+  right section down. On Contoso, where sections are real (SOP §4, minutes §Decision), hierarchical is the clear winner.
+  Same method, different documents, different result: that's the chapter's lesson.
+- Contoso: structure-aware beats naive-500 (0.61 vs 0.47, the E1 lesson), and it's best on the same-size view (R@~2k
+  0.89). Its chunks are small (median 26 tokens), so five of them carry little text.
+- With 17 questions, Contoso differences under ~6% are one question. Read the won/lost lists, not just the averages.
+- Contextual chunking needs a model call per chunk, so it's on request: `compare --phase chunking --rows contextual`.
+  To show what it writes, cheaply: `chunks --dataset contoso --chunking contextual --limit 10 --show 5`.
+
+**A good notebook line:** "Recursive, because it cuts the rulebook at headings and paragraphs, so a whole rule stays
+in one chunk; sentences cut 72% of the right passages in two."

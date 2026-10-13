@@ -213,7 +213,7 @@ def _positions():
                     flat = re.sub(r"\s+", " ", re.sub(r"<!--.*?-->", "", piece, flags=re.S))
                     expect(c["text"] in flat, f"{name} {ch}: {c['source']} text is not at its position")
                 else:
-                    expect(c["text"] == piece, f"{name} {ch}: chunk {c['id']} text differs from {c['file']} {c['start']}-{c['end']}")
+                    expect(c["text"] == piece, f"{name} {ch}: chunk {c.get('id', c['start'])} text differs from {c['file']} {c['start']}-{c['end']}")
 
 
 @check(4, "chunks: count, sizes and gold passages cut in two, per chunking (D&D)")

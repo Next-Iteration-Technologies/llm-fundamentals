@@ -141,13 +141,15 @@ The first prints **PERFECT student**, the second **RANDOM guesser**. If either c
 
 *By the end of this chapter you can: Pick a chunking for a source and explain why, from what the chunks actually look like.*
 
-Look at one question the assistant got wrong. The output of `eval` lists them.
+*Builds on E1 (naive vs structure-aware cutting) and E11 (small pieces that hand over their whole section).*
+
+Look at one question the assistant got wrong. In the output of `eval`, they're marked `✗`. Question 3 is one of them in both sets of documents; any other number from your `✗` list works too.
 
 ```
 python rag.py show 3
 ```
 
-You see the right passage on one side, and what the assistant found on the other. Often the right passage *was* found, but only half of it. The cut went right through the middle.
+For each right passage (**GOLD**), you see its text, and under it the chunk the assistant found (**FOUND rank N**). The text they share is marked `»like this«`. The line above the chunk says how much of the passage it holds. Often the right passage *was* found, but only half of it: the cut went right through the middle.
 
 How you cut documents into chunks is called **chunking**. There are several ways:
 
@@ -158,6 +160,8 @@ How you cut documents into chunks is called **chunking**. There are several ways
 | **By sentence** | A few sentences per piece |
 | **Semantic** | Cutting where the topic changes |
 | **Hierarchical** | Searching small pieces, but handing over the whole section they came from |
+| **Structure-aware** (`contoso` only) | Cutting each kind of document its own way: one row of a sheet, one mail, one log line |
+| **Contextual** | Any of the above, plus one sentence written by a model saying where the piece comes from |
 
 **Your guess:** which way will find the most right passages in your documents?
 
@@ -167,7 +171,12 @@ python rag.py chunks
 python rag.py compare --phase chunking
 ```
 
-The first command shows what the chunks look like: how many, how big, and how many right passages got cut in two. The second scores every way of cutting. Everything else stays the same, so any difference comes from the cutting.
+The first command shows what the chunks look like: how many, how big (in **tokens**, roughly words), and how many right passages got **cut in two**. The second scores every way of cutting with the same search and the same embedding model, so any difference comes from the cutting. The first time it runs, it turns every new kind of chunk into numbers, which takes a few minutes.
+
+**Look for:**
+- The same scores as Chapter 2, one row per way of cutting. **won / lost** lists the questions (by number) that got better or worse against the row above.
+- Bigger chunks hold more text, so they win a little just by being bigger. The **R@2k** column is fairer: every way of cutting gets the same amount of text, about 2,000 tokens.
+- Contextual cutting needs a model call for every chunk, so it's left out. Your trainer will show it.
 
 **Talk about:** were you right? What did the winner do that the others didn't? Would the same way win on the other set of documents?
 

@@ -73,9 +73,15 @@ def plan(a, ds, exp):
             if "embed" not in r:
                 s.embed = a.embed or s.embed
             out.append((r["name"], s, r.get("needs_model", False)))
-    if a.rows:
-        keep_names = a.rows.split(",")
-        out = [x for x in out if x[0] in keep_names or x[0].split("@")[0] in keep_names]
+    asked = a.rows.split(",") if a.rows else []
+    on_request = {r["name"] for r in exp["rows"] if r.get("on_request")}
+    for name, *_ in out:
+        if name in on_request and name not in asked:
+            print(f"  ({name} is left out: it needs a model call per {'chunk' if exp['phase'] == 'chunking' else 'question'}. "
+                  f"Add it with --rows {name})")
+    out = [x for x in out if x[0].split("@")[0] not in on_request or x[0].split("@")[0] in asked]
+    if asked:
+        out = [x for x in out if x[0] in asked or x[0].split("@")[0] in asked]
     if a.skip:
         skip = a.skip.split(",")
         out = [x for x in out if x[0] not in skip and x[0].split("@")[0] not in skip]
@@ -177,6 +183,14 @@ def mark(text, s, e, a, b):
     return text[:lo - s] + "»" + text[lo - s:hi - s] + "«" + text[hi - s:]
 
 
+def box(text, width=100, most=700):
+    """Indented, wrapped, and cut after `most` characters (a gold passage can be thousands long)."""
+    t = " ".join(text.split())
+    if len(t) > most:
+        t = t[:most] + " […]" + ("«" if t[:most].count("»") > t[:most].count("«") else "")
+    return textwrap.indent(textwrap.fill(t, width), "    | ")
+
+
 def show_cmd(a):
     ds = datasets.load(a.dataset)
     q = ds.question(a.question)
@@ -191,6 +205,7 @@ def show_cmd(a):
     s = row["scores"]
     print(f"  Recall@3 {results.fmt(s.get('R@3'))}, Recall@5 {results.fmt(s.get('R@5'))}, MRR {results.fmt(s.get('MRR'))}\n")
     top = row["top"]
+    untouched = 0
     for i, ((f, gs, ge, grade), rank) in enumerate(zip(row["gold"], row["ranks"]), 1):
         gold_text = ds.docs[f][gs:ge]
         found = next(((n, t) for n, t in enumerate(top, 1) if t[0] == f and min(t[2], ge) - max(t[1], gs) > 0), None)
@@ -199,15 +214,19 @@ def show_cmd(a):
         if found:
             n, (cf, cs, ce, sc) = found
             held = (min(ce, ge) - max(cs, gs)) / (ge - gs)
-            print(textwrap.indent(textwrap.fill(mark(gold_text, gs, ge, cs, ce), 100), "    | "))
+            print(box(mark(gold_text, gs, ge, cs, ce)))
             print(f"  FOUND rank {n}: chunk [{cf} {cs}-{ce}] holds {100 * held:.0f}% of this passage"
                   + (" (the cut went through it)" if held < 1 else ""))
-            print(textwrap.indent(textwrap.fill(mark(ds.docs[cf][cs:ce], cs, ce, gs, ge), 100), "    | "))
+            print(box(mark(ds.docs[cf][cs:ce], cs, ce, gs, ge)))
         else:
-            print(textwrap.indent(textwrap.fill(gold_text, 100), "    | "))
-            f1, s1, e1, _ = top[0]
-            print(f"  No chunk in the top 10 touches it. Rank 1 was [{f1} {s1}-{e1}]:")
-            print(textwrap.indent(textwrap.shorten(ds.docs[f1][s1:e1], 400), "    | "))
+            untouched += 1
+            print(box(gold_text))
+            print("  No chunk in the top 10 touches it.")
+        print()
+    if untouched:
+        f1, s1, e1, _ = top[0]
+        print(f"  For comparison, the chunk at rank 1 was [{f1} {s1}-{e1}]:")
+        print(box(ds.docs[f1][s1:e1]))
         print()
     print("  »…« marks the text that the gold passage and the chunk share.")
     return 0

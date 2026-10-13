@@ -1,0 +1,50 @@
+# Phase 3 (LAB chapter 4): the right chunk is there but ranked too low. How do we find it better?
+# We change: the retrieval method, one step at a time. We keep: the embedding model, 5 chunks sent,
+# and the chunking: the two best from phase 2, plus fixed-200 to see if a weak chunking can be rescued.
+phase = "retrieval"
+chunkings = ["best-1", "best-2", "fixed-200"]   # best-N: the Nth best chunking in the saved chunking runs
+keep = { k = 5 }
+
+[[rows]]
+name = "keyword"
+retriever = "keyword"
+
+[[rows]]
+name = "semantic"
+retriever = "semantic"
+
+[[rows]]
+name = "hybrid"
+retriever = "hybrid"
+
+[[rows]]
+name = "hybrid-rerank"
+retriever = "hybrid"
+rerank = true
+
+[[rows]]
+name = "hybrid-rerank-rewrite"   # a model rewrites the question first (one call per question)
+retriever = "hybrid"
+rerank = true
+transform = "rewrite"
+needs_model = true
+on_request = true                # a model call per question: only with --rows
+main_only = true
+
+[[rows]]
+name = "hybrid-rerank-multi"     # three versions of the question, all searched
+retriever = "hybrid"
+rerank = true
+transform = "multi"
+needs_model = true
+on_request = true                # a model call per question: only with --rows
+main_only = true
+
+[[rows]]
+name = "hybrid-rerank-hyde"      # search with a drafted answer
+retriever = "hybrid"
+rerank = true
+transform = "hyde"
+needs_model = true
+on_request = true                # a model call per question: only with --rows
+main_only = true

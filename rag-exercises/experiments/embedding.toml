@@ -1,0 +1,16 @@
+# Phase 4 (LAB chapter 5): would a better embedding model help?
+# We change: the embedding model. We keep: the best chunking and retrieval so far (the best saved retrieval run).
+phase = "embedding"
+from = "retrieval"        # the setup to keep: the best run of this phase
+
+[[rows]]
+name = "hash"             # not a real model: matches words and word pieces. The offline stand-in.
+embed = "hash"
+
+[[rows]]
+name = "ollama-embed"     # nomic-embed-text in Ollama
+embed = "ollama-embed"
+
+[[rows]]
+name = "bge-small"        # BAAI/bge-small-en-v1.5 with sentence-transformers, on this laptop
+embed = "bge-small"
