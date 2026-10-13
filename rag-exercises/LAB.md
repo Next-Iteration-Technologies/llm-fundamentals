@@ -176,6 +176,7 @@ The first command shows what the chunks look like: how many, how big (in **token
 **Look for:**
 - The same scores as Chapter 2, one row per way of cutting. **won / lost** lists the questions (by number) that got better or worse against the row above.
 - Bigger chunks hold more text, so they win a little just by being bigger. The **R@2k** column is fairer: every way of cutting gets the same amount of text, about 2,000 tokens.
+- Three more columns, each a question: **all**: did *every* right passage make the top 5? **nDCG**: like MRR, but it counts every right chunk in the top 5, the most important ones most. **R@50**: was it in the top 50 at all? (You'll need that one in Chapter 4.)
 - Contextual cutting needs a model call for every chunk, so it's left out. Your trainer will show it.
 
 **Talk about:** were you right? What did the winner do that the others didn't? Would the same way win on the other set of documents?
@@ -200,8 +201,8 @@ There are two basic ways to search:
 
 | Way to search | What it does |
 |---|---|
-| Keyword | Same words |
-| Meaning | Same meaning |
+| Keyword (`keyword`) | Same words |
+| Meaning (`semantic` in the output) | Same meaning |
 | **Hybrid** | Both, with their rankings merged |
 | Hybrid + **rerank** | A careful second reader re-sorts the top 50 |
 | **Rewrite the question** | A model rephrases the question before searching |
@@ -322,7 +323,7 @@ And one more: when the answer isn't in the documents, does it say "I don't find 
 python rag.py answers --best --limit 10
 ```
 
-`--best` takes your best setup so far; `--limit 10` takes 10 questions spread over the whole list, so a few of the ones without an answer are in it too. One model writes the answers, and a second one, the **judge**, scores them. With a model on your laptop this takes a while (about a minute per question).
+`--best` takes your best setup so far; `--limit 10` takes 10 questions spread over the whole list, so a few of the ones without an answer are in it too. One model writes the answers, and a second one, the **judge**, scores them. With a model on your laptop this takes a while: a few minutes per question. Every reply is saved, so running it again is quick.
 
 **Look for:** one line per question, then the averages.
 - **context**: did we send passages that fit? This is Recall@5 from before: no model needed.
@@ -346,13 +347,15 @@ python rag.py answers --best --limit 10
 
 Even the best setup misses some. Each miss has a cause, and each cause points back to a chapter:
 
-| What happened | Go back to |
-|---|---|
-| The right passage was cut apart | Chapter 3, cutting |
-| Found, but too far down | Chapter 4, searching |
-| Not found at all | Chapter 4 or 5 |
-| Everything came from the wrong document | Chapter 5, meaning |
-| Only part of a multi-part answer was found | Chapter 3 or 4 |
+| What happened | In the output | Go back to |
+|---|---|---|
+| The right passage was cut apart | `cut apart` | Chapter 3, cutting |
+| Only part of a multi-part answer was found | `half found` | Chapter 3 or 4 |
+| Found, but too far down | `ranked too low` | Chapter 4, searching |
+| Everything came from the wrong document | `wrong document` | Chapter 5, meaning |
+| Not found at all | `not found at all` | Chapter 4 or 5 |
+
+Each miss gets one cause: the first in this list that fits.
 
 **Try it:**
 ```

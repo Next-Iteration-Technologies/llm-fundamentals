@@ -1,0 +1,83 @@
+{
+ "corpus_tokens": 397765,
+ "dataset": "dnd-srd",
+ "date": "2026-10-14 03:50",
+ "ignore_data_class": false,
+ "judge": "ollama",
+ "judge_desc": "ollama (llama3.2:3b)",
+ "limit": 1,
+ "model": "ollama",
+ "model_desc": "ollama (llama3.2:3b)",
+ "name": "ollama__embedding-ollama-embed",
+ "phase": "final",
+ "rows": {
+  "full": [
+   {
+    "error": "too big for the window",
+    "id": "easy-0",
+    "level": "easy",
+    "message": "The prompt is about 375,129 tokens, but the window of 'ollama' (llama3.2:3b) is 8,192 tokens (num_ctx). Ollama would cut it silently and answer anyway; the lab stops instead. Send fewer chunks, or raise num_ctx in the [ollama] block if the model and memory allow.",
+    "n": 1,
+    "tokens_in": 375129
+   }
+  ],
+  "rag": [
+   {
+    "answer": "Based on the passages provided, here's a comparison of the restoration abilities of the Pit Fiend, Planetar, Rakshasa, and Solar:\n\n* The Pit Fiend has **Diabolical Restoration**, which involves its body disappearing in sulfurous smoke if it dies outside the Nine Hells, and then gaining a new body instantly.\n* The Rakshasa has **Fiendish Restoration**, which is similar to the Pit Fiend's, but with slightly different wording. Instead of disappearing in sulfurous smoke, its body turns to ichor, and it gains a new body instantly if it dies outside the Nine Hells.\n* The Planetar and Solar have identical restoration abilities: they both have **Exalted Restoration**, which involves their bodies disappearing and then gaining a new body instantly with all hit points restored if they die outside Mount Celestia or the planetar's respective realm.\n\nThe key differences in how their bodies react upon death are:\n\n* The Pit Fiend and Rakshasa have bodies that are destroyed upon death, but in different ways (sulfurous smoke for the Pit Fiend, ichor for the Rakshasa).\n* The Planetar and Solar have bodies that disappear upon death, but then reappear instantly with all hit points restored.\n\nThe key differences in where their bodies are revived are:\n\n* Only the Pit Fiend and Rakshasa have restoration abilities tied to specific locations (the Nine Hells and Mount Celestia, respectively).\n* The Planetar and Solar have restoration abilities tied only to Mount Celestia.\n*",
+    "answer_relevance": 0.75,
+    "cache_read": null,
+    "cache_write": null,
+    "citations": 0,
+    "cites_right_file": false,
+    "faithfulness": 0.5,
+    "id": "easy-0",
+    "level": "easy",
+    "n": 1,
+    "refused": false,
+    "saved": true,
+    "seconds": 114.7,
+    "tokens_in": 750
+   }
+  ]
+ },
+ "setup": {
+  "chunking": "recursive",
+  "embed": "ollama-embed",
+  "embedder": "ollama-embed (nomic-embed-text)",
+  "filters": {},
+  "k": 5,
+  "rerank": false,
+  "retriever": "semantic",
+  "transform": ""
+ },
+ "setup_run": "embedding/ollama-embed",
+ "summary": {
+  "full": {
+   "answer_relevance": null,
+   "answered": 0,
+   "citations": null,
+   "cites_right_file": null,
+   "faithfulness": null,
+   "must_say": null,
+   "n": 1,
+   "refusals_ok": null,
+   "seconds": null,
+   "tokens_in": 375129.0,
+   "too_big": 1
+  },
+  "rag": {
+   "answer_relevance": 0.75,
+   "answered": 1,
+   "citations": 0.0,
+   "cites_right_file": 0.0,
+   "faithfulness": 0.5,
+   "must_say": null,
+   "n": 1,
+   "refusals_ok": null,
+   "seconds": 114.7,
+   "tokens_in": 750.0,
+   "too_big": 0
+  }
+ },
+ "took_s": 0.0
+}

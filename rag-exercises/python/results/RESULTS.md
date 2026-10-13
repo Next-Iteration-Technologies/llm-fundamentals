@@ -70,6 +70,14 @@ Scores are per question, then averaged. R@k = Recall@k (of the right passages, h
 | filters/platform | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 10 | 0.76 | 0.67 | 0.70 | 0.40 | 1 of 2 |
 | retrieval/hybrid-rerank | ollama (llama3.2:3b) | ollama (llama3.2:3b) | 5 | 0.88 | 0.42 | 0.75 | 0.54 | 1 of 2 |
 
+### final: RAG vs full context (same model, same judge)
+
+| Model | Row | Answered | Answer rel. | Faithful to right passages | Must say | Refusals right | Cites right file | Tokens / question | Seconds / question | Judge |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ollama (llama3.2:3b) | RAG | 2 of 2 | 0.75 | 0.50 | 0.83 |   -   | 1.00 | 2,384 | 161.10 | ollama (llama3.2:3b) |
+| ollama (llama3.2:3b) | full context | 0 of 2 (2 too big for the window) |   -   |   -   |   -   |   -   |   -   | 15,060 |   -   | ollama (llama3.2:3b) |
+RAG setup: filters/platform.
+
 ## dnd-srd
 
 ### eval
