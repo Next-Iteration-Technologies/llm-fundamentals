@@ -8,6 +8,7 @@ The round files stay short because this file holds three things:
 
 Flags every round understands:
     --provider NAME   use another block from providers.toml
+    --model NAME      use another model of that provider (recordings go to <provider>_<model>.json)
     --demo            type the round's prepared lines for you
     --record          save the answers while running live
     --replay          answer from the recordings (implies --demo)
@@ -86,6 +87,7 @@ class Session:
     def __init__(self, round_name, demo_lines, default_provider=None, replay_provider=None):
         parser = argparse.ArgumentParser(add_help=False)
         parser.add_argument("--provider")
+        parser.add_argument("--model")
         parser.add_argument("--demo", action="store_true")
         parser.add_argument("--record", action="store_true")
         parser.add_argument("--replay", action="store_true")
@@ -102,12 +104,15 @@ class Session:
         self.round_name = round_name
         self.provider_name = name
         self.provider = providers[name]
+        if flags.model:
+            self.provider = {**self.provider, "model": flags.model}
         self.replay = flags.replay
         self.record = flags.record and not flags.replay
         self.lines_to_type = list(demo_lines) if (flags.demo or flags.replay) else None
         self.price_per_million = self.provider.get("input_price_per_million", 0)
 
-        self.recordings_file = RECORDINGS_FOLDER / f"{name}.json"
+        model_part = "_" + flags.model.replace(":", "-").replace("/", "-") if flags.model else ""
+        self.recordings_file = RECORDINGS_FOLDER / f"{name}{model_part}.json"
         self.recordings = self._load_recordings()
         self.times_asked = {}      # request key -> how often this session sent it
         self.new_answers = {}      # request key -> answers recorded in this session
@@ -210,6 +215,8 @@ class Session:
             raise SetupProblem("Cannot reach the Anthropic API. Check the network, or run with --replay.")
         except anthropic.AuthenticationError:
             raise SetupProblem("The Anthropic key was refused. Check ANTHROPIC_API_KEY, or run with --replay.")
+        except anthropic.NotFoundError:
+            raise SetupProblem(f"Anthropic has no model called '{self.provider['model']}'. Check the model name.")
 
         if response.stop_reason == "refusal":
             text = "(The model declined to answer this one.)"

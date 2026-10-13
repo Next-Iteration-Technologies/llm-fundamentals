@@ -43,6 +43,7 @@ Then run `uv run check_setup.py` again. `.env` stays on your laptop. Never commi
 |---|---|---|---|
 | R0 | `uv run r0_continue_text.py` | `uv run r0_continue_text.py --replay` | A plain text goes to a base model, with no chat around it |
 | R1 | `uv run r1_chat_stateless.py` | `uv run r1_chat_stateless.py --replay` | A chat that sends only your new question |
+| R1b | `uv run r1b_choose_model.py --model claude-haiku-5-5` | `uv run r1b_choose_model.py --replay` | The same stateless chat on a model you choose. Type `/model NAME` to switch mid-chat |
 | R2 | `uv run r2_chat_with_history.py` | `uv run r2_chat_with_history.py --replay` | A chat that sends the whole conversation |
 | R2, long | `uv run r2_chat_with_history.py --long --demo` | `uv run r2_chat_with_history.py --long --replay` | 20 turns, then what they cost |
 | R2b | `uv run r2b_chat_keep_last.py --demo` | `uv run r2b_chat_keep_last.py --replay` | A chat that sends only the last 5 messages |
@@ -104,13 +105,13 @@ Read it every time:
 
 | File | What it is |
 |---|---|
-| `r0_…`, `r1_…`, `r2_…`, `r2b_…`, `r3_…`, `r4_…` | The rounds. Open these |
+| `r0_…`, `r1_…`, `r1b_…`, `r2_…`, `r2b_…`, `r3_…`, `r4_…` | The rounds. Open these |
 | `request_view.py` | The printout |
 | `llm_client.py` | Which model is used, and how recording and replay work. You don't need to open it |
 | `check_setup.py` | The laptop check |
 | `providers.example.toml` | Model settings (Anthropic, an OpenAI-compatible service such as Nexus, Ollama) |
 | `recordings/` | The trainer's recorded answers, used by `--replay` |
 
-Every round also accepts `--provider NAME`, which picks a block from `providers.toml`.
+Every round also accepts `--provider NAME`, which picks a block from `providers.toml`. `--model NAME` keeps that provider but uses another of its models.
 
 Replay finds an answer by the exact request. If you change a round so that it sends something new, replay says there is no recording for it. That is expected. Run it live to see the answer.
