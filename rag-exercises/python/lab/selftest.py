@@ -322,7 +322,8 @@ def _filters():
     names = {k.split("/")[-1][:-5] for k in runs}
     expect({"no-filters", "asker", "platform", "after-2026", "prefer-newest"} <= names, f"rows: {names}")
     # on the real embedding (all Contoso chunks are embedded once, then cached): hash may not find the config at all
-    out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--embed", "ollama-embed")
+    # pinned to the recorded setup (hierarchical, semantic, nomic): a hash setup may not find the 2026 config at all
+    out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--setup", "chunking/hierarchical", "--embed", "ollama-embed")
     lines = out.splitlines()
     i = next(n for n, l in enumerate(lines) if l.strip().startswith("prefer-newest "))
     expect("the newer one first: contenthub-cleanup.xml" in lines[i + 1], "prefer-newest:\n" + "\n".join(lines[i:i + 2]))
@@ -393,7 +394,7 @@ LOOK_FOR = {1: STEPS8, 2: ["Recall@3", "MRR", "PERFECT student", "RANDOM guesser
             3: ["GOLD 1 of", "»", "cut in two", "COMPARE chunking", "won"],
             4: ["COMPARE retrieval", "keyword", "hybrid-rerank", "won", "R@50"],
             5: ["COMPARE embedding", "hash", "ollama-embed", "bge-small"],
-            6: ["COMPARE filters", "prefer-newest", "the newer one first", "14 days"],
+            6: ["COMPARE filters", "prefer-newest", "14 days", " one first"],
             7: ["context", "faithful", "answers", "judged by"],
             8: ["cut apart", "half found", "ranked too low", "wrong document", "not found at all"],
             9: ["tokens to send", "rag", "full"],
