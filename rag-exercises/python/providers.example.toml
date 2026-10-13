@@ -2,7 +2,8 @@
 # Pick a block with:  --chat NAME  --embed NAME   (or LLM_CHAT=NAME, LLM_EMBED=NAME)
 # The same shape as ai-application-architecture/providers.toml in the earlier track.
 
-chat = "nexus"            # default chat block: answers, contextual prefixes, query rewrites, judge, agent
+chat = "sonnet"           # default chat block: answers, contextual prefixes, query rewrites, agent
+judge = "opus"            # default judge for the lab's answer scores (LAB.md chapters 7 and 9); LLM_JUDGE or --judge override
 embed = "nexus-embed"     # default embed block: what the chunks and questions are turned into
 
 # ---------- chat blocks ----------
@@ -25,11 +26,24 @@ model = "claude-opus-5-5"
 api_key_env = "ANTHROPIC_API_KEY"
 where = "external"
 
+[sonnet]                  # the lab's default answer model (1M-token window)
+kind = "anthropic"
+model = "claude-sonnet-5-5"
+api_key_env = "ANTHROPIC_API_KEY"
+where = "external"
+
+[opus]                    # the lab's default judge
+kind = "anthropic"
+model = "claude-opus-5-5"
+api_key_env = "ANTHROPIC_API_KEY"
+where = "external"
+
 [ollama]                  # all local; the all-Docker path uses it too
 kind = "ollama"
 base_url = "http://localhost:11434"
 model = "llama3.2:3b"     # ollama pull llama3.2:3b   (qwen2.5:7b chooses tools better)
 where = "local"
+num_ctx = 8192            # the window sent to Ollama; a longer prompt stops with a clear message instead of being cut
 
 # ---------- embed blocks ----------
 # Anthropic has no embeddings endpoint: pair `--chat anthropic` with nexus-embed, ollama-embed or hash.

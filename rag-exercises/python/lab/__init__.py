@@ -6,5 +6,16 @@ reuses its Contoso loaders, prompt and policy instead of copying them.
 from pathlib import Path
 
 HOST = None
+
+
+def host():
+    """The rag.py module: the running one, or imported when the lab is used on its own (tests)."""
+    global HOST
+    if HOST is None:
+        import rag
+        HOST = rag
+    return HOST
+
+
 PY = Path(__file__).resolve().parents[1]      # rag-exercises/python
 ROOT = PY.parent                              # rag-exercises

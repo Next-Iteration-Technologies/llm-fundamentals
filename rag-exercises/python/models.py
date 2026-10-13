@@ -23,6 +23,22 @@ class SetupProblem(Exception):
     """Something on this laptop stops the call. The message says what to do."""
 
 
+class PromptTooBig(SetupProblem):
+    """The prompt does not fit the model's window. Raised instead of letting Ollama cut it silently."""
+    def __init__(self, msg, tokens=None, window=None):
+        super().__init__(msg)
+        self.tokens, self.window = tokens, window
+
+
+NO_API = "LAB_NO_API is set: this run may only use local models."
+
+
+def no_paid_api(name, b):
+    """LAB_NO_API=1: any call to an anthropic or openai block stops here, before anything is sent."""
+    if os.environ.get("LAB_NO_API", "") not in ("", "0") and b.get("kind") in ("anthropic", "openai"):
+        raise SetupProblem(f"{NO_API} Block '{name}' is kind {b['kind']}; pick a local one (ollama, hash) or unset LAB_NO_API.")
+
+
 def load_env_file():
     """Read keys like NEXUS_API_KEY from .env in this folder. A variable already set wins."""
     env_file = HERE / ".env"
@@ -100,7 +116,7 @@ def _post(b, path, payload, timeout, label):
     except httpx.ConnectError:
         raise SetupProblem(f"Cannot reach {label} at {b['base_url']}." + (" Start it with 'ollama serve'." if b["kind"] == "ollama" else ""))
     except httpx.HTTPStatusError as e:
-        raise SetupProblem(f"{label} answered {e.response.status_code}: {e.response.text.strip()[:300]}")
+        raise SetupProblem(f"{label} answered {e.response.status_code}: {e.response.text.strip()[:500]}")
     return r.json()
 
 
@@ -109,12 +125,13 @@ def chat(messages, system=None, tools=None, name=None):
     """Send a conversation (and the tools the model may call); get {"content", "tool_calls", "model"}."""
     name, b = block(name, "chat")
     kind = b["kind"]
+    no_paid_api(name, b)
     if kind == "anthropic":
         return _anthropic_chat(b, messages, system, tools)
     if kind == "openai":
         return _openai_chat(b, messages, system, tools, name)
     if kind == "ollama":
-        return _ollama_chat(b, messages, system, tools)
+        return _ollama_chat(b, messages, system, tools, name)
     raise SetupProblem(f"Block '{name}' has kind '{kind}'; a chat block needs anthropic, openai or ollama.")
 
 
@@ -158,26 +175,42 @@ def _openai_chat(b, messages, system, tools, label):
     return {"content": m.get("content") or "", "tool_calls": calls, "model": out.get("model", b["model"])}
 
 
-def _ollama_chat(b, messages, system, tools):
+def _ollama_chat(b, messages, system, tools, label="ollama"):
+    # Ollama cuts a prompt that is too long for its window and still answers, with no error. So: the window is sent
+    # explicitly (num_ctx in the block, default 8192), and truncate=false makes Ollama refuse instead of cutting.
+    window = int(b.get("num_ctx", 8192))
     body = {"model": b["model"], "messages": ([{"role": "system", "content": system}] if system else []) + ollama_messages(messages),
-            "stream": False}
+            "stream": False, "options": {"num_ctx": window}, "truncate": False}
     if tools:
         body["tools"] = openai_tools(tools)  # Ollama takes the OpenAI tool format
     if "think" in b:
         body["think"] = b["think"]
-    out = _post(b, "/api/chat", body, 900, "Ollama")
+    try:
+        out = _post(b, "/api/chat", body, 900, "Ollama")
+    except SetupProblem as e:
+        m = re.search(r'n_prompt_tokens\\?"?:\s*(\d+).*?n_ctx\\?"?:\s*(\d+)', str(e))
+        if "exceed" in str(e) and "context" in str(e):
+            n, ctx = (int(m.group(1)), int(m.group(2))) if m else (None, window)
+            raise PromptTooBig(f"The prompt is {n or 'more than'} tokens, but the window of '{label}' ({b['model']}) is {ctx} tokens "
+                               f"(num_ctx). Ollama would cut it silently and answer anyway; the lab stops instead. "
+                               f"Send fewer chunks, or raise num_ctx in the [{label}] block if the model and memory allow.", n, ctx)
+        raise
     m = out["message"]
     calls = [{"id": f"call_{n}", "name": c["function"]["name"], "arguments": dict(c["function"].get("arguments") or {})}
              for n, c in enumerate(m.get("tool_calls") or [], 1)]
-    return {"content": m.get("content", ""), "tool_calls": calls, "model": b["model"]}
+    return {"content": m.get("content", ""), "tool_calls": calls, "model": b["model"],
+            "usage": {"input_tokens": out.get("prompt_eval_count"), "output_tokens": out.get("eval_count")}}
 
 
 # ------------------------------------------------------------------ embeddings
 def embed(texts, kind, name=None):
     """Vectors for texts; kind is "query" or "doc" (some models want to know which)."""
     name, b = block(name, "embed")
+    no_paid_api(name, b)
     if b["kind"] == "hash":
         return hash_embed(texts)
+    if b["kind"] == "sentence-transformers":
+        return _st_embed(b, texts, kind)
     if b.get("model", "").startswith("nomic"):  # nomic-embed-text task prefixes
         texts = [("search_query: " if kind == "query" else "search_document: ") + t for t in texts]
     vecs = []
@@ -189,9 +222,31 @@ def embed(texts, kind, name=None):
         elif b["kind"] == "ollama":
             vecs += _post(b, "/api/embed", {"model": b["model"], "input": batch}, 300, "Ollama")["embeddings"]
         else:
-            raise SetupProblem(f"Block '{name}' has kind '{b['kind']}'; an embed block needs openai, ollama or hash. "
+            raise SetupProblem(f"Block '{name}' has kind '{b['kind']}'; an embed block needs openai, ollama, "
+                               "sentence-transformers or hash. "
                                "Anthropic has no embeddings endpoint: pair --chat anthropic with another embed block.")
     return np.array(vecs, dtype=np.float32)
+
+
+_st_models = {}
+
+
+def _st_embed(b, texts, kind):
+    """A sentence-transformers model on this laptop (downloaded from Hugging Face once). query_prefix: what some
+    models (bge) want in front of a question."""
+    import platform
+    if b["model"] not in _st_models:
+        try:
+            from sentence_transformers import SentenceTransformer
+            # Intel Macs: torch 2.2.2 on MPS gives wrong results (see the reranker in rag.py), so the CPU there.
+            device = "cpu" if sys.platform == "darwin" and platform.machine() == "x86_64" else None
+            _st_models[b["model"]] = SentenceTransformer(b["model"], device=device)
+        except Exception as e:
+            raise SetupProblem(f"Cannot load {b['model']} ({type(e).__name__}: {str(e)[:150]}). "
+                               "It is downloaded from Hugging Face on first use: check the network.")
+    if kind == "query" and b.get("query_prefix"):
+        texts = [b["query_prefix"] + t for t in texts]
+    return np.asarray(_st_models[b["model"]].encode(texts, batch_size=32, normalize_embeddings=True), dtype=np.float32)
 
 
 def hash_embed(texts, dim=768):
@@ -210,8 +265,12 @@ def reachable(name, role):
     name, b = block(name, role)
     kind = b["kind"]
     try:
+        no_paid_api(name, b)
         if kind == "hash":
             return True, "no model needed"
+        if kind == "sentence-transformers":
+            embed(["ping"], "query", name)
+            return True, f"{b['model']} (on this laptop)"
         if kind == "anthropic":
             import anthropic
             anthropic.Anthropic(api_key=_api_key(b)).models.retrieve(b["model"])
