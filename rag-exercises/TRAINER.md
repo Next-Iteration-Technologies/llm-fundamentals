@@ -88,7 +88,7 @@ On Contoso it's g03 ("What happened with 7f3a-91c2?").
 | fixed-200 | 1,999 | 200 | 144 of 264 (55%) |
 | recursive | 3,151 | 98 | 108 (41%) |
 | sentence | 6,197 | 59 | 191 (72%) |
-| semantic | 6,286 (bge-small) | 39 | 157 (59%) |
+| semantic | 6,286 | 39 | 157 (59%) |
 | hierarchical | 2,806 sections, searched as 13,228 pieces | 93 | 100 (38%) |
 
 `compare --phase chunking` (semantic search, no rerank, 5 chunks):
@@ -108,7 +108,7 @@ On Contoso it's g03 ("What happened with 7f3a-91c2?").
 | fixed-200 | 0.36 | 0.50 | 0.46 | 0.75 |
 | recursive | 0.52 | 0.60 | 0.61 | 0.74 |
 | sentence | 0.40 | 0.42 | 0.54 | 0.86 |
-| semantic | 0.59 | 0.64 | 0.67 | 0.87 |
+| semantic | 0.37 | 0.54 | 0.54 | 0.84 |
 | **hierarchical** | **0.66** | **0.80** | **0.73** | 0.77 |
 
 **Talking points**
@@ -121,6 +121,7 @@ On Contoso it's g03 ("What happened with 7f3a-91c2?").
 - Contoso: structure-aware beats naive-500 (0.61 vs 0.47, the E1 lesson), and it's best on the same-size view (R@~2k
   0.89). Its chunks are small (median 26 tokens), so five of them carry little text.
 - With 17 questions, Contoso differences under ~6% are one question. Read the won/lost lists, not just the averages.
+- Semantic chunking sees topic changes with bge-small, whatever model searches, so its chunks stay the same in Chapter 5.
 - Contextual chunking needs a model call per chunk, so it's on request: `compare --phase chunking --rows contextual`.
   To show what it writes, cheaply: `chunks --dataset contoso --chunking contextual --limit 10 --show 5`.
 
@@ -152,8 +153,10 @@ in one chunk; sentences cut 72% of the right passages in two."
 | hierarchical, hybrid | 0.58 | 0.76 | 0.70 | 1.00 |
 | hierarchical, hybrid + rerank | 0.54 | 0.71 | 0.68 | 1.00 |
 | hierarchical, hybrid + rerank + rewrite (llama3.2:3b) | 0.54 | 0.73 | 0.68 | 1.00 |
-| structure, hybrid (`eval --chunking structure --retriever hybrid`) | 0.55 | 0.54 | 0.65 | |
-| structure, hybrid + rerank | 0.60 | 0.60 | 0.84 | |
+| structure, semantic | 0.58 | 0.61 | 0.69 | 0.89 |
+| structure, hybrid | 0.55 | 0.54 | 0.65 | 0.90 |
+| structure, hybrid + rerank | 0.60 | 0.60 | **0.84** | 0.90 |
+| fixed-200, hybrid + rerank | 0.47 | 0.61 | 0.64 | 1.00 |
 
 **Talking points**
 - **R@50 is the same with and without rerank, in every group.** Rerank only reorders the 50 it is given; it can't find a

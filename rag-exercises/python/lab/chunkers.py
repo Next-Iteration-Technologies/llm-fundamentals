@@ -257,15 +257,31 @@ def sentence(ds, size=4, **_):
     return finish(out)
 
 
-def semantic(ds, size=300, embed=None, **_):
+def boundary_model(ds):
+    """The model semantic chunking uses to see topic changes: one fixed, fast model (the dataset's `semantic_embed`,
+    else bge-small if providers.toml has it, else hash), so the chunks don't change when the embedding phase changes the
+    search model, and nobody waits hours for a slow model to embed every sentence."""
+    import models
+    name = ds.cfg.get("semantic_embed") or ("bge-small" if "bge-small" in models.PROVIDERS else "hash")
+    return name
+
+
+def semantic(ds, size=300, **_):
     """A new chunk where the topic changes: neighbouring sentences whose embeddings are least alike (the lowest
     quarter of similarities in the file) start a new chunk. Never more than `size` tokens."""
+    import sys
     import numpy as np
+    import models
     from . import pipeline
     out = []
     per_file = {f: sentence_spans(t) for f, t in ds.docs.items()}
     texts = [ds.docs[f][a:b] for f, sp in per_file.items() for a, b in sp]
-    vecs, _ = pipeline.embed(texts, "doc", embed or "hash", progress=f"{ds.name} semantic: sentences")
+    model = boundary_model(ds)
+    try:
+        vecs, _ = pipeline.embed(texts, "doc", model, progress=f"{ds.name} semantic chunking: sentences")
+    except models.SetupProblem as e:
+        print(f"! semantic chunking: {model} unavailable ({e}); seeing topic changes with hash instead.", file=sys.stderr)
+        vecs, _ = pipeline.embed(texts, "doc", "hash")
     k = 0
     for f, sp in per_file.items():
         v = vecs[k:k + len(sp)]
@@ -332,7 +348,7 @@ def contextual(ds, size=300, chat=None, limit=None, base="recursive", embed=None
 
 CHUNKERS = {"fixed": fixed, "structure": structure, "naive": naive, "recursive": recursive, "sentence": sentence,
             "semantic": semantic, "hierarchical": hierarchical, "contextual": contextual}
-NEEDS_EMBED = {"semantic"}
+NEEDS_EMBED = set()   # chunkings whose chunks depend on the run's embed model (none: semantic uses boundary_model)
 NEEDS_CHAT = {"contextual"}
 
 

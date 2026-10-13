@@ -71,6 +71,7 @@ def add_commands(sub):
     p.add_argument("--skip", metavar="A,B", help="leave these rows out")
     p.add_argument("--limit", type=int, help="contextual: write context sentences for the first N chunks only")
     p.add_argument("--chunkings", metavar="A,B", help="retrieval: these chunkings instead of the two best and fixed-200")
+    p.add_argument("--setup", metavar="RUN", help="embedding, filters: keep this saved run's setup instead of the best so far")
 
     p = sub.add_parser("show", help="one question: the gold passages next to what the run found")
     dataset_arg(p)

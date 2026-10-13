@@ -1,7 +1,7 @@
 {
  "chunks": 403,
  "dataset": "contoso",
- "date": "2026-10-13 23:15",
+ "date": "2026-10-14 00:53",
  "name": "semantic",
  "order": 5,
  "phase": "chunking",
@@ -38,7 +38,7 @@
    "n": 1,
    "ranks": [
     1,
-    27,
+    34,
     null,
     null
    ],
@@ -49,69 +49,69 @@
     "R@5": 0.25,
     "R@50": 0.5,
     "all@5": 0.0,
-    "chunks@2k": 43,
+    "chunks@2k": 45,
     "nDCG@5": 0.5152
    },
    "top": [
     [
      "minutes/2026-10-01.md",
-     271,
-     720,
-     0.7029
+     324,
+     478,
+     0.7365
+    ],
+    [
+     "minutes/2026-10-01.md",
+     555,
+     931,
+     0.6718
     ],
     [
      "jira/snapshot-2026-10-06.json",
      4909,
-     5001,
-     0.6559
+     4956,
+     0.6637
     ],
     [
      "minutes/2026-09-17.md",
-     301,
+     315,
      834,
-     0.6373
+     0.636
+    ],
+    [
+     "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
+     628,
+     801,
+     0.6241
     ],
     [
      "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
      487,
-     764,
-     0.6285
-    ],
-    [
-     "minutes/2026-10-01.md",
-     722,
-     931,
-     0.6267
+     692,
+     0.6226
     ],
     [
      "minutes/2026-09-24.md",
-     816,
+     853,
      993,
-     0.62
+     0.6208
     ],
     [
-     "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
-     654,
-     810,
-     0.6185
+     "contenthub/POL-RET-01.md",
+     97,
+     202,
+     0.6128
     ],
     [
-     "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
-     0,
-     75,
-     0.6123
+     "jira/snapshot-2026-10-06.json",
+     5069,
+     5386,
+     0.6107
     ],
     [
      "mail/2026-10-03_sam_vendor-c-demo-invite.eml",
      334,
      406,
      0.6093
-    ],
-    [
-     "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
-     520,
-     801,
-     0.6012
     ]
    ]
   },
@@ -147,26 +147,26 @@
    "n": 2,
    "ranks": [
     3,
-    1,
-    1,
-    1
+    4,
+    4,
+    4
    ],
    "scores": {
-    "MRR": 1.0,
+    "MRR": 0.3333,
     "R@2k": 1.0,
-    "R@3": 1.0,
+    "R@3": 0.3333,
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 38,
-    "nDCG@5": 1.0
+    "chunks@2k": 28,
+    "nDCG@5": 0.6418
    },
    "top": [
     [
      "contenthub/SOP-CH-03.md",
      198,
-     857,
-     0.8066
+     368,
+     0.8219
     ],
     [
      "contenthub/SOP-CH-03.md",
@@ -177,50 +177,50 @@
     [
      "known-issues.csv",
      387,
-     1433,
-     0.7317
+     1252,
+     0.7356
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     420,
+     857,
+     0.7249
     ],
     [
      "tickets/tickets.json",
-     12466,
+     12496,
      12858,
-     0.723
-    ],
-    [
-     "contenthub/SD-CH-02.md",
-     220,
-     788,
-     0.7097
+     0.7243
     ],
     [
      "tickets/tickets.json",
-     13639,
-     14037,
-     0.7017
-    ],
-    [
-     "mail/2026-10-07_0222_alert_3b7c-e104.eml",
-     413,
-     503,
-     0.6991
-    ],
-    [
-     "mail/2026-10-06_0211_alert_b2e0-17f4.eml",
-     413,
-     503,
-     0.6991
-    ],
-    [
-     "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
-     413,
-     503,
-     0.6991
+     13669,
+     14001,
+     0.7179
     ],
     [
      "tickets/tickets.json",
-     14422,
+     14452,
      14831,
-     0.6979
+     0.7042
+    ],
+    [
+     "tickets/tickets.json",
+     12095,
+     12393,
+     0.7037
+    ],
+    [
+     "tickets/tickets.json",
+     11568,
+     11625,
+     0.7035
+    ],
+    [
+     "tickets/tickets.json",
+     15139,
+     15196,
+     0.7035
     ]
    ]
   },
@@ -249,18 +249,18 @@
    "level": "",
    "n": 3,
    "ranks": [
-    11,
-    43,
-    35
+    10,
+    38,
+    null
    ],
    "scores": {
-    "MRR": 0.0909,
+    "MRR": 0.1,
     "R@2k": 0.3333,
     "R@3": 0.0,
     "R@5": 0.0,
-    "R@50": 1.0,
+    "R@50": 0.6667,
     "all@5": 0.0,
-    "chunks@2k": 26,
+    "chunks@2k": 23,
     "nDCG@5": 0.0
    },
    "top": [
@@ -273,26 +273,14 @@
     [
      "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
      86,
-     337,
-     0.5537
+     430,
+     0.5524
     ],
     [
      "logs/index.log",
      3175,
      3340,
      0.5479
-    ],
-    [
-     "tickets/tickets.json",
-     13639,
-     14037,
-     0.5471
-    ],
-    [
-     "tickets/tickets.json",
-     12065,
-     12393,
-     0.5455
     ],
     [
      "logs/transfer.log",
@@ -307,22 +295,34 @@
      0.5433
     ],
     [
-     "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
-     339,
-     411,
-     0.5413
+     "mail/2026-10-06_0302_alert_41aa-0c9d.eml",
+     335,
+     422,
+     0.5372
+    ],
+    [
+     "mail/2026-10-06_0302_alert_41aa-0c9d.eml",
+     86,
+     333,
+     0.5371
     ],
     [
      "tickets/tickets.json",
-     12466,
-     12858,
-     0.5348
+     13669,
+     14001,
+     0.5366
     ],
     [
      "tickets/tickets.json",
      9963,
      10336,
      0.5348
+    ],
+    [
+     "logs/transfer.log",
+     2426,
+     3033,
+     0.5339
     ]
    ]
   },
@@ -359,46 +359,46 @@
      0.9023
     ],
     [
-     "tickets/tickets.json",
-     2118,
-     2390,
-     0.7303
-    ],
-    [
-     "tickets/tickets.json",
-     6418,
-     6690,
-     0.7302
-    ],
-    [
-     "tickets/tickets.json",
-     5284,
-     5630,
-     0.7279
-    ],
-    [
      "mail/2026-09-15_jonas_retention-reminder.eml",
-     106,
+     310,
      491,
-     0.7182
+     0.8039
     ],
     [
-     "contenthub/POL-RET-01.md",
-     204,
-     527,
-     0.6889
+     "tickets/tickets.json",
+     2088,
+     2390,
+     0.7366
+    ],
+    [
+     "tickets/tickets.json",
+     6388,
+     6767,
+     0.7358
+    ],
+    [
+     "tickets/tickets.json",
+     5254,
+     5630,
+     0.7352
     ],
     [
      "onedrive/priya-notes/on-call-cheatsheet.md",
-     68,
-     457,
-     0.6709
+     314,
+     465,
+     0.6909
+    ],
+    [
+     "contenthub/POL-RET-01.md",
+     328,
+     676,
+     0.6619
     ],
     [
      "contenthub/SOP-OPS-02.md",
-     130,
-     635,
-     0.6468
+     78,
+     545,
+     0.661
     ],
     [
      "tickets/tickets.json",
@@ -407,10 +407,10 @@
      0.6432
     ],
     [
-     "tickets/tickets.json",
-     17193,
-     17559,
-     0.6392
+     "contenthub/POL-RET-01.md",
+     204,
+     326,
+     0.6418
     ]
    ]
   },
@@ -447,17 +447,17 @@
    "ranks": [
     null,
     1,
-    44,
-    15
+    null,
+    25
    ],
    "scores": {
     "MRR": 1.0,
     "R@2k": 0.5,
     "R@3": 0.3333,
     "R@5": 0.25,
-    "R@50": 0.75,
+    "R@50": 0.5,
     "all@5": 0.0,
-    "chunks@2k": 23,
+    "chunks@2k": 25,
     "nDCG@5": 0.4744
    },
    "top": [
@@ -468,22 +468,28 @@
      0.8183
     ],
     [
-     "tickets/tickets.json",
-     7626,
-     8029,
-     0.788
-    ],
-    [
-     "tickets/tickets.json",
-     4046,
-     4352,
-     0.779
-    ],
-    [
      "mail/2026-09-21_noor_fabrikam-search.eml",
-     104,
-     391,
-     0.7774
+     302,
+     374,
+     0.7838
+    ],
+    [
+     "tickets/tickets.json",
+     4076,
+     4459,
+     0.7805
+    ],
+    [
+     "tickets/tickets.json",
+     7656,
+     7969,
+     0.768
+    ],
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     283,
+     386,
+     0.7561
     ],
     [
      "mail/2026-09-22_priya_re-fabrikam-search.eml",
@@ -492,34 +498,28 @@
      0.7561
     ],
     [
-     "mail/2026-09-22_priya_re-fabrikam-search.eml",
-     106,
-     310,
-     0.738
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     300,
+     0.7443
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     314,
+     465,
+     0.7386
     ],
     [
      "logs/index.log",
-     4321,
-     4404,
-     0.7219
-    ],
-    [
-     "tickets/tickets.json",
-     16365,
-     16742,
-     0.7201
+     3557,
+     3635,
+     0.7174
     ],
     [
      "logs/index.log",
      4019,
      4097,
      0.717
-    ],
-    [
-     "logs/index.log",
-     1010,
-     1153,
-     0.7085
     ]
    ]
   },
@@ -542,67 +542,61 @@
    "level": "",
    "n": 7,
    "ranks": [
-    8,
-    2
+    7,
+    null
    ],
    "scores": {
-    "MRR": 0.5,
-    "R@2k": 1.0,
-    "R@3": 0.5,
-    "R@5": 0.5,
-    "R@50": 1.0,
+    "MRR": 0.1429,
+    "R@2k": 0.5,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.5,
     "all@5": 0.0,
-    "chunks@2k": 23,
-    "nDCG@5": 0.2961
+    "chunks@2k": 26,
+    "nDCG@5": 0.0
    },
    "top": [
     [
-     "mail/2026-10-05_priya_on-call-handover.eml",
-     295,
-     456,
-     0.6833
-    ],
-    [
      "contenthub/SOP-CH-07.md",
-     198,
+     713,
      985,
-     0.6363
+     0.7629
     ],
     [
-     "contenthub/SOP-CH-07.md",
-     987,
-     1181,
-     0.6303
+     "mail/2026-10-05_priya_on-call-handover.eml",
+     331,
+     456,
+     0.6972
+    ],
+    [
+     "contenthub/SD-CH-02.md",
+     790,
+     953,
+     0.6356
     ],
     [
      "tickets/tickets.json",
      2467,
-     2796,
-     0.6276
+     2833,
+     0.6233
     ],
     [
      "tickets/tickets.json",
      11201,
-     11524,
-     0.6247
+     11561,
+     0.6196
     ],
     [
      "tickets/tickets.json",
      11632,
-     11955,
-     0.6245
-    ],
-    [
-     "onedrive/priya-notes/capture-remote-sites.md",
-     159,
-     415,
-     0.6191
+     11992,
+     0.6187
     ],
     [
      "known-issues.csv",
      387,
-     1433,
-     0.615
+     1252,
+     0.6131
     ],
     [
      "mail/2026-10-06_sam_re-night-alerts.eml",
@@ -615,6 +609,12 @@
      609,
      736,
      0.5878
+    ],
+    [
+     "tickets/tickets.json",
+     8066,
+     8366,
+     0.5815
     ]
    ]
   },
@@ -640,7 +640,7 @@
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 28,
+    "chunks@2k": 20,
     "nDCG@5": 1.0
    },
    "top": [
@@ -653,8 +653,14 @@
     [
      "known-issues.csv",
      387,
-     1433,
-     0.5791
+     1252,
+     0.5741
+    ],
+    [
+     "known-issues.csv",
+     1253,
+     2250,
+     0.5615
     ],
     [
      "contenthub/SD-LOG-01.md",
@@ -663,46 +669,40 @@
      0.5427
     ],
     [
-     "known-issues.csv",
-     1434,
-     2250,
-     0.5348
+     "mail/2026-10-07_0222_alert_3b7c-e104.eml",
+     86,
+     430,
+     0.5241
     ],
     [
      "jira/snapshot-2026-10-06.json",
-     5490,
-     5601,
-     0.5272
-    ],
-    [
-     "mail/2026-10-07_0222_alert_3b7c-e104.eml",
-     86,
-     337,
-     0.5259
+     5432,
+     5556,
+     0.5227
     ],
     [
      "mail/2026-09-29_0205_alert_5e90-a3f7.eml",
      86,
-     337,
-     0.5226
-    ],
-    [
-     "tickets/tickets.json",
-     12895,
-     13207,
-     0.5219
+     430,
+     0.522
     ],
     [
      "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
      86,
-     337,
-     0.5198
+     430,
+     0.5192
+    ],
+    [
+     "known-issues.csv",
+     42,
+     386,
+     0.5186
     ],
     [
      "tickets/tickets.json",
-     12065,
+     12095,
      12393,
-     0.5195
+     0.5186
     ]
    ]
   },
@@ -719,30 +719,24 @@
    "level": "",
    "n": 9,
    "ranks": [
-    3
+    2
    ],
    "scores": {
-    "MRR": 0.3333,
+    "MRR": 0.5,
     "R@2k": 1.0,
     "R@3": 1.0,
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 21,
-    "nDCG@5": 0.5
+    "chunks@2k": 25,
+    "nDCG@5": 0.6309
    },
    "top": [
     [
      "onedrive/priya-notes/capture-remote-sites.md",
-     159,
-     415,
-     0.7408
-    ],
-    [
-     "mail/2026-07-23_lee_capture-batch.eml",
-     297,
-     390,
-     0.6881
+     260,
+     356,
+     0.7819
     ],
     [
      "known-issues.csv",
@@ -753,44 +747,50 @@
     [
      "mail/2026-07-23_lee_capture-batch.eml",
      102,
-     295,
-     0.6585
+     359,
+     0.6639
     ],
     [
-     "mail/2026-10-05_priya_on-call-handover.eml",
-     295,
-     456,
-     0.6453
+     "contenthub/SOP-CH-07.md",
+     713,
+     985,
+     0.6638
     ],
     [
      "known-issues.csv",
      387,
-     1433,
-     0.6409
+     1252,
+     0.6462
+    ],
+    [
+     "mail/2026-10-05_priya_on-call-handover.eml",
+     331,
+     456,
+     0.6404
     ],
     [
      "tickets/tickets.json",
-     12065,
+     12095,
      12393,
-     0.634
+     0.6402
     ],
     [
      "tickets/tickets.json",
-     13639,
-     14037,
-     0.6335
+     13669,
+     14001,
+     0.6369
     ],
     [
      "tickets/tickets.json",
-     4466,
+     4496,
      4798,
-     0.6305
+     0.6362
     ],
     [
      "tickets/tickets.json",
-     12466,
+     12496,
      12858,
-     0.6271
+     0.6333
     ]
    ]
   },
@@ -814,42 +814,54 @@
    "n": 10,
    "ranks": [
     1,
-    4
+    6
    ],
    "scores": {
     "MRR": 1.0,
     "R@2k": 1.0,
     "R@3": 0.5,
-    "R@5": 1.0,
+    "R@5": 0.5,
     "R@50": 1.0,
-    "all@5": 1.0,
-    "chunks@2k": 25,
-    "nDCG@5": 0.8772
+    "all@5": 0.0,
+    "chunks@2k": 29,
+    "nDCG@5": 0.6131
    },
    "top": [
     [
      "contenthub/SOP-OPS-02.md",
-     130,
-     635,
-     0.8152
+     78,
+     545,
+     0.8022
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     314,
+     465,
+     0.7502
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     260,
+     474,
+     0.7066
     ],
     [
      "contenthub/POL-RET-01.md",
-     204,
-     527,
-     0.7249
+     328,
+     676,
+     0.6871
     ],
     [
      "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
      765,
-     847,
-     0.6987
+     810,
+     0.6802
     ],
     [
      "contenthub/config/contenthub-cleanup.xml",
-     102,
+     157,
      439,
-     0.6852
+     0.6799
     ],
     [
      "minutes/2026-09-03.md",
@@ -858,34 +870,22 @@
      0.6624
     ],
     [
+     "tickets/tickets.json",
+     17566,
+     17879,
+     0.6624
+    ],
+    [
+     "minutes/2026-10-01.md",
+     479,
+     554,
+     0.6511
+    ],
+    [
      "contenthub/POL-RET-01.md",
      678,
      819,
      0.6502
-    ],
-    [
-     "onedrive/priya-notes/on-call-cheatsheet.md",
-     68,
-     457,
-     0.6487
-    ],
-    [
-     "tickets/tickets.json",
-     3686,
-     4039,
-     0.6484
-    ],
-    [
-     "contenthub/SOP-OPS-02.md",
-     19,
-     77,
-     0.6467
-    ],
-    [
-     "tickets/tickets.json",
-     17566,
-     17842,
-     0.6423
     ]
    ]
   },
@@ -908,79 +908,79 @@
    "level": "",
    "n": 11,
    "ranks": [
-    5,
-    15
+    15,
+    16
    ],
    "scores": {
-    "MRR": 0.2,
+    "MRR": 0.0667,
     "R@2k": 1.0,
     "R@3": 0.0,
-    "R@5": 0.5,
+    "R@5": 0.0,
     "R@50": 1.0,
     "all@5": 0.0,
-    "chunks@2k": 32,
-    "nDCG@5": 0.2372
+    "chunks@2k": 33,
+    "nDCG@5": 0.0
    },
    "top": [
     [
      "minutes/2026-10-01.md",
-     271,
-     720,
-     0.7353
+     555,
+     931,
+     0.777
+    ],
+    [
+     "mail/2026-10-07_sam_re-re-re-pricing.eml",
+     461,
+     491,
+     0.775
+    ],
+    [
+     "minutes/2026-09-24.md",
+     313,
+     415,
+     0.7618
     ],
     [
      "minutes/2026-09-24.md",
      676,
-     814,
-     0.727
+     852,
+     0.7319
     ],
     [
      "minutes/2026-09-24.md",
-     816,
+     853,
      993,
-     0.7098
-    ],
-    [
-     "minutes/2026-10-01.md",
-     722,
-     931,
-     0.6971
-    ],
-    [
-     "minutes/2026-09-24.md",
-     194,
-     456,
-     0.695
-    ],
-    [
-     "mail/2026-10-07_sam_re-re-re-pricing.eml",
-     131,
-     508,
-     0.687
+     0.7261
     ],
     [
      "jira/snapshot-2026-10-06.json",
      2570,
-     2665,
-     0.677
+     2724,
+     0.6987
     ],
     [
-     "mail/2026-09-26_vendor-b_re-pricing.eml",
-     116,
-     340,
-     0.677
+     "jira/snapshot-2026-10-06.json",
+     3157,
+     3315,
+     0.6966
     ],
     [
      "minutes/2026-09-17.md",
-     301,
+     315,
      834,
-     0.6753
+     0.6807
     ],
     [
-     "mail/2026-10-03_sam_vendor-c-demo-invite.eml",
-     334,
-     406,
-     0.6719
+     "mail/2026-10-07_vendor-b_re-re-pricing.eml",
+     108,
+     375,
+     0.6783
+    ],
+    [
+     "minutes/2026-10-01.md",
+     324,
+     478,
+     0.673
     ]
    ]
   },
@@ -1003,20 +1003,26 @@
    "level": "",
    "n": 12,
    "ranks": [
-    6,
-    47
+    5,
+    38
    ],
    "scores": {
-    "MRR": 0.1667,
+    "MRR": 0.2,
     "R@2k": 0.5,
     "R@3": 0.0,
-    "R@5": 0.0,
+    "R@5": 0.5,
     "R@50": 1.0,
     "all@5": 0.0,
-    "chunks@2k": 24,
-    "nDCG@5": 0.0
+    "chunks@2k": 28,
+    "nDCG@5": 0.2723
    },
    "top": [
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     302,
+     374,
+     0.8632
+    ],
     [
      "mail/2026-09-22_priya_re-fabrikam-search.eml",
      387,
@@ -1024,28 +1030,16 @@
      0.8398
     ],
     [
-     "mail/2026-09-21_noor_fabrikam-search.eml",
-     104,
-     391,
-     0.7922
-    ],
-    [
-     "tickets/tickets.json",
-     4046,
-     4352,
-     0.7712
-    ],
-    [
      "tickets/tickets.json",
      16365,
-     16742,
-     0.7656
+     16779,
+     0.7566
     ],
     [
-     "mail/2026-09-22_priya_re-fabrikam-search.eml",
-     106,
-     310,
-     0.7357
+     "tickets/tickets.json",
+     4076,
+     4459,
+     0.7398
     ],
     [
      "tickets/tickets.json",
@@ -1054,28 +1048,34 @@
      0.7
     ],
     [
-     "tickets/tickets.json",
-     3290,
-     3576,
-     0.6958
+     "onedrive/priya-notes/index-worker-fix.md",
+     283,
+     386,
+     0.6962
     ],
     [
      "tickets/tickets.json",
-     7626,
-     8029,
-     0.6902
+     3290,
+     3679,
+     0.696
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     314,
+     465,
+     0.6936
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     300,
+     0.6874
     ],
     [
      "logs/index.log",
-     4321,
-     4404,
-     0.676
-    ],
-    [
-     "tickets/tickets.json",
-     13639,
-     14037,
-     0.6724
+     4019,
+     4097,
+     0.672
     ]
    ]
   },
@@ -1098,26 +1098,20 @@
    "level": "",
    "n": 13,
    "ranks": [
-    1,
-    2
+    4,
+    1
    ],
    "scores": {
     "MRR": 1.0,
     "R@2k": 1.0,
-    "R@3": 1.0,
+    "R@3": 0.5,
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 22,
-    "nDCG@5": 1.0
+    "chunks@2k": 27,
+    "nDCG@5": 0.6313
    },
    "top": [
-    [
-     "onedrive/priya-notes/index-worker-fix.md",
-     150,
-     529,
-     0.7324
-    ],
     [
      "contenthub/SOP-CH-03.md",
      859,
@@ -1127,50 +1121,56 @@
     [
      "mail/2026-09-22_priya_re-fabrikam-search.eml",
      312,
-     385,
-     0.656
+     362,
+     0.6538
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     420,
+     857,
+     0.6295
+    ],
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     0,
+     282,
+     0.6282
     ],
     [
      "contenthub/SOP-CH-07.md",
-     987,
-     1181,
-     0.6536
-    ],
-    [
-     "contenthub/SOP-CH-07.md",
-     198,
+     713,
      985,
-     0.6179
+     0.6208
+    ],
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     418,
+     561,
+     0.6186
     ],
     [
      "tickets/tickets.json",
-     4046,
-     4352,
-     0.6161
-    ],
-    [
-     "mail/2026-10-05_priya_on-call-handover.eml",
-     295,
-     456,
-     0.6131
+     4076,
+     4459,
+     0.6014
     ],
     [
      "tickets/tickets.json",
      16365,
-     16742,
-     0.6073
+     16779,
+     0.6008
     ],
     [
-     "onedrive/priya-notes/capture-remote-sites.md",
-     159,
-     415,
-     0.6072
+     "mail/2026-10-05_priya_on-call-handover.eml",
+     331,
+     456,
+     0.5998
     ],
     [
-     "contenthub/SOP-CH-03.md",
-     198,
-     857,
-     0.6067
+     "known-issues.csv",
+     2251,
+     2534,
+     0.5964
     ]
    ]
   },
@@ -1187,78 +1187,78 @@
    "level": "",
    "n": 14,
    "ranks": [
-    7
+    11
    ],
    "scores": {
-    "MRR": 0.1429,
+    "MRR": 0.0909,
     "R@2k": 1.0,
     "R@3": 0.0,
     "R@5": 0.0,
     "R@50": 1.0,
     "all@5": 0.0,
-    "chunks@2k": 40,
+    "chunks@2k": 42,
     "nDCG@5": 0.0
    },
    "top": [
     [
+     "mail/2026-10-07_sam_re-re-re-pricing.eml",
+     461,
+     491,
+     0.7587
+    ],
+    [
+     "minutes/2026-10-01.md",
+     555,
+     931,
+     0.7498
+    ],
+    [
+     "minutes/2026-09-24.md",
+     853,
+     993,
+     0.7278
+    ],
+    [
+     "minutes/2026-09-24.md",
+     313,
+     415,
+     0.7193
+    ],
+    [
      "minutes/2026-09-24.md",
      676,
-     814,
-     0.716
-    ],
-    [
-     "minutes/2026-09-24.md",
-     816,
-     993,
-     0.6918
-    ],
-    [
-     "minutes/2026-10-01.md",
-     722,
-     931,
-     0.6865
-    ],
-    [
-     "mail/2026-10-07_sam_re-re-re-pricing.eml",
-     131,
-     508,
-     0.6746
-    ],
-    [
-     "minutes/2026-10-01.md",
-     271,
-     720,
-     0.6718
-    ],
-    [
-     "mail/2026-09-26_vendor-b_re-pricing.eml",
-     116,
-     340,
-     0.667
-    ],
-    [
-     "minutes/2026-09-24.md",
-     194,
-     456,
-     0.6602
-    ],
-    [
-     "minutes/2026-09-24.md",
-     457,
-     662,
-     0.6588
+     852,
+     0.7166
     ],
     [
      "mail/2026-10-07_vendor-b_re-re-pricing.eml",
-     146,
-     465,
-     0.6521
+     108,
+     375,
+     0.6622
     ],
     [
      "mail/2026-09-24_sam_vendor-b-pricing.eml",
-     146,
-     374,
-     0.6495
+     108,
+     332,
+     0.6556
+    ],
+    [
+     "mail/2026-09-26_vendor-b_re-pricing.eml",
+     78,
+     430,
+     0.6514
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     3157,
+     3315,
+     0.6496
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     1971,
+     2027,
+     0.6494
     ]
    ]
   },
@@ -1287,80 +1287,80 @@
    "level": "",
    "n": 15,
    "ranks": [
-    1,
-    6,
-    8
+    3,
+    43,
+    4
    ],
    "scores": {
-    "MRR": 1.0,
+    "MRR": 0.3333,
     "R@2k": 1.0,
     "R@3": 0.3333,
-    "R@5": 0.3333,
+    "R@5": 0.6667,
     "R@50": 1.0,
     "all@5": 0.0,
-    "chunks@2k": 43,
-    "nDCG@5": 0.6388
+    "chunks@2k": 47,
+    "nDCG@5": 0.4569
    },
    "top": [
     [
-     "minutes/2026-10-01.md",
-     271,
-     720,
-     0.6984
-    ],
-    [
      "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
      487,
-     764,
-     0.6923
+     692,
+     0.6943
+    ],
+    [
+     "minutes/2026-09-24.md",
+     853,
+     993,
+     0.6864
+    ],
+    [
+     "minutes/2026-10-01.md",
+     324,
+     478,
+     0.6852
+    ],
+    [
+     "minutes/2026-10-01.md",
+     555,
+     931,
+     0.685
     ],
     [
      "minutes/2026-09-17.md",
-     301,
+     315,
      834,
-     0.6837
+     0.674
     ],
     [
      "minutes/2026-09-24.md",
-     816,
-     993,
-     0.6686
+     313,
+     415,
+     0.674
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     821,
+     932,
+     0.6659
     ],
     [
      "minutes/2026-10-01.md",
-     201,
-     269,
-     0.6624
+     180,
+     323,
+     0.6605
     ],
     [
-     "minutes/2026-09-24.md",
-     194,
-     456,
-     0.6521
-    ],
-    [
-     "jira/snapshot-2026-10-06.json",
-     333,
-     530,
-     0.6487
-    ],
-    [
-     "minutes/2026-10-01.md",
-     722,
-     931,
-     0.6475
+     "mail/2026-10-07_sam_re-re-re-pricing.eml",
+     461,
+     491,
+     0.6506
     ],
     [
      "minutes/2026-09-24.md",
      676,
-     814,
-     0.6414
-    ],
-    [
-     "minutes/2026-09-17.md",
-     194,
-     299,
-     0.6372
+     852,
+     0.6474
     ]
    ]
   },
@@ -1377,17 +1377,17 @@
    "level": "",
    "n": 16,
    "ranks": [
-    2
+    4
    ],
    "scores": {
-    "MRR": 0.5,
+    "MRR": 0.25,
     "R@2k": 1.0,
-    "R@3": 1.0,
+    "R@3": 0.0,
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 42,
-    "nDCG@5": 0.6309
+    "chunks@2k": 46,
+    "nDCG@5": 0.4307
    },
    "top": [
     [
@@ -1397,22 +1397,28 @@
      0.7619
     ],
     [
-     "minutes/2026-10-01.md",
-     722,
-     931,
-     0.7112
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     811,
+     847,
+     0.7203
     ],
     [
-     "minutes/2026-09-24.md",
-     194,
-     456,
-     0.68
+     "mail/2026-09-17_sam_on-prem-parser.eml",
+     290,
+     329,
+     0.6981
+    ],
+    [
+     "minutes/2026-10-01.md",
+     555,
+     931,
+     0.6814
     ],
     [
      "minutes/2026-09-17.md",
-     301,
+     315,
      834,
-     0.6695
+     0.6787
     ],
     [
      "mail/2026-10-03_sam_vendor-c-demo-invite.eml",
@@ -1421,16 +1427,10 @@
      0.6694
     ],
     [
-     "jira/snapshot-2026-10-06.json",
-     3752,
-     3829,
-     0.659
-    ],
-    [
      "minutes/2026-09-17.md",
      194,
-     299,
-     0.6569
+     314,
+     0.6594
     ],
     [
      "minutes/2026-09-03.md",
@@ -1439,16 +1439,16 @@
      0.656
     ],
     [
-     "jira/snapshot-2026-10-06.json",
-     1662,
-     1733,
-     0.6415
+     "minutes/2026-09-03.md",
+     102,
+     490,
+     0.6524
     ],
     [
-     "minutes/2026-09-03.md",
-     810,
-     1011,
-     0.6377
+     "minutes/2026-09-24.md",
+     173,
+     312,
+     0.6493
     ]
    ]
   },
@@ -1465,78 +1465,78 @@
    "level": "",
    "n": 17,
    "ranks": [
-    2
+    6
    ],
    "scores": {
-    "MRR": 0.5,
+    "MRR": 0.1667,
     "R@2k": 1.0,
-    "R@3": 1.0,
-    "R@5": 1.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
     "R@50": 1.0,
-    "all@5": 1.0,
-    "chunks@2k": 21,
-    "nDCG@5": 0.6309
+    "all@5": 0.0,
+    "chunks@2k": 31,
+    "nDCG@5": 0.0
    },
    "top": [
     [
      "contenthub/SOP-LA-02.md",
      234,
-     607,
-     0.8506
-    ],
-    [
-     "known-issues.csv",
-     1434,
-     2250,
-     0.8031
+     307,
+     0.7721
     ],
     [
      "mail/2026-10-06_noor_legacy-viewer.eml",
      104,
-     400,
-     0.779
-    ],
-    [
-     "tickets/tickets.json",
-     14044,
-     14415,
-     0.7416
-    ],
-    [
-     "tickets/tickets.json",
-     9591,
-     9956,
-     0.7413
-    ],
-    [
-     "tickets/tickets.json",
-     19093,
-     19391,
-     0.7349
-    ],
-    [
-     "tickets/tickets.json",
-     15987,
-     16358,
-     0.7294
+     368,
+     0.7583
     ],
     [
      "contenthub/SOP-LA-02.md",
-     91,
-     232,
-     0.728
+     309,
+     607,
+     0.7444
     ],
     [
      "tickets/tickets.json",
-     15603,
-     15907,
-     0.7279
+     9621,
+     9923,
+     0.7401
+    ],
+    [
+     "tickets/tickets.json",
+     14074,
+     14415,
+     0.7398
+    ],
+    [
+     "known-issues.csv",
+     1253,
+     2250,
+     0.7353
+    ],
+    [
+     "tickets/tickets.json",
+     16017,
+     16325,
+     0.7307
+    ],
+    [
+     "tickets/tickets.json",
+     19123,
+     19428,
+     0.7297
     ],
     [
      "contenthub/SOP-CH-03.md",
-     198,
-     857,
-     0.7148
+     369,
+     418,
+     0.7251
+    ],
+    [
+     "tickets/tickets.json",
+     15633,
+     15944,
+     0.7239
     ]
    ]
   },
@@ -1562,7 +1562,7 @@
     "R@5": 1.0,
     "R@50": 1.0,
     "all@5": 1.0,
-    "chunks@2k": 27,
+    "chunks@2k": 26,
     "nDCG@5": 1.0
    },
    "top": [
@@ -1575,8 +1575,8 @@
     [
      "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
      765,
-     847,
-     0.7033
+     810,
+     0.6718
     ],
     [
      "contenthub/SOP-CH-03.md",
@@ -1586,21 +1586,15 @@
     ],
     [
      "tickets/tickets.json",
-     4046,
-     4352,
-     0.6412
+     4076,
+     4459,
+     0.622
     ],
     [
      "tickets/tickets.json",
      16365,
-     16742,
-     0.6387
-    ],
-    [
-     "mail/2026-09-21_noor_fabrikam-search.eml",
-     104,
-     391,
-     0.6161
+     16779,
+     0.6202
     ],
     [
      "mail/2026-09-22_priya_re-fabrikam-search.eml",
@@ -1609,22 +1603,28 @@
      0.6136
     ],
     [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     302,
+     374,
+     0.6046
+    ],
+    [
      "tickets/tickets.json",
      12895,
-     13207,
-     0.6089
+     13273,
+     0.5979
+    ],
+    [
+     "tickets/tickets.json",
+     8066,
+     8366,
+     0.5932
     ],
     [
      "contenthub/SOP-CH-03.md",
-     198,
+     420,
      857,
-     0.6058
-    ],
-    [
-     "tickets/tickets.json",
-     17566,
-     17842,
-     0.6003
+     0.5923
     ]
    ]
   }
@@ -1641,14 +1641,14 @@
   "transform": ""
  },
  "summary": {
-  "MRR": 0.6726,
-  "R@2k": 0.8725,
-  "R@3": 0.5882,
-  "R@5": 0.6373,
-  "R@50": 0.9559,
-  "all@5": 0.5294,
+  "MRR": 0.5402,
+  "R@2k": 0.8431,
+  "R@3": 0.3725,
+  "R@5": 0.5392,
+  "R@50": 0.8922,
+  "all@5": 0.4118,
   "n": 17,
-  "nDCG@5": 0.5765
+  "nDCG@5": 0.451
  },
- "took_s": 180.5
+ "took_s": 94.5
 }

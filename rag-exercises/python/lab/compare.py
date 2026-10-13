@@ -67,6 +67,8 @@ def plan(a, ds, exp):
         src = []
         for ph in froms:  # the first earlier phase that has runs
             src = src or [r for r in results.all_runs(ds.name) if r["phase"] == ph and r["retriever"] == "pipeline"]
+        if a.setup:
+            src = [results.find(ds.name, a.setup)]
         base = results.setup_of(max(src, key=results.rank_key)) if src else pipeline.Setup(chunking=ds.chunking)
         if not src:
             print(f"! no saved {' or '.join(froms)} runs: keeping the starting setup ({base.label()}).")

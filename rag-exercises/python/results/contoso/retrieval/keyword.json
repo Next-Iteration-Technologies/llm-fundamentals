@@ -1,7 +1,7 @@
 {
  "chunks": 61,
  "dataset": "contoso",
- "date": "2026-10-13 23:34",
+ "date": "2026-10-14 00:54",
  "name": "keyword",
  "order": 0,
  "phase": "retrieval",
@@ -1584,5 +1584,5 @@
   "n": 17,
   "nDCG@5": 0.4942
  },
- "took_s": 0.3
+ "took_s": 0.4
 }

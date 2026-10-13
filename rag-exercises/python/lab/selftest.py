@@ -305,9 +305,10 @@ def _retrieval():
 def _embedding():
     out = rag("check", "--embed", "bge-small")
     expect("[ok] embed block 'bge-small'" in out, out)
-    rag("compare", "--phase", "embedding", "--dataset", "dnd-srd", timeout=7200)
+    pin = ["--setup", "eval/baseline"]  # fixed-200: embedded once by every model, so this check stays quick
+    rag("compare", "--phase", "embedding", "--dataset", "dnd-srd", *pin, timeout=7200)
     t0 = time.time()
-    out = rag("compare", "--phase", "embedding", "--dataset", "dnd-srd")
+    out = rag("compare", "--phase", "embedding", "--dataset", "dnd-srd", *pin)
     took = time.time() - t0
     for n in ("hash", "ollama-embed", "bge-small"):
         expect(re.search(rf"^\s+{n}\s+[\d.]+", out, re.M), f"no row for {n}:\n{out[-1500:]}")

@@ -21,7 +21,7 @@ name = "recursive"        # headings, then paragraphs, then sentences; up to 300
 name = "sentence"         # 4 sentences per chunk
 
 [[rows]]
-name = "semantic"         # a new chunk where neighbouring sentences are least alike (by the embedding model)
+name = "semantic"         # a new chunk where neighbouring sentences are least alike (seen by bge-small, whatever the search model)
 
 [[rows]]
 name = "hierarchical"     # search 2-sentence pieces, send their whole section (up to 800 tokens)
