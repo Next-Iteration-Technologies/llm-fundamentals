@@ -17,7 +17,7 @@ try:
 except ModuleNotFoundError:  # Python 3.10
     import tomli as tomllib
 
-DATASETS = ROOT / "datasets"
+DATASETS = Path(os.environ.get("RAG_DATASETS") or ROOT / "datasets")   # RAG_DATASETS: another folder of settings files
 DEFAULT = "contoso"
 
 

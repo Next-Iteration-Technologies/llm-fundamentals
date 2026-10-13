@@ -427,6 +427,50 @@ def _final():
     expect(code != 0 and "nothing sent" in out, "answering n must send nothing")
 
 
+# ------------------------------------------------------------------ step 11: write it up
+@check(11, "everything compiles; docs/add-a-dataset.md works as written (a new dataset with quotes, file-only and refusal gold)")
+def _writeup():
+    import py_compile
+    for f in [PY / "rag.py", PY / "models.py", *sorted((PY / "lab").glob("*.py"))]:
+        py_compile.compile(str(f), doraise=True)
+    for f in ("LAB.md", "notebook.md", "TRAINER.md", "docs/decisions.md", "docs/add-a-dataset.md"):
+        expect((ROOT / f).exists(), f"{f} is missing")
+    expect("Next: open `LAB.md`." in (ROOT / "README.md").read_text(), "README E11 should end with: Next: open `LAB.md`.")
+    d = SCRATCH / "datasets"
+    (d / "my-docs" / "docs" / "sops").mkdir(parents=True, exist_ok=True)
+    (d / "my-docs" / "qa").mkdir(parents=True, exist_ok=True)
+    (d / "my-docs" / "docs" / "backup.md").write_text("# Backup policy\n\nBackups are kept\nfor 35 days, then deleted.\n\n"
+                                                    "## Restores\n\nA restore needs a ticket.\n")
+    (d / "my-docs" / "docs" / "sops" / "restore.md").write_text("# Restore SOP\n\nThe team lead approves every restore.\n")
+    (d / "my-docs" / "qa" / "questions.json").write_text(json.dumps([
+        {"id": "q1", "question": "How long do we keep backups?", "passages": [{"file": "backup.md", "quote": "Backups are kept for 35 days"}],
+         "must_say": ["35 days"]},
+        {"id": "q2", "question": "Who approves a restore?", "passages": [{"file": "sops/restore.md"}]},
+        {"id": "q3", "question": "What is our office's wifi password?", "refuse": True}]))
+    (d / "my-docs.toml").write_text('title = "My documents"\ndocs = "my-docs/docs"\ninclude = ["**/*.md"]\n'
+                                    'questions = ["my-docs/qa/questions.json"]\nformat = "quotes"\nchunking = "recursive"\n'
+                                    'refusal = "I don\'t find this in our documents"\n')
+    out = rag("check-data", "--dataset", "my-docs", RAG_DATASETS=d)
+    expect("questions: 3; 2 with gold passages, 1 must be refused" in out and "2 found at their positions, 0 failed" in out, out)
+    out = rag("eval", "--dataset", "my-docs", RAG_DATASETS=d)
+    expect("EVAL my-docs: 2 questions" in out and "Recall@3 1.00" in out, out[-800:])
+
+
+# ------------------------------------------------------------------ check 8: surprises are flagged, not hidden
+@check(11, "surprises: perfect beats every real setup (warnings only), on the scratch runs and the recorded ones")
+def _perfect_beats_all():
+    for base in (SCRATCH / "results", PY / "results"):
+        for ds in ("dnd-srd", "contoso"):
+            runs = [json.loads(p.read_text()) for p in sorted((base / ds).glob("*/*.json"))]
+            runs = [r for r in runs if "summary" in r and "questions" in r]
+            perfect = [r for r in runs if r.get("retriever") == "perfect"]
+            if not perfect:
+                continue
+            for r in runs:
+                if r.get("retriever") == "pipeline" and r["summary"].get("R@5", 0) > perfect[0]["summary"]["R@5"]:
+                    warn(f"{base.name}/{ds}: {r['phase']}/{r['name']} beats the perfect retriever on Recall@5")
+
+
 # ------------------------------------------------------------------ check 7: the student story works
 CHAPTERS_BY_STEP = {2: [1], 3: [2], 4: [3], 5: [4], 6: [5], 7: [6], 8: [7], 9: [8, 10], 10: [9]}
 LOOK_FOR = {1: STEPS8, 2: ["Recall@3", "MRR", "PERFECT student", "RANDOM guesser", "questions with gold passages"],
