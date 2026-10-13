@@ -1,0 +1,1588 @@
+{
+ "chunks": 61,
+ "dataset": "contoso",
+ "date": "2026-10-13 23:34",
+ "name": "keyword",
+ "order": 0,
+ "phase": "retrieval",
+ "questions": [
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     382,
+     580,
+     3
+    ],
+    [
+     "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+     483,
+     638,
+     3
+    ],
+    [
+     "minutes/2026-09-03.md",
+     551,
+     663,
+     1
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     495,
+     655,
+     1
+    ]
+   ],
+   "id": "g01",
+   "level": "",
+   "n": 1,
+   "ranks": [
+    8,
+    10,
+    3,
+    9
+   ],
+   "scores": {
+    "MRR": 0.3333,
+    "R@2k": 0.25,
+    "R@3": 0.3333,
+    "R@5": 0.25,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 6,
+    "nDCG@5": 0.0859
+   },
+   "top": [
+    [
+     "minutes/2026-09-17.md",
+     0,
+     834,
+     8.1371
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     993,
+     7.3587
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     5.7995
+    ],
+    [
+     "contenthub/SD-CH-02.md",
+     0,
+     953,
+     5.6336
+    ],
+    [
+     "mail/2026-09-25_sam_re-re-on-prem-parser.eml",
+     0,
+     802,
+     5.5638
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     5.233
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     2871,
+     5774,
+     5.1218
+    ],
+    [
+     "minutes/2026-10-01.md",
+     0,
+     931,
+     5.1218
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     4.8852
+    ],
+    [
+     "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+     0,
+     1182,
+     4.693
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     546,
+     737,
+     3
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     613,
+     786,
+     2
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     808,
+     857,
+     2
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     439,
+     592,
+     1
+    ]
+   ],
+   "id": "g02",
+   "level": "",
+   "n": 2,
+   "ranks": [
+    5,
+    1,
+    1,
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 5,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "contenthub/SOP-CH-03.md",
+     0,
+     1036,
+     15.8
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     14.5553
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     13.5116
+    ],
+    [
+     "mail/2026-09-22_priya_re-fabrikam-search.eml",
+     0,
+     490,
+     12.8243
+    ],
+    [
+     "known-issues.csv",
+     0,
+     2534,
+     11.6302
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     11.4575
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     8.4841
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     8.057
+    ],
+    [
+     "mail/2026-09-08_jonas_change-window.eml",
+     0,
+     419,
+     7.9571
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     7.9018
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "logs/transfer.log",
+     2859,
+     2950,
+     3
+    ],
+    [
+     "known-issues.csv",
+     912,
+     1094,
+     2
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     622,
+     798,
+     1
+    ]
+   ],
+   "id": "g03",
+   "level": "",
+   "n": 3,
+   "ranks": [
+    4,
+    20,
+    19
+   ],
+   "scores": {
+    "MRR": 0.25,
+    "R@2k": 0.3333,
+    "R@3": 0.0,
+    "R@5": 0.3333,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 5,
+    "nDCG@5": 0.2713
+   },
+   "top": [
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     6.9908
+    ],
+    [
+     "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
+     0,
+     503,
+     5.3827
+    ],
+    [
+     "logs/index.log",
+     2648,
+     4466,
+     5.164
+    ],
+    [
+     "logs/transfer.log",
+     2278,
+     4381,
+     4.7646
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     993,
+     3.9414
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     3.6369
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     3.6369
+    ],
+    [
+     "logs/index.log",
+     0,
+     2647,
+     3.3399
+    ],
+    [
+     "tickets/tickets.json",
+     0,
+     3004,
+     3.1502
+    ],
+    [
+     "tickets/tickets.json",
+     8960,
+     12058,
+     3.1502
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "contenthub/POL-RET-01.md",
+     702,
+     819,
+     3
+    ]
+   ],
+   "id": "g04",
+   "level": "",
+   "n": 4,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 3,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "contenthub/POL-RET-01.md",
+     0,
+     938,
+     11.1958
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     10.0979
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     9.625
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     9.625
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     8.9091
+    ],
+    [
+     "mail/2026-09-15_jonas_retention-reminder.eml",
+     0,
+     498,
+     6.3769
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     0,
+     465,
+     4.8022
+    ],
+    [
+     "tickets/tickets.json",
+     6031,
+     8953,
+     4.7713
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     4.4401
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     4.3008
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     546,
+     737,
+     3
+    ],
+    [
+     "tickets/tickets.json",
+     9864,
+     10305,
+     3
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     613,
+     786,
+     2
+    ],
+    [
+     "known-issues.csv",
+     1889,
+     2082,
+     1
+    ]
+   ],
+   "id": "g06",
+   "level": "",
+   "n": 6,
+   "ranks": [
+    21,
+    1,
+    23,
+    21
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 0.25,
+    "R@3": 0.3333,
+    "R@5": 0.25,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.4744
+   },
+   "top": [
+    [
+     "tickets/tickets.json",
+     8960,
+     12058,
+     14.8522
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     10.6141
+    ],
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     0,
+     561,
+     9.2206
+    ],
+    [
+     "contenthub/POL-RET-01.md",
+     0,
+     938,
+     8.8433
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     8.1339
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     8.0993
+    ],
+    [
+     "tickets/tickets.json",
+     6031,
+     8953,
+     7.7445
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     7.7445
+    ],
+    [
+     "logs/index.log",
+     0,
+     2647,
+     6.7807
+    ],
+    [
+     "logs/index.log",
+     2648,
+     4466,
+     6.7807
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     912,
+     1094,
+     3
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     622,
+     798,
+     2
+    ]
+   ],
+   "id": "g07",
+   "level": "",
+   "n": 7,
+   "ranks": [
+    11,
+    5
+   ],
+   "scores": {
+    "MRR": 0.2,
+    "R@2k": 0.5,
+    "R@3": 0.0,
+    "R@5": 0.5,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 8,
+    "nDCG@5": 0.1815
+   },
+   "top": [
+    [
+     "contenthub/SD-CH-02.md",
+     0,
+     953,
+     5.237
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     4.4401
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     4.3008
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     4.047
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     0,
+     1181,
+     3.8215
+    ],
+    [
+     "mail/2026-10-06_sam_re-night-alerts.eml",
+     0,
+     398,
+     3.702
+    ],
+    [
+     "mail/2026-10-05_priya_on-call-handover.eml",
+     0,
+     463,
+     3.2377
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     0,
+     465,
+     3.1393
+    ],
+    [
+     "tickets/tickets.json",
+     0,
+     3004,
+     2.9593
+    ],
+    [
+     "tickets/tickets.json",
+     8960,
+     12058,
+     2.9593
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     2251,
+     2399,
+     3
+    ]
+   ],
+   "id": "g08",
+   "level": "",
+   "n": 8,
+   "ranks": [
+    5
+   ],
+   "scores": {
+    "MRR": 0.2,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.3869
+   },
+   "top": [
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     4.3016
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     4.3016
+    ],
+    [
+     "onedrive/priya-notes/capture-remote-sites.md",
+     0,
+     415,
+     3.2553
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     2.9023
+    ],
+    [
+     "known-issues.csv",
+     0,
+     2534,
+     1.7024
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     2251,
+     2399,
+     3
+    ]
+   ],
+   "id": "g09",
+   "level": "",
+   "n": 9,
+   "ranks": [
+    4
+   ],
+   "scores": {
+    "MRR": 0.25,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.4307
+   },
+   "top": [
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     5.4066
+    ],
+    [
+     "onedrive/priya-notes/capture-remote-sites.md",
+     0,
+     415,
+     4.7215
+    ],
+    [
+     "mail/2026-07-23_lee_capture-batch.eml",
+     0,
+     390,
+     4.5581
+    ],
+    [
+     "known-issues.csv",
+     0,
+     2534,
+     2.0939
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "contenthub/SOP-OPS-02.md",
+     178,
+     260,
+     3
+    ],
+    [
+     "contenthub/config/contenthub-cleanup.xml",
+     199,
+     272,
+     3
+    ]
+   ],
+   "id": "g10",
+   "level": "",
+   "n": 10,
+   "ranks": [
+    7,
+    null
+   ],
+   "scores": {
+    "MRR": 0.1429,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.5,
+    "all@5": 0.0,
+    "chunks@2k": 3,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     14.6068
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     9.625
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     9.625
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     8.9091
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     0,
+     465,
+     7.8401
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     7.6606
+    ],
+    [
+     "contenthub/SOP-OPS-02.md",
+     0,
+     635,
+     7.1847
+    ],
+    [
+     "contenthub/POL-RET-01.md",
+     0,
+     938,
+     7.0689
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     6.7729
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     6.521
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-09-24.md",
+     370,
+     528,
+     1
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     1920,
+     2513,
+     1
+    ]
+   ],
+   "id": "g11",
+   "level": "",
+   "n": 11,
+   "ranks": [
+    3,
+    5
+   ],
+   "scores": {
+    "MRR": 0.3333,
+    "R@2k": 0.5,
+    "R@3": 0.5,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.5438
+   },
+   "top": [
+    [
+     "minutes/2026-10-01.md",
+     0,
+     931,
+     18.2402
+    ],
+    [
+     "mail/2026-10-07_sam_re-re-re-pricing.eml",
+     0,
+     672,
+     16.4563
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     993,
+     15.137
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     2871,
+     5774,
+     9.7724
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     9.4618
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     8.8718
+    ],
+    [
+     "mail/2026-10-01_sam_minutes-approved.eml",
+     0,
+     453,
+     7.8773
+    ],
+    [
+     "minutes/2026-09-17.md",
+     0,
+     834,
+     7.6092
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     6.9427
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     0,
+     465,
+     6.5207
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "tickets/tickets.json",
+     9864,
+     10305,
+     3
+    ],
+    [
+     "known-issues.csv",
+     546,
+     737,
+     2
+    ]
+   ],
+   "id": "g12",
+   "level": "",
+   "n": 12,
+   "ranks": [
+    8,
+    null
+   ],
+   "scores": {
+    "MRR": 0.125,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.5,
+    "all@5": 0.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     13.0165
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     11.0377
+    ],
+    [
+     "mail/2026-09-22_priya_re-fabrikam-search.eml",
+     0,
+     490,
+     10.1151
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     10.1151
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     8.8094
+    ],
+    [
+     "mail/2026-09-15_jonas_retention-reminder.eml",
+     0,
+     498,
+     8.738
+    ],
+    [
+     "mail/2026-10-05_priya_on-call-handover.eml",
+     0,
+     463,
+     8.3239
+    ],
+    [
+     "tickets/tickets.json",
+     8960,
+     12058,
+     8.1339
+    ],
+    [
+     "tickets/tickets.json",
+     6031,
+     8953,
+     7.7445
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     7.7445
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     155,
+     317,
+     3
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     876,
+     1036,
+     1
+    ]
+   ],
+   "id": "g13",
+   "level": "",
+   "n": 13,
+   "ranks": [
+    1,
+    8
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 0.5,
+    "R@5": 0.5,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 8,
+    "nDCG@5": 0.8262
+   },
+   "top": [
+    [
+     "onedrive/priya-notes/index-worker-fix.md",
+     0,
+     561,
+     17.3346
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     11.4454
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     11.0865
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     10.4322
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     0,
+     1181,
+     9.8509
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     6.9908
+    ],
+    [
+     "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
+     0,
+     801,
+     6.0314
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     0,
+     1036,
+     5.7852
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     5.7852
+    ],
+    [
+     "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+     0,
+     1182,
+     5.6646
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-09-24.md",
+     370,
+     528,
+     1
+    ]
+   ],
+   "id": "g14",
+   "level": "",
+   "n": 14,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-09-24.md",
+     0,
+     993,
+     16.3325
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     10.9858
+    ],
+    [
+     "mail/2026-09-24_sam_vendor-b-pricing.eml",
+     0,
+     546,
+     8.2311
+    ],
+    [
+     "mail/2026-09-26_vendor-b_re-pricing.eml",
+     0,
+     614,
+     8.2311
+    ],
+    [
+     "mail/2026-10-02_lee_vendor-b-server-versions.eml",
+     0,
+     540,
+     8.2311
+    ],
+    [
+     "mail/2026-10-07_vendor-b_re-re-pricing.eml",
+     0,
+     824,
+     8.2311
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     6.9908
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     6.9427
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     6.1912
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     2871,
+     5774,
+     6.1912
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     382,
+     580,
+     2
+    ],
+    [
+     "minutes/2026-09-24.md",
+     370,
+     528,
+     1
+    ],
+    [
+     "minutes/2026-10-01.md",
+     737,
+     819,
+     1
+    ]
+   ],
+   "id": "g15",
+   "level": "",
+   "n": 15,
+   "ranks": [
+    10,
+    2,
+    10
+   ],
+   "scores": {
+    "MRR": 0.5,
+    "R@2k": 0.3333,
+    "R@3": 0.3333,
+    "R@5": 0.3333,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 8,
+    "nDCG@5": 0.2015
+   },
+   "top": [
+    [
+     "minutes/2026-09-17.md",
+     0,
+     834,
+     5.9075
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     993,
+     5.9075
+    ],
+    [
+     "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+     0,
+     847,
+     5.233
+    ],
+    [
+     "contenthub/SD-CH-02.md",
+     0,
+     953,
+     4.2944
+    ],
+    [
+     "mail/2026-09-17_sam_on-prem-parser.eml",
+     0,
+     561,
+     4.1462
+    ],
+    [
+     "mail/2026-09-25_sam_re-re-on-prem-parser.eml",
+     0,
+     802,
+     3.8777
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     3.7878
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     3.3017
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     2871,
+     5774,
+     3.0183
+    ],
+    [
+     "minutes/2026-10-01.md",
+     0,
+     931,
+     2.9487
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     737,
+     819,
+     3
+    ]
+   ],
+   "id": "g16",
+   "level": "",
+   "n": 16,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-10-01.md",
+     0,
+     931,
+     8.4703
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     0,
+     1181,
+     8.1987
+    ],
+    [
+     "contenthub/POL-RET-01.md",
+     0,
+     938,
+     7.8854
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     6.6785
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     0,
+     1036,
+     6.6563
+    ],
+    [
+     "contenthub/SD-LOG-01.md",
+     0,
+     1062,
+     6.5002
+    ],
+    [
+     "contenthub/SD-CH-02.md",
+     0,
+     953,
+     6.3832
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     6.1923
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2860,
+     6.1507
+    ],
+    [
+     "mail/2026-10-01_sam_minutes-approved.eml",
+     0,
+     453,
+     6.0084
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "known-issues.csv",
+     1434,
+     1605,
+     3
+    ]
+   ],
+   "id": "g17",
+   "level": "",
+   "n": 17,
+   "ranks": [
+    8
+   ],
+   "scores": {
+    "MRR": 0.125,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 2,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     20.1587
+    ],
+    [
+     "tickets/tickets.json",
+     8960,
+     12058,
+     18.9157
+    ],
+    [
+     "tickets/tickets.json",
+     14979,
+     17945,
+     18.9157
+    ],
+    [
+     "tickets/tickets.json",
+     17952,
+     19759,
+     18.9157
+    ],
+    [
+     "mail/2026-10-06_noor_legacy-viewer.eml",
+     0,
+     406,
+     18.4224
+    ],
+    [
+     "contenthub/SOP-LA-02.md",
+     0,
+     736,
+     15.9245
+    ],
+    [
+     "contenthub/SOP-CH-03.md",
+     0,
+     1036,
+     14.8086
+    ],
+    [
+     "known-issues.csv",
+     0,
+     2534,
+     14.4769
+    ],
+    [
+     "onedrive/priya-notes/on-call-cheatsheet.md",
+     0,
+     465,
+     10.7298
+    ],
+    [
+     "tickets/tickets.json",
+     0,
+     3004,
+     7.4418
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-09-03.md",
+     551,
+     663,
+     3
+    ]
+   ],
+   "id": "g18",
+   "level": "",
+   "n": 18,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 4,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-09-03.md",
+     0,
+     1011,
+     7.4537
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-search.eml",
+     0,
+     434,
+     6.9908
+    ],
+    [
+     "contenthub/SOP-CH-07.md",
+     0,
+     1181,
+     6.6879
+    ],
+    [
+     "known-issues.csv",
+     0,
+     2534,
+     6.0478
+    ],
+    [
+     "tickets/tickets.json",
+     3011,
+     6024,
+     5.8465
+    ],
+    [
+     "tickets/tickets.json",
+     6031,
+     8953,
+     5.6291
+    ],
+    [
+     "tickets/tickets.json",
+     12065,
+     14972,
+     5.6291
+    ],
+    [
+     "onedrive/priya-notes/capture-remote-sites.md",
+     0,
+     415,
+     5.541
+    ],
+    [
+     "contenthub/SOP-CAP-01.md",
+     0,
+     731,
+     5.3504
+    ],
+    [
+     "mail/2026-09-22_priya_re-fabrikam-search.eml",
+     0,
+     490,
+     5.3107
+    ]
+   ]
+  }
+ ],
+ "retriever": "pipeline",
+ "setup": {
+  "chunking": "hierarchical",
+  "embed": "ollama-embed",
+  "embedder": "ollama-embed (nomic-embed-text)",
+  "filters": {},
+  "k": 5,
+  "rerank": false,
+  "retriever": "keyword",
+  "transform": ""
+ },
+ "summary": {
+  "MRR": 0.5564,
+  "R@2k": 0.5392,
+  "R@3": 0.4118,
+  "R@5": 0.598,
+  "R@50": 0.9412,
+  "all@5": 0.4706,
+  "n": 17,
+  "nDCG@5": 0.4942
+ },
+ "took_s": 0.3
+}

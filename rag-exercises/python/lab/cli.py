@@ -70,6 +70,7 @@ def add_commands(sub):
     p.add_argument("--rows", metavar="A,B", help="only these rows")
     p.add_argument("--skip", metavar="A,B", help="leave these rows out")
     p.add_argument("--limit", type=int, help="contextual: write context sentences for the first N chunks only")
+    p.add_argument("--chunkings", metavar="A,B", help="retrieval: these chunkings instead of the two best and fixed-200")
 
     p = sub.add_parser("show", help="one question: the gold passages next to what the run found")
     dataset_arg(p)
@@ -77,11 +78,33 @@ def add_commands(sub):
     p.add_argument("--run", metavar="RUN", help="phase/name of a saved run (default: eval/baseline)")
     p.add_argument("--best", action="store_true", help="the best run so far")
 
+    p = sub.add_parser("answers", help="answer the golden questions with a run's setup and score the answers (RAG triad)")
+    dataset_arg(p)
+    p.add_argument("run", nargs="?", help="phase/name of a saved run (default: the best so far)")
+    p.add_argument("--best", action="store_true", help="the best run so far (by Recall@5, then MRR)")
+    p.add_argument("--limit", type=int, help="only N questions, spread over the golden set")
+    p.add_argument("--chat", metavar="NAME", help="chat block that answers (default: LLM_CHAT, else providers.toml)")
+    p.add_argument("--judge", metavar="NAME", help="chat block that judges (default: LLM_JUDGE, else `judge` in providers.toml, else --chat)")
+
+    p = sub.add_parser("misses", help="why does it still miss? one label per missed question")
+    dataset_arg(p)
+    p.add_argument("run", nargs="?", help="phase/name of a saved run (default: the best so far)")
+    p.add_argument("--best", action="store_true", help="the best run so far")
+
+    p = sub.add_parser("final", help="RAG vs the whole corpus in the prompt, same model (LAB chapter 9)")
+    dataset_arg(p)
+    p.add_argument("--model", metavar="NAME", help="chat block for both rows (default: LLM_CHAT, else providers.toml)")
+    p.add_argument("--judge", metavar="NAME", help="chat block that judges both rows")
+    p.add_argument("--setup", metavar="RUN", help="the RAG setup: phase/name of a saved run (default: the best so far)")
+    p.add_argument("--limit", type=int, help="only N questions, spread over the golden set")
+    p.add_argument("--yes", action="store_true", help="send without asking (the token preview is still printed)")
+    p.add_argument("--ignore-data-class", action="store_true", help="Contoso: let the model read every class (fictional pack only)")
+
     p = sub.add_parser("report", help="rebuild python/results/RESULTS.md from the saved runs")
     dataset_arg(p)
 
 
-COMMANDS = {"selftest", "check-data", "walkthrough", "report", "chunks", "compare", "show"}
+COMMANDS = {"selftest", "check-data", "walkthrough", "report", "chunks", "compare", "show", "answers", "misses", "final"}
 
 
 def run(a):
@@ -105,6 +128,15 @@ def run(a):
         if a.cmd == "show" and a.best:
             a.run = "--best"
         return {"chunks": compare.chunks_cmd, "compare": compare.compare, "show": compare.show_cmd}[a.cmd](a) or 0
+    if a.cmd == "final":
+        from . import final
+        return final.run(a)
+    if a.cmd == "misses":
+        from . import misses
+        return misses.run(a)
+    if a.cmd == "answers":
+        from . import answers
+        return answers.run(a)
     if a.cmd == "report":
         from . import results
         out = results.report()

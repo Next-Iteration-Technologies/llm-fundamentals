@@ -121,13 +121,14 @@ def _post(b, path, payload, timeout, label):
 
 
 # ------------------------------------------------------------------ chat
-def chat(messages, system=None, tools=None, name=None):
-    """Send a conversation (and the tools the model may call); get {"content", "tool_calls", "model"}."""
+def chat(messages, system=None, tools=None, name=None, cache_system=False):
+    """Send a conversation (and the tools the model may call); get {"content", "tool_calls", "model", "usage"}.
+    cache_system: Anthropic prompt caching on the system prompt, so a long one (a whole corpus) is sent once and reused."""
     name, b = block(name, "chat")
     kind = b["kind"]
     no_paid_api(name, b)
     if kind == "anthropic":
-        return _anthropic_chat(b, messages, system, tools)
+        return _anthropic_chat(b, messages, system, tools, cache_system)
     if kind == "openai":
         return _openai_chat(b, messages, system, tools, name)
     if kind == "ollama":
@@ -140,14 +141,14 @@ def text(reply):
     return re.sub(r"<think>.*?</think>", "", reply["content"] or "", flags=re.S).strip()
 
 
-def _anthropic_chat(b, messages, system, tools):
+def _anthropic_chat(b, messages, system, tools, cache_system=False):
     import anthropic
     client = anthropic.Anthropic(api_key=_api_key(b), timeout=_timeout(b, 900))
     request = dict(model=b["model"], max_tokens=MAX_ANSWER_TOKENS, messages=anthropic_messages(messages),
                    output_config={"effort": b.get("effort", "low")},
                    betas=["server-side-fallback-2026-07-01"], fallbacks="default")
     if system:
-        request["system"] = system
+        request["system"] = [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}] if cache_system else system
     if tools:
         request["tools"] = [{"name": t["name"], "description": t["description"], "input_schema": t["parameters"]} for t in tools]
     try:
@@ -159,7 +160,11 @@ def _anthropic_chat(b, messages, system, tools):
     content = "(The model declined to answer this one.)" if r.stop_reason == "refusal" else \
         "".join(bl.text for bl in r.content if bl.type == "text")
     calls = [{"id": bl.id, "name": bl.name, "arguments": dict(bl.input)} for bl in r.content if bl.type == "tool_use"]
-    return {"content": content, "tool_calls": calls, "model": r.model}
+    u = r.usage
+    usage = {"input_tokens": u.input_tokens, "output_tokens": u.output_tokens,
+             "cache_read_tokens": getattr(u, "cache_read_input_tokens", 0) or 0,
+             "cache_write_tokens": getattr(u, "cache_creation_input_tokens", 0) or 0}
+    return {"content": content, "tool_calls": calls, "model": r.model, "usage": usage}
 
 
 def _openai_chat(b, messages, system, tools, label):
@@ -179,6 +184,11 @@ def _ollama_chat(b, messages, system, tools, label="ollama"):
     # Ollama cuts a prompt that is too long for its window and still answers, with no error. So: the window is sent
     # explicitly (num_ctx in the block, default 8192), and truncate=false makes Ollama refuse instead of cutting.
     window = int(b.get("num_ctx", 8192))
+    size = sum(len(m.get("content") or "") for m in messages) + len(system or "")
+    if size / 4 > 2 * window:  # far too big (a whole corpus): stop before sending megabytes; ~4 characters a token
+        raise PromptTooBig(f"The prompt is about {size // 4:,} tokens, but the window of '{label}' ({b['model']}) is {window:,} "
+                           f"tokens (num_ctx). Ollama would cut it silently and answer anyway; the lab stops instead. "
+                           f"Send fewer chunks, or raise num_ctx in the [{label}] block if the model and memory allow.", size // 4, window)
     body = {"model": b["model"], "messages": ([{"role": "system", "content": system}] if system else []) + ollama_messages(messages),
             "stream": False, "options": {"num_ctx": window}, "truncate": False}
     if tools:

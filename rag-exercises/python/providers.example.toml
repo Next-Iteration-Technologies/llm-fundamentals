@@ -46,7 +46,7 @@ where = "local"
 num_ctx = 8192            # the window sent to Ollama; a longer prompt stops with a clear message instead of being cut
 
 # ---------- embed blocks ----------
-# Anthropic has no embeddings endpoint: pair `--chat anthropic` with nexus-embed, ollama-embed or hash.
+# Anthropic has no embeddings endpoint: pair `--chat anthropic` with nexus-embed, ollama-embed, bge-small or hash.
 
 [nexus-embed]
 kind = "openai"
@@ -58,6 +58,11 @@ api_key_env = "NEXUS_API_KEY"
 kind = "ollama"
 base_url = "http://localhost:11434"
 model = "nomic-embed-text"   # ollama pull nomic-embed-text
+
+[bge-small]               # on this laptop with sentence-transformers (~130 MB from Hugging Face on first use); fast on a CPU
+kind = "sentence-transformers"
+model = "BAAI/bge-small-en-v1.5"
+query_prefix = "Represent this sentence for searching relevant passages: "
 
 [hash]
 kind = "hash"             # no model at all: a lexical stand-in. --dry falls back to this.

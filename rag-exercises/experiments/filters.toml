@@ -1,0 +1,35 @@
+# Phase 5 (LAB chapter 6): two documents disagree. SOP-OPS-02 (revised 2025-11-20) says logs are kept 14 days,
+# the Content Hub cleanup config (revised 2026-08-04) says 30. Which one does the answer use?
+# We change: search filters and a "prefer the newest" rule. We keep: the best setup so far (embedding phase, else retrieval).
+phase = "filters"
+only = ["contoso"]        # D&D has no dates, platforms or askers
+from = ["embedding", "retrieval"]
+
+[[rows]]
+name = "no-filters"
+
+[[rows]]
+name = "asker"            # each question asked as its golden-set asker: only what that role may see (E6)
+filters = { asker = "golden" }
+
+[[rows]]
+name = "platform"         # a question that names a platform only searches that platform
+filters = { platform = "question" }
+
+[[rows]]
+name = "after-2026"       # only documents dated 2026 or later
+filters = { after = "2026-01-01" }
+
+[[rows]]
+name = "prefer-newest"    # the same chunks are sent, newest first: when sources disagree, the newer one comes first
+filters = { prefer_newest = true }
+
+[[rows]]
+name = "asker+prefer-newest"
+filters = { asker = "golden", prefer_newest = true }
+
+[[watch]]                 # printed for every row: which of the two comes first for this question
+question = "g10"
+old = "contenthub/SOP-OPS-02.md"
+new = "contenthub/config/contenthub-cleanup.xml"
+say = "14 days (SOP-OPS-02, 2025) or 30 days (cleanup config, 2026)?"

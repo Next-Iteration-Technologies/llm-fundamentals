@@ -24,7 +24,7 @@ def describe(name):
     return f"{n} ({b.get('model', b['kind'])})"
 
 
-def ask(name, system, prompt, fresh=False):
+def ask(name, system, prompt, fresh=False, cache_system=False):
     """One chat call: {text, model, seconds, usage, saved}. saved is the date of a reused reply, else None.
     Raises models.SetupProblem (and PromptTooBig) for the caller to report."""
     n, b = models.block(name, "chat")
@@ -34,7 +34,7 @@ def ask(name, system, prompt, fresh=False):
         if hit:
             return dict(hit, saved=saved)
     t0 = time.time()
-    r = models.chat([{"role": "user", "content": prompt}], system=system, name=n)
+    r = models.chat([{"role": "user", "content": prompt}], system=system, name=n, cache_system=cache_system)
     out = {"text": models.text(r), "model": r.get("model", b.get("model")), "seconds": round(time.time() - t0, 1),
            "usage": r.get("usage") or {}}
     cache.put(k, out)

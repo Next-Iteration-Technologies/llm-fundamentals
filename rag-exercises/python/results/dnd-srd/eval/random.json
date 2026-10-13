@@ -1,7 +1,7 @@
 {
  "chunks": 1999,
  "dataset": "dnd-srd",
- "date": "2026-10-13 23:06",
+ "date": "2026-10-14 00:49",
  "name": "random",
  "phase": "eval",
  "questions": [
@@ -6346,5 +6346,5 @@
   "n": 55,
   "nDCG@5": 0.0
  },
- "took_s": 0.7
+ "took_s": 1.1
 }

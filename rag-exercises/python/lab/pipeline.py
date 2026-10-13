@@ -118,12 +118,12 @@ def rrf(lists, k=60):
     return sorted(fused.items(), key=lambda kv: (-kv[1], kv[0]))
 
 
-def search(index, question, setup, queries=None):
+def search(index, question, setup, queries=None, q=None):
     """The top DEPTH chunks as [(chunk, score)], best first, before rerank. queries: [(keyword text, vector text, kind)]
     from a query rewrite; default the question as asked."""
     queries = queries or [(question, question, "query")]
     units = index.units
-    allowed = allowed_units(index, units, setup)
+    allowed = allowed_units(index, units, setup, q)
     lists = []
     for kw, vec, kind in queries:
         if setup.retriever in ("keyword", "hybrid"):
@@ -151,13 +151,13 @@ def search(index, question, setup, queries=None):
     return out
 
 
-def allowed_units(index, units, setup):
+def allowed_units(index, units, setup, q=None):
     """Filters (phase 5) run before ranking, like rag.py's permission filter. No filters: everything may be found."""
     ok = np.ones(len(units), dtype=bool)
     from . import retrievers
-    if setup.filters:
+    if any(v for k, v in setup.filters.items() if k != "prefer_newest"):
         for n, c in enumerate(units):
-            ok[n] = retrievers.passes(c, setup.filters, index.ds)
+            ok[n] = retrievers.passes(index.chunks[c["parent"]] if "parent" in c else c, setup.filters, index.ds, q)
     return ok
 
 
@@ -191,10 +191,15 @@ def rerank(question, hits):
     return [x for _, x in sorted(enumerate(out), key=lambda p: (-p[1][1], p[0]))]
 
 
-def retrieve(index, question, setup, queries=None):
-    """Search, then rerank if the setup says so. Returns (final order, first-stage order)."""
-    first = search(index, question, setup, queries)
-    return (rerank(question, first) if setup.rerank else first), first
+def retrieve(index, question, setup, queries=None, q=None):
+    """Search, then rerank if the setup says so, then prefer the newest if it says so.
+    Returns (final order, first-stage order). q: the golden-set question, for filters that depend on it (asker)."""
+    first = search(index, question, setup, queries, q)
+    final = rerank(question, first) if setup.rerank else first
+    if setup.filters.get("prefer_newest"):
+        from . import retrievers
+        final = retrievers.prefer_newest(final, setup.k)
+    return final, first
 
 
 # ------------------------------------------------------------------ the prompt

@@ -4,7 +4,7 @@ import re, sys
 
 import models
 
-from . import llm
+from . import host, llm
 
 PLAIN = " It goes to a search over the documents, not the web: plain words, no site:, quotes or operators."
 
@@ -41,6 +41,31 @@ def _transform(question, how, chat):
     sys.exit(f"! no query transformation '{how}': rewrite, multi or hyde.")
 
 
-def passes(chunk, filters, ds):
-    """Does a chunk pass the filters? Filled in by phase 5; no filters: everything passes."""
+PLATFORMS = ["Content Hub", "Legacy Archive", "Capture"]
+
+
+def passes(chunk, filters, ds, q=None):
+    """Phase 5 filters, applied before ranking (like rag.py's permission filter):
+      asker = "golden"  each question asked as its golden-set asker: only chunks that role may see (E6)
+      platform = "question"  a question that names a platform only searches that platform (and "All")
+      after = "YYYY-MM-DD"  only documents dated on or after this day (undated ones stay)"""
+    if filters.get("asker"):
+        role = (q.asker if q and filters["asker"] == "golden" else filters["asker"]) or "sam"
+        if not set(chunk.get("access", ["team", "priya", "vendor"])) & set(host().ROLES.get(role, [role])):
+            return False
+    if filters.get("platform") and q is not None:
+        named = [p for p in PLATFORMS if p.lower() in q.text.lower()]
+        if named and chunk.get("platform", "") not in named + ["", "All"]:
+            return False
+    if filters.get("after") and chunk.get("date") and str(chunk["date"]) < filters["after"]:
+        return False
     return True
+
+
+def prefer_newest(hits, k):
+    """When sources disagree, prefer the newest: the k chunks that are sent stay the same, but newest first, so a newer
+    source sits above an older one it contradicts (and the model reads it first). Undated chunks keep their place
+    after the dated ones. A bonus for being new on every candidate pulled in recent but unrelated mail and logs."""
+    top, rest = hits[:k], hits[k:]
+    dated = sorted([h for h in top if h[0].get("date")], key=lambda h: str(h[0]["date"]), reverse=True)
+    return dated + [h for h in top if not h[0].get("date")] + rest

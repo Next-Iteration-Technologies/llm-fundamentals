@@ -36,7 +36,7 @@ def run(ds, setup, phase, name, retriever="pipeline", dry=False, chat=None, limi
             ranked = rng.sample(index.chunks, min(pipeline.DEPTH, len(index.chunks)))
             scores = [0.0] * len(ranked)
         else:
-            final, _ = pipeline.retrieve(index, q.text, setup, queries=transform_queries(q.text, setup, chat, dry))
+            final, _ = pipeline.retrieve(index, q.text, setup, queries=transform_queries(q.text, setup, chat, dry), q=q)
             ranked, scores = [c for c, _ in final], [s for _, s in final]
         ranks = metrics.gold_ranks(ranked, q.gold)
         sc = metrics.score(ranks, [g.grade for g in q.gold], [chunkers.ntok(c["text"]) for c in ranked])
@@ -199,7 +199,7 @@ def report():
             rows = [r for r in runs if r["phase"] == ph]
             if not rows:
                 continue
-            lines += [f"### {ph}", "", "| Run | Chunking | Search | Embedding | Q | " + " | ".join(c for _, c in COLS) + " | Changed vs row above |",
+            lines += [f"### {ph}", "", "| Run | Chunking | Search | Embedding | Q | " + " | ".join(c for _, c in COLS) + " | Won / lost vs row above (Recall@5) |",
                       "|---|---|---|---|---|" + "---|" * len(COLS) + "---|"]
             order = sorted(rows, key=lambda r: r.get("order", 0)) if any("order" in r for r in rows) else rows
             prev = None
@@ -208,7 +208,8 @@ def report():
                 search = "—" if r["retriever"] != "pipeline" else st["retriever"] + (" + rerank" if st.get("rerank") else "") \
                     + (f" + {st['transform']}" if st.get("transform") else "") + "".join(f", {k}={v}" for k, v in sorted((st.get("filters") or {}).items()))
                 chg = ""
-                if prev is not None and r["retriever"] == "pipeline" and prev["retriever"] == "pipeline":
+                if prev is not None and r["retriever"] == "pipeline" and prev["retriever"] == "pipeline" \
+                        and (ph == "chunking" or prev["setup"].get("chunking") == st.get("chunking")):
                     won, lost = changed(prev, r)
                     chg = f"won {len(won)}, lost {len(lost)}"
                 lines.append(f"| {r['name']} | {st.get('chunking', '')} | {search} | {st.get('embed') or '—'} | {r['summary']['n']} | "

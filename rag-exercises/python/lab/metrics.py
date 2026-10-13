@@ -62,8 +62,8 @@ def score(ranks, grades, sizes=None):
 
 NAMES = ["R@3", "R@5", "MRR", "nDCG@5", "all@5", "R@2k", "R@50"]
 EXPLAIN = {
-    "R@3": "Recall@3: of the right passages, how many were in the top 3?",
-    "R@5": "Recall@5: of the right passages, how many were in the top 5 (the chunks sent)?",
+    "R@3": "Recall@3: of the right passages, how many were in the top 3? (Counted out of 3 at most: the best 3 chunks can do.)",
+    "R@5": "Recall@5: of the right passages, how many were in the top 5, the chunks sent? (Out of 5 at most.)",
     "MRR": "MRR: how high was the first right chunk? 1st = 1.0, 2nd = 0.5, 3rd = 0.33",
     "nDCG@5": "nDCG@5: like MRR, but counts every right chunk in the top 5, weighted by how important it is",
     "all@5": "All found: share of questions where every right passage was in the top 5",

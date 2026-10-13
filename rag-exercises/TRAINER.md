@@ -126,3 +126,109 @@ On Contoso it's g03 ("What happened with 7f3a-91c2?").
 
 **A good notebook line:** "Recursive, because it cuts the rulebook at headings and paragraphs, so a whole rule stays
 in one chunk; sentences cut 72% of the right passages in two."
+
+---
+
+## Chapter 4. It was there, just too far down
+
+**Goal:** say when keyword search beats semantic search, and what rerank can and can't fix.
+
+**What they see** (`compare --phase retrieval`; rows grouped by chunking: the two best from Chapter 3, plus fixed-200)
+
+| D&D (bge-small) | R@3 | R@5 | MRR | R@50 |
+|---|---|---|---|---|
+| recursive, keyword | 0.35 | 0.38 | 0.51 | 0.54 |
+| recursive, **semantic** | **0.50** | **0.52** | **0.65** | 0.65 |
+| recursive, hybrid | 0.44 | 0.44 | 0.64 | 0.68 |
+| recursive, hybrid + rerank | 0.47 | 0.48 | 0.63 | 0.68 |
+| fixed-200, semantic | 0.44 | 0.45 | 0.58 | 0.63 |
+| fixed-200, hybrid | 0.44 | 0.43 | 0.62 | 0.65 |
+| fixed-200, hybrid + rerank | 0.45 | 0.48 | 0.64 | 0.65 |
+
+| Contoso (nomic) | R@3 | R@5 | MRR | R@50 |
+|---|---|---|---|---|
+| hierarchical, keyword | 0.41 | 0.60 | 0.56 | 0.94 |
+| hierarchical, **semantic** | **0.66** | **0.80** | **0.73** | 1.00 |
+| hierarchical, hybrid | 0.58 | 0.76 | 0.70 | 1.00 |
+| hierarchical, hybrid + rerank | 0.54 | 0.71 | 0.68 | 1.00 |
+| hierarchical, hybrid + rerank + rewrite (llama3.2:3b) | 0.54 | 0.73 | 0.68 | 1.00 |
+| structure, hybrid (`eval --chunking structure --retriever hybrid`) | 0.55 | 0.54 | 0.65 | |
+| structure, hybrid + rerank | 0.60 | 0.60 | 0.84 | |
+
+**Talking points**
+- **R@50 is the same with and without rerank, in every group.** Rerank only reorders the 50 it is given; it can't find a
+  chunk the first search missed. That's the answer to the chapter's question.
+- **Hybrid did not beat semantic on either dataset here.** The questions are written in plain words, and a good
+  embedding model already handles them; BM25 adds noise that equal-weight RRF lets in. Hybrid still has a higher R@50
+  on D&D (0.68 vs 0.65): it finds more, but ranks it worse. Keyword search alone lost on average in every group here.
+  Where it helps is exact strings: use E2's `ask "transfer TIMEOUT 7f3a-91c2" --keyword-only` to show it, and ask the
+  room which questions in their own golden set are like that. (Checked: on g08 "KI-047" keyword and semantic both find
+  the row; keyword ranks it lower.)
+- **Rerank helps small chunks and hurts long ones.** On Contoso's structure-aware chunks, rerank lifts MRR from 0.65 to
+  0.84 (E3: "Why did we drop vendor A?" goes to rank 1). On hierarchical sections (up to 800 tokens) it lowers the
+  scores: the reranker reads only the first ~512 tokens of each, so a section whose answer sits at the end looks
+  irrelevant. "What rerank can't fix" includes this.
+- Rewriting the question with a 3B local model barely moved anything (one question). With Sonnet it's worth trying.
+- Recall@3 can be higher than Recall@5 for a row: recall counts out of at most 3 (or 5) passages, so a question with 4
+  gold passages and 2 in the top 3 scores 0.67 on R@3 but 0.50 on R@5.
+
+**A good notebook line:** "Semantic on recursive chunks. Rerank didn't change R@50 (it only reorders) and helped only
+where chunks were small. Keyword search is for exact strings like IDs and error codes."
+
+---
+
+## Chapter 5. Same meaning, different words
+
+**Goal:** explain what an embedding model changes, and when a better one is worth it.
+
+**What they see** (`compare --phase embedding`, keeping the best setup from Chapter 4)
+
+| | hash | nomic-embed-text (Ollama) | bge-small |
+|---|---|---|---|
+| D&D (recursive, semantic): R@5 / MRR | 0.27 / 0.34 | **0.53 / 0.66** | 0.52 / 0.65 |
+| Contoso (hierarchical, semantic): R@5 / MRR | 0.59 / 0.62 | **0.80 / 0.73** | 0.73 / 0.77 |
+
+Time on the build machine (Intel Mac, CPU only) to embed the D&D recursive chunks (3,151) once: nomic about 33 min,
+bge-small about 4 min, hash a few seconds. After that, both are cached and a rerun takes seconds.
+
+**Talking points**
+- A real model doubles D&D's scores over the word-matching stand-in. That's the size of "meaning, not words".
+- nomic and bge-small are a tie on D&D (one question apart), and nomic leads on Contoso by about one question. bge-small
+  is about 8 times faster on this laptop. "When is a better one worth it?" The numbers here say: going from no model to
+  any model is worth it; between these two, speed decides.
+- The spec's follow-up: re-run Chapter 3 with the chosen model to check the winner still wins. On D&D the chunking
+  comparison was already run with bge-small.
+
+**A good notebook line:** "bge-small: as good as nomic on the rulebook, much faster here. hash is half as good, so a
+real model matters; which real model matters less."
+
+---
+
+## Chapter 6. Two documents disagree (Contoso)
+
+**Goal:** explain why a RAG answer can be correct and still out of date.
+
+**What they see** (`compare --phase filters --dataset contoso`, on the best setup so far: hierarchical, semantic, nomic)
+
+| Row | R@3 | R@5 | MRR | R@50 | Log question (g10): which comes first? |
+|---|---|---|---|---|---|
+| no-filters | 0.66 | 0.80 | 0.73 | 1.00 | the 2025 SOP (14 days) rank 1, the 2026 config (30 days) rank 4 |
+| asker | 0.69 | 0.77 | 0.67 | 0.94 | SOP first |
+| platform | 0.66 | 0.80 | 0.74 | 1.00 | SOP first |
+| after-2026 | 0.66 | 0.77 | 0.70 | 0.97 | config only: the SOP is filtered out |
+| prefer-newest | 0.34 | 0.80 | 0.44 | 1.00 | **config rank 2, SOP rank 5** |
+| asker + prefer-newest | 0.40 | 0.77 | 0.39 | 0.94 | config first |
+
+**Talking points**
+- Without help, the out-of-date SOP comes first. An answer from it ("14 days") is grounded, cited, and wrong today.
+- "prefer-newest" sends the same five chunks, newest first. Recall@5 doesn't move, but MRR drops (0.73 → 0.44): for
+  most questions newest-first is *not* most-relevant-first. Freshness is a trade-off, not a free fix. That's why rag.py
+  also says it in the prompt ("If passages disagree, prefer the newest") and leaves the call to the model.
+- "after-2026" removes the SOP entirely. But the golden set's must-say for g10 is "14 days in SOP-OPS-02, 30 days in the
+  config, **the two disagree**". Filtering the old one out hides the disagreement, and the best answer names it.
+- "asker" lowers R@50 (0.94): Sam, Priya and the vendor see different things (E6). The score drops because the vendor
+  can't see some passages; that's correct behaviour, not a worse search.
+- Where in their own documents could this happen: SOPs vs config, old wiki pages, superseded policies.
+
+**A good notebook line:** "The SOP says 14 days and is found first, but the 2026 config says 30. The answer is grounded
+and still out of date. Newest-first fixes this question but costs ranking everywhere else."

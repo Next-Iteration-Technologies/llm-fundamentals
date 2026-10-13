@@ -53,7 +53,7 @@ def plan(a, ds, exp):
         for r in rows_for(exp, ds):
             out.append((r["name"], pipeline.Setup(chunking=r["name"], embed=a.embed or "", **keep), r.get("needs_model", False)))
     elif exp["phase"] == "retrieval":
-        chunkings = resolve_chunkings(exp, ds)
+        chunkings = a.chunkings.split(",") if a.chunkings else resolve_chunkings(exp, ds)
         for i, ch in enumerate(chunkings):
             for r in rows_for(exp, ds):
                 if r.get("main_only") and i:
@@ -62,10 +62,17 @@ def plan(a, ds, exp):
                                    transform=r.get("transform", ""), embed=a.embed or "", **keep)
                 out.append((r["name"] if i == 0 else f"{r['name']}@{ch}", s, r.get("needs_model", False)))
     else:  # keep the best run of an earlier phase, change what the rows say
-        src = [r for r in results.all_runs(ds.name) if r["phase"] == exp.get("from") and r["retriever"] == "pipeline"]
+        froms = exp.get("from", [])
+        froms = [froms] if isinstance(froms, str) else froms
+        src = []
+        for ph in froms:  # the first earlier phase that has runs
+            src = src or [r for r in results.all_runs(ds.name) if r["phase"] == ph and r["retriever"] == "pipeline"]
         base = results.setup_of(max(src, key=results.rank_key)) if src else pipeline.Setup(chunking=ds.chunking)
         if not src:
-            print(f"! no saved {exp.get('from')} runs: keeping the starting setup ({base.label()}).")
+            print(f"! no saved {' or '.join(froms)} runs: keeping the starting setup ({base.label()}).")
+        else:
+            b = max(src, key=results.rank_key)
+            print(f"  keeping the best setup so far: {b['phase']}/{b['name']} ({base.label()}, {b['setup'].get('embed')})")
         if base.transform:  # a rewrite needs a model on every question; the comparison keeps the search part
             base.transform = ""
         for r in rows_for(exp, ds):
@@ -73,10 +80,11 @@ def plan(a, ds, exp):
             if "embed" not in r:
                 s.embed = a.embed or s.embed
             out.append((r["name"], s, r.get("needs_model", False)))
+    out = [(n, st, nm, i) for i, (n, st, nm) in enumerate(out)]   # the order in the experiment, whatever is left out
     asked = a.rows.split(",") if a.rows else []
     on_request = {r["name"] for r in exp["rows"] if r.get("on_request")}
     for name, *_ in out:
-        if name in on_request and name not in asked:
+        if name.split("@")[0] in on_request and name not in asked:
             print(f"  ({name} is left out: it needs a model call per {'chunk' if exp['phase'] == 'chunking' else 'question'}. "
                   f"Add it with --rows {name})")
     out = [x for x in out if x[0].split("@")[0] not in on_request or x[0].split("@")[0] in asked]
@@ -100,8 +108,12 @@ def compare(a):
     if exp.get("question"):
         print(f"  {exp['question']}")
     print(f"\n  {'setup':<34}{'R@3':>6}{'R@5':>6}{'MRR':>6}{'nDCG':>6}{'all':>6}{'R@2k':>6}{'R@50':>6}   won / lost vs the row above")
-    prev, done = None, []
-    for order, (name, setup, needs_model) in enumerate(rows):
+    prev, done, group = None, [], None
+    grouped = len({x[1].chunking for x in rows}) > 1 and exp["phase"] != "chunking"
+    for name, setup, needs_model, order in rows:
+        if grouped and setup.chunking != group:
+            group, prev = setup.chunking, None
+            print(f"  -- chunking: {group} --")
         if needs_model and a.dry:
             print(f"  {name:<34}  skipped: needs the chat model (run without --dry)")
             continue
@@ -117,6 +129,8 @@ def compare(a):
             won, lost = results.changed(prev, r)
             line += f"   won {len(won)} {fmt_ids(won)} / lost {len(lost)} {fmt_ids(lost)}"
         print(line + f"   ({r['setup']['embed']}, {time.time() - t0:.0f} s)", flush=True)
+        for w in exp.get("watch", []):
+            print("      " + watch_line(r, w, ds))
         prev = r
         done.append(r)
     if done:
@@ -128,6 +142,25 @@ def compare(a):
         print(f"  saved in {results.root() / ds.name / exp['phase']}; all tables: python rag.py report")
     results.report()
     return 0
+
+
+def watch_line(r, w, ds):
+    """Which of two disagreeing documents comes first for one question, in this run's top 10."""
+    row = next((x for x in r["questions"] if x["id"] == w["question"]), None)
+    if row is None:
+        return f"{w['question']}: not in this run"
+    rank = {}
+    for n, (f, *_rest) in enumerate(row["top"], 1):
+        rank.setdefault(f, n)
+    ro, rn = rank.get(w["old"]), rank.get(w["new"])
+    name = lambda f: f.split("/")[-1]
+    if not ro and not rn:
+        first = "neither in the top 10"
+    elif rn and (not ro or rn < ro):
+        first = f"the newer one first: {name(w['new'])} rank {rn}" + (f", {name(w['old'])} rank {ro}" if ro else f", {name(w['old'])} not in the top 10")
+    else:
+        first = f"the older one first: {name(w['old'])} rank {ro}" + (f", {name(w['new'])} rank {rn}" if rn else f", {name(w['new'])} not in the top 10")
+    return f"question {ds.question(w['question']).n} ({w['question']}), {w['say']} → {first}"
 
 
 def fmt_ids(ids, n=8):

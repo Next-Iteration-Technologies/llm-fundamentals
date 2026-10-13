@@ -4,7 +4,7 @@ Every check belongs to the step that added it; --upto N runs all checks of steps
 WARN for the spec's expectations that are only flagged. Exit code 1 on any FAIL.
 Commands run in a scratch store and results folder, so the real index and python/results are never touched.
 """
-import json, math, os, re, subprocess, sys, tempfile, time
+import json, math, os, re, shutil, subprocess, sys, tempfile, time
 from pathlib import Path
 
 from . import PY, ROOT
@@ -45,11 +45,11 @@ def env(**extra):
     return e
 
 
-def rag(*args, ok=True, timeout=3600, **extra):
-    """Run `python rag.py ARGS`; returns stdout+stderr. ok=True: a non-zero exit is a failure."""
+def rag(*args, ok=True, timeout=3600, stdin="", **extra):
+    """Run `python rag.py ARGS`; returns stdout+stderr. ok=True: a non-zero exit is a failure. stdin: what is typed."""
     t0 = time.time()
     p = subprocess.run([sys.executable, str(PY / "rag.py"), *args], cwd=PY, env=env(**extra), capture_output=True,
-                       text=True, timeout=timeout)
+                       text=True, timeout=timeout, input=stdin)
     out = p.stdout + p.stderr
     if ok and p.returncode != 0:
         raise Fail(f"`rag.py {' '.join(args)}` exited {p.returncode}:\n" + "\n".join(out.strip().splitlines()[-12:]))
@@ -228,8 +228,14 @@ def compare_twice(*args):
     outs = []
     for n in (1, 2):
         res = SCRATCH / f"twice{n}"
+        shutil.rmtree(res, ignore_errors=True)
+        if (SCRATCH / "results").exists():  # earlier phases' runs (the best chunkings), but none of this phase
+            shutil.copytree(SCRATCH / "results", res, ignore=shutil.ignore_patterns(*[f"{x}" for x in ("answers", "final")]))
+            for old_run in res.glob(f"*/{args[args.index('--phase') + 1]}/*.json"):
+                old_run.unlink()
         rag("compare", *args, RAG_RESULTS=res)
-        outs.append({p.relative_to(res).as_posix(): json.loads(p.read_text()) for p in sorted(res.rglob("*.json"))})
+        phase, ds = args[args.index("--phase") + 1], args[args.index("--dataset") + 1]
+        outs.append({p.relative_to(res).as_posix(): json.loads(p.read_text()) for p in sorted((res / ds / phase).glob("*.json"))})
     expect(outs[0].keys() == outs[1].keys(), f"different runs saved: {outs[0].keys()} vs {outs[1].keys()}")
     for k in outs[0]:
         a, b = ({x: y for x, y in r.items() if x not in ("date", "took_s")} for r in (outs[0][k], outs[1][k]))
@@ -263,10 +269,134 @@ def _contextual():
     expect(n >= 5, f"expected context sentences for the first chunks, got {n}:\n{out[-2000:]}")
 
 
+# ------------------------------------------------------------------ step 5: retrieval
+def rerank_keeps_top50(runs, ds):
+    """Rerank only reorders: per question, Recall@50 with rerank equals Recall@50 without (same chunking)."""
+    by = {(r["setup"]["chunking"], r["setup"]["retriever"], r["setup"]["rerank"]): r for r in runs.values()
+          if not r["setup"].get("transform")}
+    pairs = 0
+    for (ch, ret, rr), r in by.items():
+        if rr and (ch, ret, False) in by:
+            pairs += 1
+            a = {q["id"]: q["scores"]["R@50"] for q in by[(ch, ret, False)]["questions"]}
+            b = {q["id"]: q["scores"]["R@50"] for q in r["questions"]}
+            expect(a == b, f"{ds} {ch}: Recall@50 changed with rerank: " + str({k: (a[k], b[k]) for k in a if a[k] != b[k]}))
+    expect(pairs, f"{ds}: no rerank / no-rerank pair to compare")
+
+
+@check(5, "retrieval: every row scored, won/lost against the row above, rerank leaves Recall@50 unchanged, same output twice")
+def _retrieval():
+    for ds, extra in (("dnd-srd", ["--chunkings", "fixed-200"]), ("contoso", [])):  # D&D: one chunking keeps it quick
+        runs = compare_twice("--phase", "retrieval", "--dataset", ds, "--dry", *extra)
+        names = {k.split("/")[-1][:-5] for k in runs}
+        for n in ("keyword", "semantic", "hybrid", "hybrid-rerank"):
+            expect(n in names, f"{ds}: no '{n}' row")
+        rerank_keeps_top50(runs, ds)
+        out = rag("compare", "--phase", "retrieval", "--dataset", ds, "--dry", *extra)
+        expect(out.count(" won ") >= 3 and ("-- chunking:" in out or extra), f"{ds}: rows should list won/lost:\n{out[-1500:]}")
+        main = {k.split("/")[-1][:-5]: v["summary"] for k, v in runs.items() if "@" not in k}
+        if main["hybrid"]["R@5"] < max(main["keyword"]["R@5"], main["semantic"]["R@5"]):
+            warn(f"{ds} (hash): hybrid R@5 {main['hybrid']['R@5']:.2f} is below keyword {main['keyword']['R@5']:.2f} "
+                 f"or semantic {main['semantic']['R@5']:.2f}")
+
+
+# ------------------------------------------------------------------ step 6: embedding models
+@check(6, "embedding: bge-small reachable; hash, nomic and bge-small each give a row; the second run takes seconds")
+def _embedding():
+    out = rag("check", "--embed", "bge-small")
+    expect("[ok] embed block 'bge-small'" in out, out)
+    rag("compare", "--phase", "embedding", "--dataset", "dnd-srd", timeout=7200)
+    t0 = time.time()
+    out = rag("compare", "--phase", "embedding", "--dataset", "dnd-srd")
+    took = time.time() - t0
+    for n in ("hash", "ollama-embed", "bge-small"):
+        expect(re.search(rf"^\s+{n}\s+[\d.]+", out, re.M), f"no row for {n}:\n{out[-1500:]}")
+    expect(took < 120, f"the second run took {took:.0f} s; embeddings should come from the cache")
+
+
+# ------------------------------------------------------------------ step 7: filters and freshness (Contoso)
+@check(7, "filters: prefer-newest puts the 2026 config (30 days) before the 2025 SOP (14 days); D&D is refused; same output twice")
+def _filters():
+    runs = compare_twice("--phase", "filters", "--dataset", "contoso", "--dry")
+    names = {k.split("/")[-1][:-5] for k in runs}
+    expect({"no-filters", "asker", "platform", "after-2026", "prefer-newest"} <= names, f"rows: {names}")
+    # on the real embedding (all Contoso chunks are embedded once, then cached): hash may not find the config at all
+    out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--embed", "ollama-embed")
+    lines = out.splitlines()
+    i = next(n for n, l in enumerate(lines) if l.strip().startswith("prefer-newest "))
+    expect("the newer one first: contenthub-cleanup.xml" in lines[i + 1], "prefer-newest:\n" + "\n".join(lines[i:i + 2]))
+    code, out = rag("compare", "--phase", "filters", "--dataset", "dnd-srd", ok=False)
+    expect(code != 0 and "needs contoso" in out, f"D&D should be refused with a message:\n{out}")
+
+
+# ------------------------------------------------------------------ step 8: answers
+@check(8, "answers: chat and judge recorded, triad + must-say + refusal per answer, rerun costs nothing, paid judge refused")
+def _answers():
+    out = rag("answers", "--best", "--limit", "5", RAG_DATASET="contoso", timeout=7200)
+    for term in ("context", "faithful", "answers", "must say", "judged by"):
+        expect(term in out, f"'{term}' missing:\n{out[-1500:]}")
+    files = sorted((SCRATCH / "results" / "contoso" / "answers").glob("*.json"))
+    expect(files, "no answers run saved")
+    r = json.loads(files[-1].read_text())
+    expect(r["chat"] and r["judge"] and len(r["rows"]) == 5, f"chat/judge/rows not saved: {r.get('chat')} {r.get('judge')}")
+    for row in r["rows"]:
+        expect("faithfulness" in row and "answer_relevance" in row and "refused" in row, f"row {row['id']} lacks scores")
+    expect(any("refusal_ok" in row for row in r["rows"]), "a --limit sample should include a refusal question")
+    t0 = time.time()
+    rag("answers", "--best", "--limit", "5", RAG_DATASET="contoso")
+    r2 = json.loads(files[-1].read_text())
+    expect(all(row["saved"] for row in r2["rows"]) and time.time() - t0 < 120, "a rerun should reuse every saved reply")
+    out = rag("answers", "retrieval/hybrid-rerank", "--dataset", "dnd-srd", "--limit", "5", timeout=7200)
+    expect("ANSWERS dnd-srd: run retrieval/hybrid-rerank" in out, out[-800:])
+    code, out = rag("answers", "retrieval/hybrid-rerank", "--dataset", "dnd-srd", "--limit", "5", "--judge", "sonnet", ok=False)
+    expect(code != 0 and "LAB_NO_API is set" in out, f"--judge sonnet must stop under LAB_NO_API:\n{out[-600:]}")
+
+
+# ------------------------------------------------------------------ step 9: misses and the finish
+LABELS = ("cut apart", "half found", "ranked too low", "wrong document", "not found at all")
+
+
+@check(9, "misses: every miss has exactly one label; walkthrough --compare-with baseline runs both setups")
+def _misses():
+    for ref in ("--best", "retrieval/hybrid-rerank"):
+        out = rag("misses", ref, "--dataset", "dnd-srd")
+        counts = {l: int(m.group(1)) for l in LABELS for m in [re.search(rf"^  {l}\s+(\d+)\s", out, re.M)] if m}
+        expect(len(counts) == 5, f"the cause table should list all five labels:\n{out[:800]}")
+        lines = [l for l in out.splitlines() if re.match(r"^\s+\d+ \S+\s+(cut apart|half found|ranked too low|wrong document|not found at all)\s", l)]
+        n = int(re.search(r"(\d+) of \d+ questions miss", out).group(1))
+        expect(len(lines) == n == sum(counts.values()), f"{ref}: {n} misses, {len(lines)} labelled lines, counts {counts}")
+    out = rag("walkthrough", "--question", "1", "--dataset", "dnd-srd", "--compare-with", "baseline", timeout=7200)
+    expect(out.count("WALKTHROUGH") == 2 and "Compared: best setup" in out and out.count("8. CHECK") == 2, out[-1500:])
+
+
+# ------------------------------------------------------------------ step 10: RAG vs full context
+@check(10, "final (Ollama, 1 question): token preview first, RAG answers, full context stops as too big and is recorded")
+def _final():
+    out = rag("final", "--dataset", "dnd-srd", "--model", "ollama", "--limit", "1", "--yes", timeout=7200)
+    expect(out.index("tokens to send") < out.index("  1  "), "the token preview must come before any answer")
+    m = re.search(r"full context\s+([\d,]+)", out)
+    full = int(m.group(1).replace(",", ""))
+    expect(300_000 < full < 450_000, f"D&D full context should be roughly 375k tokens, got {full:,}")
+    expect(re.search(r"rag\s+answered 1 of 1", out) and re.search(r"full\s+answered 0 of 1, 1 too big for the window", out), out[-1200:])
+    text = (SCRATCH / "results" / "RESULTS.md").read_text()
+    expect("final: RAG vs full context" in text and "too big for the window" in text, "RESULTS.md should get the final table")
+    code, out = rag("final", "--dataset", "dnd-srd", "--model", "sonnet", "--limit", "1", "--yes", ok=False)
+    expect(code != 0 and "LAB_NO_API is set" in out, f"--model sonnet must stop under LAB_NO_API:\n{out[-600:]}")
+    code, out = rag("final", "--dataset", "dnd-srd", "--model", "ollama", "--limit", "1", ok=False, stdin="n\n")
+    expect(code != 0 and "nothing sent" in out, "answering n must send nothing")
+
+
 # ------------------------------------------------------------------ check 7: the student story works
 CHAPTERS_BY_STEP = {2: [1], 3: [2], 4: [3], 5: [4], 6: [5], 7: [6], 8: [7], 9: [8, 10], 10: [9]}
 LOOK_FOR = {1: STEPS8, 2: ["Recall@3", "MRR", "PERFECT student", "RANDOM guesser", "questions with gold passages"],
-            3: ["GOLD 1 of", "»", "cut in two", "COMPARE chunking", "won"]}
+            3: ["GOLD 1 of", "»", "cut in two", "COMPARE chunking", "won"],
+            4: ["COMPARE retrieval", "keyword", "hybrid-rerank", "won", "R@50"],
+            5: ["COMPARE embedding", "hash", "ollama-embed", "bge-small"],
+            6: ["COMPARE filters", "prefer-newest", "the newer one first", "14 days"],
+            7: ["context", "faithful", "answers", "judged by"],
+            8: ["cut apart", "half found", "ranked too low", "wrong document", "not found at all"],
+            9: ["tokens to send", "rag", "full"],
+            10: ["WALKTHROUGH", "Compared: best setup"]}
 
 
 def chapter_commands(n):
@@ -289,7 +419,7 @@ def student_story(step):
             cmds = chapter_commands(n)
             expect(cmds, f"Chapter {n} has no commands")
             for ds in ("dnd-srd", "contoso"):
-                outs = [rag(*c, RAG_DATASET=ds) for c in cmds]
+                outs = [rag(*c, RAG_DATASET=ds, stdin="y\n", timeout=7200) for c in cmds]
                 for term in LOOK_FOR.get(n, []):
                     expect(any(term in o for o in outs), f"Chapter {n} ({ds}): '{term}' is not in the output of its commands")
     return fn

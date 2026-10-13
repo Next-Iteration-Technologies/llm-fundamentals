@@ -113,7 +113,7 @@ python rag.py eval
 It runs every question in the golden set through the same steps as Chapter 1 (without writing answers, so it's quick) and gives each one a score. One line per question, then the averages.
 
 **Look for:** two scores.
-- **Recall@3:** of the right pages, how many were in the top 3 results?
+- **Recall@3:** of the right pages, how many were in the top 3 results? When a question has more than 3 right pages, it counts out of 3: the most the top 3 can hold.
 - **MRR:** how high was the first right page? First place scores 1, second 0.5, third 0.33.
 
 A `✗` marks the questions where a right page did not make the top 5. You'll need those in Chapter 3.
@@ -188,6 +188,8 @@ The first command shows what the chunks look like: how many, how big (in **token
 
 *By the end of this chapter you can: Say when keyword search beats semantic search, and what rerank can and can't fix.*
 
+*Builds on E2 (keyword, semantic, hybrid), E3 (rerank) and E8 (rewriting the question).*
+
 With better cutting, look at the misses again. Something new shows up: the right chunk now *exists*, but it came 9th. The assistant only reads the top few.
 
 So cutting isn't enough. We also need to **search** better.
@@ -211,9 +213,18 @@ There are two basic ways to search:
 python rag.py compare --phase retrieval
 ```
 
-Each row shows which questions it **won** and **lost** compared with the row above.
+It takes your two best ways of cutting from Chapter 3, plus fixed size (can good searching rescue a weak cut?), and tries each way of searching on each. The reranker reads 50 chunks for every question, so this takes a few minutes the first time.
 
-**Talk about:** rerank can move a right chunk to the top. Can it find a chunk that the first search missed? Why not?
+**Look for:**
+- The rows come in groups, one per way of cutting. Within a group, each row shows which questions it **won** and **lost** compared with the row above.
+- The **R@50** column: was the right chunk in the top 50 at all? Compare the hybrid row with the hybrid-rerank row.
+
+Rewriting the question needs one model call per question, so it isn't in the list above. To try it (slow with a model on your laptop: about half an hour):
+```
+python rag.py compare --phase retrieval --rows hybrid-rerank-rewrite
+```
+
+**Talk about:** rerank can move a right chunk to the top. Can it find a chunk that the first search missed? Why not? (Look at R@50 again.) Did hybrid beat both of its parts on your documents? If not, why might that be?
 
 **Write down:** your best way to search, and what rerank did.
 
@@ -222,6 +233,8 @@ Each row shows which questions it **won** and **lost** compared with the row abo
 ## Chapter 5. Same meaning, different words
 
 *By the end of this chapter you can: Explain what an embedding model changes, and when a better one is worth it.*
+
+*Builds on the setup step and E9: the same choice of model, now measured.*
 
 Some questions still fail when they use different words from the documents. Meaning search should catch those. So why doesn't it?
 
@@ -233,6 +246,18 @@ Meaning search depends on the model that turns text into numbers, the **embeddin
 ```
 python rag.py compare --phase embedding
 ```
+
+It keeps your best way of cutting and searching from Chapter 4, and changes only the embedding model. Three rows:
+
+| Row | What it is |
+|---|---|
+| `hash` | Not a real model: it matches words and pieces of words. The stand-in when there's no model at all. |
+| `ollama-embed` | `nomic-embed-text`, running in Ollama on your laptop |
+| `bge-small` | A small model that runs inside Python on your laptop (downloaded once, about 130 MB) |
+
+Every chunk has to be turned into numbers again by each model, once. On a laptop that can take a while: the rulebook with `ollama-embed` takes about half an hour. The second time, it's saved and takes seconds.
+
+**Look for:** how far `hash` is behind the real models, and how far apart the two real ones are. The time in brackets at the end of each row is only the scoring; the slow part was turning the chunks into numbers the first time.
 
 **Talk about:** was the improvement worth a slower, bigger model?
 
@@ -246,6 +271,8 @@ python rag.py compare --phase embedding
 
 *This chapter needs documents with dates, so it uses `contoso` whichever set you picked.*
 
+*Builds on E6 (who may see what) and E10 (keeping the index current).*
+
 Two of Contoso's documents disagree. A guide says logs are kept 14 days. The system's settings say 30. Both are in the documents. Which one should the assistant believe?
 
 **Your guess:** which will it pick, and why?
@@ -255,7 +282,17 @@ Two of Contoso's documents disagree. A guide says logs are kept 14 days. The sys
 python rag.py compare --phase filters --dataset contoso
 ```
 
-This adds labels to the search, such as date, platform and who is asking, plus a rule: *when two sources disagree, prefer the newest.*
+This adds labels to the search, such as date, platform and who is asking, plus a rule: *when two sources disagree, prefer the newest.* Each row adds one:
+
+| Row | What it does |
+|---|---|
+| `no-filters` | Your best setup from Chapter 5, as it is |
+| `asker` | Each question is asked as the person in the golden set: Sam, Priya or the vendor see different documents (E6) |
+| `platform` | A question that names a platform (Content Hub, Legacy Archive) only searches that platform |
+| `after-2026` | Only documents dated 2026 or later |
+| `prefer-newest` | The same chunks are sent, but the newest first, so a newer source sits above an older one |
+
+**Look for:** under each row, one line for the log question: **14 days (SOP-OPS-02, 2025) or 30 days (cleanup config, 2026)?**, and which of the two came first.
 
 **Talk about:** a right answer from an old document is still a wrong answer. Where could this happen in your own documents?
 
@@ -266,6 +303,8 @@ This adds labels to the search, such as date, platform and who is asking, plus a
 ## Chapter 7. Right pages, wrong answer?
 
 *By the end of this chapter you can: Separate "found the right passage" from "gave the right answer" (the RAG triad).*
+
+*Builds on E4 (the faithfulness score) and E6 (the "I don't find this" answer).*
 
 So far we've only checked whether the assistant found the right pages. Now look at what it actually *says*.
 
@@ -283,6 +322,16 @@ And one more: when the answer isn't in the documents, does it say "I don't find 
 python rag.py answers --best --limit 10
 ```
 
+`--best` takes your best setup so far; `--limit 10` takes 10 questions spread over the whole list, so a few of the ones without an answer are in it too. One model writes the answers, and a second one, the **judge**, scores them. With a model on your laptop this takes a while (about a minute per question).
+
+**Look for:** one line per question, then the averages.
+- **context**: did we send passages that fit? This is Recall@5 from before: no model needed.
+- **faithful**: is every claim backed by the passages sent? The judge checks each claim.
+- **answers**: does it actually answer the question? The judge rates it.
+- **must say** (`contoso` only): did the answer contain the facts the golden set lists?
+- **refusal**: for a question with no answer in the documents, "refused ✓" is right and "answered ✗" means it made one up.
+- Lines starting with `!` point at answers that were good with none of the right passages, or bad with all of them.
+
 **Talk about:** a model already knows a lot about popular topics, like a well-known game. How could that make a bad search look good?
 
 **Write down:** one answer that was right for the wrong reason, or wrong despite the right pages.
@@ -292,6 +341,8 @@ python rag.py answers --best --limit 10
 ## Chapter 8. Why does it still miss?
 
 *By the end of this chapter you can: Read a miss and say which part of the pipeline caused it.*
+
+*Builds on Chapters 3 to 5: every cause points back to one of them.*
 
 Even the best setup misses some. Each miss has a cause, and each cause points back to a chapter:
 
@@ -308,6 +359,8 @@ Even the best setup misses some. Each miss has a cause, and each cause points ba
 python rag.py misses --best
 ```
 
+**Look for:** the table of causes at the top, with how many misses each has, then one line per missed question with its cause and the detail (which passage, which rank). The last line names a question to look at with `show`.
+
 **Talk about:** which cause is most common? What would you try next?
 
 **Write down:** the most common cause, and your next fix.
@@ -318,18 +371,24 @@ python rag.py misses --best
 
 *By the end of this chapter you can: Decide when RAG is worth it compared with sending everything.*
 
+*Builds on E9: which model may read which documents.*
+
 Today's big models can read about 750,000 words at once. Your documents might fit. So why search at all? Why not hand over every document and let the model find the answer?
 
 **Your guess:** which gives better answers, the assistant with search, or the model with everything? Which costs more?
 
-**Try it:** first with 5 questions. It shows the cost before it sends anything.
+**Try it:** first with 5 questions. It shows the cost before it sends anything, and asks before it sends.
 ```
 python rag.py final --limit 5
 ```
 
-Same model, same questions, two ways:
-- **With search:** a few pages
-- **With everything:** all the documents, every time
+Same model, same questions, same judge, two ways:
+- **With search** (row `rag`): a few pages
+- **With everything** (row `full`): all the documents, every time
+
+**Look for:** the **tokens to send** table first: how much each way sends per question. Then the answers, scored as in Chapter 7, with the **tokens in** and **seconds** for each.
+
+If your model runs on your laptop, the `full` row stops with **too big for the window**: the documents don't fit in what that model can read at once. That's a result too. With `contoso` and a model outside the company, some documents are held back in both rows (E9), so the comparison stays fair.
 
 **Talk about:** what if your documents were a thousand times bigger, like a whole company's archive? What changes then?
 
@@ -339,13 +398,17 @@ Same model, same questions, two ways:
 
 ## Chapter 10. Before and after
 
+*Builds on everything before it.*
+
 Ask the question from Chapter 1 again, with your best setup, next to your starting point:
 
 ```
 python rag.py walkthrough --question 1 --compare-with baseline
 ```
 
-What changed at each of the eight steps?
+It runs the walkthrough twice: first with your best setup, then with the starting point (`baseline`, from Chapter 2). The last line names both.
+
+**Look for:** what changed at each of the eight steps. The chunks (step 2), the search order (step 4), which gold passages were found (step 8), and the answer.
 
 If you have time, set `RAG_DATASET` to the other set of documents and run Chapters 2–4 again. Do the same choices win?
 
