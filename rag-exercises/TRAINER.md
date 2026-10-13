@@ -36,3 +36,35 @@ saved (`python/.store/lab-cache.sqlite`), so the run in the room is fast, and th
 
 **A good notebook line:** the eight steps with an in/out for each, e.g. "Chunk: documents in, small pieces with their
 place in the file out."
+
+---
+
+## Chapter 2. Was that luck?
+
+**Goal:** explain why one good answer proves nothing, and read Recall@3 and MRR.
+
+**What they see** (`eval`, the starting setup: the dataset's own chunking, meaning search, no rerank, 5 chunks):
+
+| | Questions scored | Recall@3 | Recall@5 | MRR | Embedding |
+|---|---|---|---|---|---|
+| D&D | 55 (easy 25, medium 30) | 0.44 | 0.45 | 0.58 | bge-small |
+| D&D easy / medium | | 0.59 / 0.31 | 0.63 / 0.30 | 0.76 / 0.43 | bge-small |
+| Contoso | 17 | 0.58 | 0.61 | 0.69 | nomic-embed-text |
+
+- Perfect student: 1.00 on every score, both datasets. Random guesser: D&D 0.00 / 0.00 / 0.01, Contoso 0.02 / 0.03 / 0.04
+  (Recall@3 / Recall@5 / MRR).
+- D&D scores 55 questions, not 56: question medium-4 ("How can a player recover spell slots except using Long Rest?") has
+  no gold passages in the source dataset, so it can't be scored. The 4 unanswerable questions are for Chapter 7.
+- With the hash stand-in (`--embed hash`) the numbers are lower. That's fine: the point is the method.
+
+**Talking points**
+- One question is 2% on D&D, 6% on Contoso. A "better" setup that wins by one question on Contoso is noise.
+- Easy vs medium: medium questions need several passages (up to 24), so 5 chunks can't hold them all. Recall is
+  counted out of at most 5 passages (out of 3 for Recall@3), so a perfect top 5 still scores 1.
+- Why test the test: if the perfect student scored 0.8, the answer key or the matching would be broken, and every
+  number after it would be meaningless.
+- How a match is decided: a chunk counts for a right passage when they share at least half of the smaller of the two.
+  One rule for every score.
+
+**A good notebook line:** "Starting point on the rulebook: Recall@3 0.44, MRR 0.58. Perfect = 1, random ≈ 0, so the
+test works. 55 questions: a 2% change is one question."
