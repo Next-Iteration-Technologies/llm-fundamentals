@@ -4,7 +4,7 @@
 
 chat = "sonnet"           # default chat block: answers, contextual prefixes, query rewrites, agent
 judge = "opus"            # default judge for the lab's answer scores (LAB.md chapters 7 and 9); LLM_JUDGE or --judge override
-embed = "nexus-embed"     # default embed block: what the chunks and questions are turned into
+embed = "bge-small"       # default embed block: what the chunks and questions are turned into (setup.py asks)
 
 # ---------- chat blocks ----------
 # `where` is flow 9.4: where this model runs, and so which data classes it may read.
@@ -38,7 +38,7 @@ model = "claude-opus-5-5"
 api_key_env = "ANTHROPIC_API_KEY"
 where = "external"
 
-[ollama]                  # all local; the all-Docker path uses it too
+[ollama]                  # all local, only where Ollama is allowed; the all-Docker path uses it too
 kind = "ollama"
 base_url = "http://localhost:11434"
 model = "llama3.2:3b"     # ollama pull llama3.2:3b   (qwen2.5:7b chooses tools better)
@@ -54,7 +54,7 @@ base_url = "https://nexus.example.internal/v1"   # VERIFY
 model = "EMBED-MODEL-NAME"                       # VERIFY
 api_key_env = "NEXUS_API_KEY"
 
-[ollama-embed]
+[ollama-embed]            # only where Ollama is allowed
 kind = "ollama"
 base_url = "http://localhost:11434"
 model = "nomic-embed-text"   # ollama pull nomic-embed-text
@@ -62,6 +62,11 @@ model = "nomic-embed-text"   # ollama pull nomic-embed-text
 [bge-small]               # on this laptop with sentence-transformers (~130 MB from Hugging Face on first use); fast on a CPU
 kind = "sentence-transformers"
 model = "BAAI/bge-small-en-v1.5"
+query_prefix = "Represent this sentence for searching relevant passages: "
+
+[bge-base]                # the bigger sibling (~440 MB on first use): LAB chapter 5's better model where there's no Ollama
+kind = "sentence-transformers"
+model = "BAAI/bge-base-en-v1.5"
 query_prefix = "Represent this sentence for searching relevant passages: "
 
 [hash]

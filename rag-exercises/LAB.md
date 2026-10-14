@@ -248,15 +248,19 @@ Meaning search depends on the model that turns text into numbers, the **embeddin
 python rag.py compare --phase embedding
 ```
 
-It keeps your best way of cutting and searching from Chapter 4, and changes only the embedding model. Three rows:
+It keeps your best way of cutting and searching from Chapter 4, and changes only the embedding model. One row per model:
 
 | Row | What it is |
 |---|---|
 | `hash` | Not a real model: it matches words and pieces of words. The stand-in when there's no model at all. |
-| `ollama-embed` | `nomic-embed-text`, running in Ollama on your laptop |
 | `bge-small` | A small model that runs inside Python on your laptop (downloaded once, about 130 MB) |
+| `ollama-embed` | `nomic-embed-text`, running in Ollama on your laptop, if Ollama is allowed there |
+| `bge-base` | The bigger sibling of `bge-small`, also inside Python (downloaded once, about 440 MB) |
+| `nexus-embed` | The company gateway's embedding model, if it has one |
 
-Every chunk has to be turned into numbers again by each model, once. On a laptop that can take a while: the rulebook with `ollama-embed` takes about half an hour. The second time, it's saved and takes seconds.
+A row your laptop can't run (no Ollama, no Nexus) is left out, and the output says why. You still get at least `hash`, `bge-small` and `bge-base`.
+
+Every chunk has to be turned into numbers again by each model, once. On a laptop that can take a while: the rulebook with `ollama-embed` takes about half an hour, `bge-base` several minutes. The second time, it's saved and takes seconds.
 
 **Look for:** how far `hash` is behind the real models, and how far apart the two real ones are. The time in brackets at the end of each row is only the scoring; the slow part was turning the chunks into numbers the first time.
 

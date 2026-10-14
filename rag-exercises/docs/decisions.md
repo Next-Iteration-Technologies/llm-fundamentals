@@ -43,6 +43,17 @@ made while building.
 - **Ollama gets `num_ctx` (block key, default 8192) and `truncate: false`.** Verified on Ollama 0.32.4: without it, a 1,229-token prompt was silently cut to 258 tokens; with it, Ollama returns 400 with the real counts. A prompt over twice the window (a whole corpus) is stopped before sending.
 - **Every model reply, embedding and rerank score is cached in `python/.store/lab-cache.sqlite`.** Why: same input, same output, and reruns are free.
 
+## Setup
+
+- **`setup.py` asks two things: the chat provider (which also sets the judge), then the embedding.** nexus → nexus answers and judges; anthropic → sonnet answers, opus judges; ollama → ollama for both; offline → `--dry`. Why: the trainer runs Claude + Ollama, students run Nexus with whatever embedding their laptop allows; one script serves both.
+- **Only embeddings this laptop can use are offered**, with the reason for the others: `ollama-embed` if Ollama answers (pull offered), `nexus-embed` with the nexus provider and a model name, `bge-small` and `hash` always. The first usable one is the default. Why: a choice that can't work shouldn't be offered.
+- **Students pick the Nexus chat and embedding models from the gateway's list** (`GET /models`, with the key asked first; names with "embed" go in the embedding list, plus "0. none"). A gateway that doesn't list them gets typed names. With a Nexus embedding model, `nexus-embed` is the default embedding. Why: students don't know the gateway's model names, and its own embedding model needs no extra download.
+- **Ollama is optional.** `setup.py` never installs it; nothing in the lab needs it. Why: it is blocked on some company laptops.
+- **`compare` leaves out a row whose embed block doesn't answer, and says why; named in `--rows`, it runs and fails loudly.** Chapter 5's rows: hash, bge-small, ollama-embed, bge-base, nexus-embed. Why: every laptop gets a chapter 5 with at least one "better model" (`bge-base` needs only Hugging Face).
+- **An older `providers.toml` gets the example's missing blocks and the `judge` line appended; nothing is rewritten.** Why: `setup.py` used to copy the example only when the file was missing, so old files lacked `bge-small`, `sonnet`, `opus` and dnd-srd silently fell back to hash.
+- **Hugging Face is the one download every setup needs** (bge-small; bge-base and the reranker later); `setup.py` fetches bge-small up front and prints the `HF_ENDPOINT` / cache-copy hint if it fails.
+- **`rag.py check` also checks the judge block** when it differs from the chat block. Why: chapters 7 and 9 need it, and a missing key there shows up late.
+
 ## Answers and the final comparison
 
 - **Must-say counts a phrase as said when 70% of its content words are in the answer.** Why: the golden set's phrases are descriptions ("no on-premise parser before next year"), not exact wording.

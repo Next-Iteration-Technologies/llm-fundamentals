@@ -36,6 +36,16 @@ def expect(cond, msg):
         raise Fail(msg)
 
 
+def has_ollama():
+    """Ollama is optional (not allowed on every laptop): the checks that need it use bge-small without it."""
+    import urllib.request
+    try:
+        urllib.request.urlopen("http://localhost:11434/api/tags", timeout=3)
+        return True
+    except Exception:
+        return False
+
+
 def env(**extra):
     """The environment for every command: no paid API, a scratch store and results folder, hash embedding unless asked."""
     (SCRATCH / "store").mkdir(parents=True, exist_ok=True)
@@ -340,7 +350,7 @@ def _retrieval():
 
 
 # ------------------------------------------------------------------ step 6: embedding models
-@check(6, "embedding: bge-small reachable; hash, nomic and bge-small each give a row; the second run takes seconds")
+@check(6, "embedding: bge-small reachable; hash, bge-small, bge-base (and nomic with Ollama) each give a row; the second run takes seconds")
 def _embedding():
     out = rag("check", "--embed", "bge-small")
     expect("[ok] embed block 'bge-small'" in out, out)
@@ -349,7 +359,7 @@ def _embedding():
     t0 = time.time()
     out = rag("compare", "--phase", "embedding", "--dataset", "dnd-srd", *pin)
     took = time.time() - t0
-    for n in ("hash", "ollama-embed", "bge-small"):
+    for n in ("hash", "bge-small", "bge-base") + (("ollama-embed",) if has_ollama() else ()):
         expect(re.search(rf"^\s+{n}\s+[\d.]+", out, re.M), f"no row for {n}:\n{out[-1500:]}")
     expect(took < 120, f"the second run took {took:.0f} s; embeddings should come from the cache")
 
@@ -362,7 +372,8 @@ def _filters():
     expect({"no-filters", "asker", "platform", "after-2026", "prefer-newest"} <= names, f"rows: {names}")
     # on the real embedding (all Contoso chunks are embedded once, then cached): hash may not find the config at all
     # pinned to the recorded setup (hierarchical, semantic, nomic): a hash setup may not find the 2026 config at all
-    out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--setup", "chunking/hierarchical", "--embed", "ollama-embed")
+    out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--setup", "chunking/hierarchical",
+              "--embed", "ollama-embed" if has_ollama() else "bge-small")
     lines = out.splitlines()
     i = next(n for n, l in enumerate(lines) if l.strip().startswith("prefer-newest "))
     expect("the newer one first: contenthub-cleanup.xml" in lines[i + 1], "prefer-newest:\n" + "\n".join(lines[i:i + 2]))
@@ -476,7 +487,7 @@ CHAPTERS_BY_STEP = {2: [1], 3: [2], 4: [3], 5: [4], 6: [5], 7: [6], 8: [7], 9: [
 LOOK_FOR = {1: STEPS8, 2: ["Recall@3", "MRR", "PERFECT student", "RANDOM guesser", "questions with gold passages"],
             3: ["GOLD 1 of", "»", "cut in two", "COMPARE chunking", "won"],
             4: ["COMPARE retrieval", "keyword", "hybrid-rerank", "won", "R@50"],
-            5: ["COMPARE embedding", "hash", "ollama-embed", "bge-small"],
+            5: ["COMPARE embedding", "hash", "bge-small", "bge-base"],
             6: ["COMPARE filters", "prefer-newest", "14 days", " one first"],
             7: ["context", "faithful", "answers", "judged by"],
             8: ["cut apart", "half found", "ranked too low", "wrong document", "not found at all"],

@@ -521,9 +521,13 @@ def judge_faithfulness(answer, passages):
 def check(a):
     """Can this laptop run the lab with the chosen blocks?"""
     ok_all = True
-    for role, name in (("chat", CHAT), ("embed", EMBED)):
-        bname = models.block(name, role)[0]
-        ok, advice = models.reachable(name, role)
+    judge = os.environ.get("LLM_JUDGE") or (models.PROVIDERS.get("judge") if isinstance(models.PROVIDERS.get("judge"), str) else None)
+    blocks = [("chat", CHAT), ("embed", EMBED)]
+    if judge and judge != models.block(CHAT, "chat")[0]:  # LAB chapters 7 and 9 score answers with it
+        blocks.insert(1, ("judge", judge))
+    for role, name in blocks:
+        bname = models.block(name, "chat" if role == "judge" else role)[0]
+        ok, advice = models.reachable(name, "chat" if role == "judge" else role)
         ok_all &= ok
         print(f"[{'ok' if ok else '!!'}] {role} block '{bname}': {advice}")
     print(f"[{'ok' if PACK.exists() else '!!'}] pack at {PACK}")

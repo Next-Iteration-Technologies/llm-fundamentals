@@ -194,6 +194,10 @@ where chunks were small. Keyword search is for exact strings like IDs and error 
 Time on the build machine (Intel Mac, CPU only) to embed the D&D recursive chunks (3,151) once: nomic about 33 min,
 bge-small about 4 min, hash a few seconds. After that, both are cached and a rerun takes seconds.
 
+Where Ollama isn't allowed (often the students' laptops), the nomic row is left out with its reason, and `bge-base`
+(BAAI/bge-base-en-v1.5, the bigger bge) is the "better model" row instead; with Nexus embeddings there is also a
+`nexus-embed` row. Those rows are not measured here yet: run them before quoting numbers.
+
 **Talking points**
 - A real model doubles D&D's scores over the word-matching stand-in. That's the size of "meaning, not words".
 - nomic and bge-small are a tie on D&D (one question apart), and nomic leads on Contoso by about one question. bge-small

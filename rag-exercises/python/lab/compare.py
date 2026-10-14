@@ -2,6 +2,8 @@
 Also `chunks` (what the chunkings look like, before any search) and `show` (gold next to what was found)."""
 import statistics, sys, textwrap, time
 
+import models
+
 from . import ROOT, chunkers, datasets, llm, metrics, pipeline, results
 
 try:
@@ -95,7 +97,30 @@ def plan(a, ds, exp):
     if a.skip:
         skip = a.skip.split(",")
         out = [x for x in out if x[0] not in skip and x[0].split("@")[0] not in skip]
-    return out
+    return [x for x in out if x[0] in asked or embed_answers(exp, x[0].split("@")[0])]
+
+
+_answers = {}
+
+
+def embed_answers(exp, row):
+    """A row whose embed block this laptop can't reach (no Ollama, no Nexus) is left out, with the reason.
+    Named in --rows, it runs anyway and fails loudly."""
+    embed = next((r.get("embed") for r in exp["rows"] if r["name"] == row), None)
+    if not embed or embed == "hash":
+        return True
+    if embed not in _answers:
+        if not isinstance(models.PROVIDERS.get(embed), dict):
+            _answers[embed] = (False, f"no [{embed}] block in providers.toml (python setup.py adds it)")
+        else:
+            ok, why = models.reachable(embed, "embed")
+            if not ok and models.PROVIDERS[embed].get("kind") == "ollama" and "pull" not in why:
+                why = f"Ollama doesn't answer at {models.PROVIDERS[embed].get('base_url')}"
+            _answers[embed] = (ok, why)
+    ok, why = _answers[embed]
+    if not ok:
+        print(f"  ({row} is left out: {why.rstrip('.')}. Add it with --rows {row} once it answers)")
+    return ok
 
 
 def compare(a):

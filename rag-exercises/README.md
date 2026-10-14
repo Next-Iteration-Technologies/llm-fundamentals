@@ -13,21 +13,32 @@ python setup.py
 
 On macOS, type `python3` instead of `python`, here and in every command below.
 
-To skip the question, name the provider:
+The script asks two things: which model **answers** (and judges the answers in LAB chapters 7 and 9), and which model **embeds**. To skip the questions, name them:
 
 ```
-python setup.py anthropic
-python setup.py nexus
+python setup.py nexus                     # students: Nexus answers; you pick the embedding from what this laptop has
+python setup.py anthropic ollama-embed    # trainer: Claude answers, Ollama embeds
 ```
 
-The script creates a virtual environment in `.venv`, installs the packages (a few minutes the first time), and creates `providers.toml` and `.env`. Then it asks which model to use, asks for the key if that model needs one, and runs `python rag.py check`. There is nothing to activate: `rag.py` uses `.venv` by itself. No Docker is needed.
+The script creates a virtual environment in `.venv`, installs the packages (a few minutes the first time), and creates `providers.toml` and `.env`. Then it asks for the models, asks for the key if the chat model needs one, fetches `bge-small` (the rulebook dataset uses it) and runs `python rag.py check`. There is nothing to activate: `rag.py` uses `.venv` by itself. No Docker is needed. Run it again on an older `providers.toml`: it adds the blocks the lab needs and keeps what you set.
 
-| Provider | What it is | Asks for |
+| Chat provider | What it is | Judge | Asks for |
+|---|---|---|---|
+| `nexus` | The company gateway (students) | Nexus | `NEXUS_API_KEY`, base URL, then the chat and embedding model, picked from the gateway's list (typed if it doesn't list them; none is fine) |
+| `anthropic` | Claude (the trainer's key) | Opus; Sonnet answers | `ANTHROPIC_API_KEY` |
+| `ollama` | A local model | the same model | Nothing; Ollama must be running |
+| `offline` | No model: retrieval only | none | Nothing; add `--dry` to every command |
+
+| Embedding | What it is | Offered when |
 |---|---|---|
-| `nexus` | The company gateway, the room's default | Base URL, chat and embedding model names, `NEXUS_API_KEY` |
-| `anthropic` | Claude (the trainer's key) | `ANTHROPIC_API_KEY`. Anthropic has no embeddings, so Ollama embeds if it runs, otherwise the hashed stand-in |
-| `ollama` | A local model | Nothing; Ollama must be running |
-| `offline` | No model: retrieval only | Nothing; add `--dry` to every command |
+| `ollama-embed` | `nomic-embed-text` in Ollama | Ollama answers (the script offers to pull the model) |
+| `nexus-embed` | The gateway's embedding model | Chat is `nexus` and you picked an embedding model (then it's the default) |
+| `bge-small` | Inside Python, ~130 MB from Hugging Face once | Always |
+| `hash` | No model: a lexical stand-in | Always |
+
+**Ollama is optional.** Where it's allowed, install it first: `winget install --id Ollama.Ollama -e` on Windows, `brew install ollama` (or the app from ollama.com) on macOS. Where it isn't, nothing in the lab needs it: `bge-small` embeds, and LAB chapter 5 compares `bge-base` instead of `nomic-embed-text`.
+
+**Downloads from Hugging Face** on first use: `bge-small` (~130 MB), `bge-base` (~440 MB, chapter 5) and the reranker (~1.1 GB, chapter 4). If Hugging Face is blocked, set `HF_ENDPOINT` to an internal mirror, or copy the `.cache/huggingface` folder from a laptop that has the models into your home folder.
 
 Then:
 
@@ -40,7 +51,7 @@ Qdrant runs in-process (local path mode, `python/.store/`): no server needed. Ho
 
 **No key, no model?** Every command takes `--dry`: no chat calls, and the hashed (lexical) embedding stands in for the embed model. Retrieval, ranks and Recall/MRR still work; semantic matches ("users can't find archived files" → KI-014) get weaker. A `--dry` run withholds nothing, since no model reads anything.
 
-**The rulebook dataset** for `LAB.md` is already in the repo: `datasets/dnd-srd/` holds the D&D 5e System Reference Document 5.2.1 (20 markdown files, CC BY 4.0, see its `NOTICE.md`) with 56 questions whose answer passages are known. Nothing to download. `python rag.py check-data --dataset dnd-srd` checks it. The lab's embedding model for it is `bge-small` (about 130 MB from Hugging Face on first use), because nomic in Ollama is slow on a laptop CPU for 1.5 million characters.
+**The rulebook dataset** for `LAB.md` is already in the repo: `datasets/dnd-srd/` holds the D&D 5e System Reference Document 5.2.1 (20 markdown files, CC BY 4.0, see its `NOTICE.md`) with 56 questions whose answer passages are known. Nothing to download. `python rag.py check-data --dataset dnd-srd` checks it. The lab's embedding model for it is `bge-small` (about 130 MB from Hugging Face on first use): it runs inside Python, so it works where Ollama isn't allowed, and it's fast on a laptop CPU for 1.5 million characters.
 
 **The Jira mock** for E5 and E7 is one file with no dependencies: `python jira-mock/server.py` from the `rag-exercises` folder (it reads `contoso-pack/jira/issues.json` next to it; set `ISSUES_FILE=` to point elsewhere). Stop it with Ctrl-C; restarting it resets every status flip.
 

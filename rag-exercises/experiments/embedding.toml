@@ -1,5 +1,6 @@
 # Phase 4 (LAB chapter 5): would a better embedding model help?
 # We change: the embedding model. We keep: the best chunking and retrieval so far (the best saved retrieval run).
+# A row whose model this laptop can't reach (no Ollama, no Nexus) is left out, and the output says why.
 phase = "embedding"
 from = "retrieval"        # the setup to keep: the best run of this phase
 
@@ -8,9 +9,17 @@ name = "hash"             # not a real model: matches words and word pieces. The
 embed = "hash"
 
 [[rows]]
-name = "ollama-embed"     # nomic-embed-text in Ollama
+name = "bge-small"        # BAAI/bge-small-en-v1.5 with sentence-transformers, on this laptop
+embed = "bge-small"
+
+[[rows]]
+name = "ollama-embed"     # nomic-embed-text in Ollama, where Ollama is allowed
 embed = "ollama-embed"
 
 [[rows]]
-name = "bge-small"        # BAAI/bge-small-en-v1.5 with sentence-transformers, on this laptop
-embed = "bge-small"
+name = "bge-base"         # BAAI/bge-base-en-v1.5, the bigger sibling of bge-small (~440 MB): no Ollama needed
+embed = "bge-base"
+
+[[rows]]
+name = "nexus-embed"      # the gateway's embedding model, where Nexus serves one
+embed = "nexus-embed"
