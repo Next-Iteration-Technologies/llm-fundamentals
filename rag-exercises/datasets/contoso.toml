@@ -1,0 +1,15 @@
+# The Contoso pack of E1-E11: minutes, mail, SOPs, a known-issues sheet, logs, tickets. All fictional.
+title = "Contoso pack"
+docs = "../contoso-pack"                 # relative to this file
+include = ["contenthub/*.md", "contenthub/config/*.xml", "minutes/*.md", "onedrive/**/*.md", "mail/*.eml",
+           "known-issues.csv", "logs/*.log", "tickets/tickets.json", "jira/snapshot-2026-10-06.json"]
+questions = ["../contoso-pack/golden-set.json"]
+format = "contoso"                       # golden-set.json: expected_ids graded 3/2/1, resolved through corpus_index
+corpus_index = "../contoso-pack/corpus-index.json"
+chunking = "structure"                   # rag.py's own loaders: one section, row, message, log line, ticket per chunk
+subject = "our minutes, mail or SOPs"
+refusal = "I don't find this in our minutes, mail or SOPs"
+
+[gold]
+# corpus_index quotes (lab_match) are found in their file; some are widened to the whole record they belong to.
+expand = { ".csv" = "line", ".log" = "line", ".xml" = "line", ".json" = "object" }

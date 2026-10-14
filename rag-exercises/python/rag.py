@@ -566,6 +566,8 @@ def evaluate(a):
 
 
 if __name__ == "__main__":
+    import lab
+    from lab import cli as lab_cli
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("check", "ingest", "ask", "agent", "eval"):
@@ -598,7 +600,12 @@ if __name__ == "__main__":
         if name == "eval":
             p.add_argument("--as-in-set", action="store_true", help="ask each question as the golden set's asker")
             p.add_argument("--export", metavar="JSONL", help="write question/answer/contexts for RAGAS")
+            lab_cli.eval_args(p)  # the lab's eval (LAB.md chapter 2): any dataset, retrieval scores, saved runs
+    lab_cli.add_commands(sub)
     a = ap.parse_args()
+    if a.cmd in lab_cli.COMMANDS or lab_cli.lab_eval(a):  # the evaluation lab (LAB.md)
+        lab.HOST = sys.modules[__name__]
+        sys.exit(lab_cli.run(a))
     CHAT, EMBED = a.chat, a.embed
     WHERE = "local" if getattr(a, "dry", False) else models.where(CHAT)  # --dry: no model reads anything, so nothing is withheld
     MAY_READ = models.MAY_READ[WHERE]

@@ -1,0 +1,111 @@
+{
+ "corpus_tokens": 12935,
+ "dataset": "contoso",
+ "date": "2026-10-14 04:05",
+ "ignore_data_class": false,
+ "judge": "ollama",
+ "judge_desc": "ollama (llama3.2:3b)",
+ "limit": 2,
+ "model": "ollama",
+ "model_desc": "ollama (llama3.2:3b)",
+ "name": "ollama__filters-platform",
+ "phase": "final",
+ "rows": {
+  "full": [
+   {
+    "error": "too big for the window",
+    "id": "g01",
+    "level": "",
+    "message": "The prompt is 15059 tokens, but the window of 'ollama' (llama3.2:3b) is 8192 tokens (num_ctx). Ollama would cut it silently and answer anyway; the lab stops instead. Send fewer chunks, or raise num_ctx in the [ollama] block if the model and memory allow.",
+    "n": 1,
+    "tokens_in": 15059
+   },
+   {
+    "error": "too big for the window",
+    "id": "g18",
+    "level": "",
+    "message": "The prompt is 15061 tokens, but the window of 'ollama' (llama3.2:3b) is 8192 tokens (num_ctx). Ollama would cut it silently and answer anyway; the lab stops instead. Send fewer chunks, or raise num_ctx in the [ollama] block if the model and memory allow.",
+    "n": 18,
+    "tokens_in": 15061
+   }
+  ],
+  "rag": [
+   {
+    "answer": "According to the passage [minutes/2026-10-01.md @0], the reason for dropping vendor A is that they stated that \"no on-premise parser exists before next year.\" This is mentioned in the Decision section: \"Decision: vendor A dropped. Vendor A answered that no on-premise parser exists before next year. Logs can carry user and document identifiers, so they must stay on-premise.\"\n\nSource: [minutes/2026-10-01.md @0]",
+    "answer_relevance": 0.75,
+    "cache_read": null,
+    "cache_write": null,
+    "citations": 2,
+    "cites_right_file": true,
+    "faithfulness": null,
+    "id": "g01",
+    "level": "",
+    "must_say": 0.6667,
+    "n": 1,
+    "refused": false,
+    "saved": true,
+    "seconds": 189.4,
+    "tokens_in": 2176
+   },
+   {
+    "answer": "According to [minutes 2026-09-03 \u00a7Success criteria], the success criterion for search speed is: \"search within 5 seconds\".",
+    "answer_relevance": 0.75,
+    "cache_read": null,
+    "cache_write": null,
+    "citations": 1,
+    "cites_right_file": true,
+    "faithfulness": 0.5,
+    "id": "g18",
+    "level": "",
+    "must_say": 1.0,
+    "n": 18,
+    "refused": false,
+    "saved": true,
+    "seconds": 132.8,
+    "tokens_in": 2592
+   }
+  ]
+ },
+ "setup": {
+  "chunking": "hierarchical",
+  "embed": "ollama-embed",
+  "embedder": "ollama-embed (nomic-embed-text)",
+  "filters": {
+   "platform": "question"
+  },
+  "k": 5,
+  "rerank": false,
+  "retriever": "semantic",
+  "transform": ""
+ },
+ "setup_run": "filters/platform",
+ "summary": {
+  "full": {
+   "answer_relevance": null,
+   "answered": 0,
+   "citations": null,
+   "cites_right_file": null,
+   "faithfulness": null,
+   "must_say": null,
+   "n": 2,
+   "refusals_ok": null,
+   "seconds": null,
+   "tokens_in": 15060.0,
+   "too_big": 2
+  },
+  "rag": {
+   "answer_relevance": 0.75,
+   "answered": 2,
+   "citations": 1.5,
+   "cites_right_file": 1.0,
+   "faithfulness": 0.5,
+   "must_say": 0.8334,
+   "n": 2,
+   "refusals_ok": null,
+   "seconds": 161.1,
+   "tokens_in": 2384.0,
+   "too_big": 0
+  }
+ },
+ "took_s": 38.5
+}

@@ -1,0 +1,32 @@
+# Phase 2 (LAB chapter 3): is the way we cut the documents hurting us?
+# We change: the chunking. We keep: semantic search, no rerank, the embedding model, 5 chunks sent.
+phase = "chunking"
+keep = { retriever = "semantic", rerank = false, k = 5 }
+
+[[rows]]
+name = "structure"        # Contoso only: rag.py's own loaders (E1), one section, row, message, log line per chunk
+only = ["contoso"]
+
+[[rows]]
+name = "naive-500"        # Contoso only: E1's naive baseline, every 500 characters
+only = ["contoso"]
+
+[[rows]]
+name = "fixed-200"        # every 200 tokens, no matter where that lands (the deck's size)
+
+[[rows]]
+name = "recursive"        # headings, then paragraphs, then sentences; up to 300 tokens
+
+[[rows]]
+name = "sentence"         # 4 sentences per chunk
+
+[[rows]]
+name = "semantic"         # a new chunk where neighbouring sentences are least alike (seen by bge-small, whatever the search model)
+
+[[rows]]
+name = "hierarchical"     # search 2-sentence pieces, send their whole section (up to 800 tokens)
+
+[[rows]]
+name = "contextual"       # recursive + one sentence by the chat model saying where the chunk sits
+needs_model = true
+on_request = true         # one model call per chunk: only with --rows contextual

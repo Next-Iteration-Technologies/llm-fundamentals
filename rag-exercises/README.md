@@ -40,6 +40,8 @@ Qdrant runs in-process (local path mode, `python/.store/`): no server needed. Ho
 
 **No key, no model?** Every command takes `--dry`: no chat calls, and the hashed (lexical) embedding stands in for the embed model. Retrieval, ranks and Recall/MRR still work; semantic matches ("users can't find archived files" → KI-014) get weaker. A `--dry` run withholds nothing, since no model reads anything.
 
+**The rulebook dataset** for `LAB.md` is already in the repo: `datasets/dnd-srd/` holds the D&D 5e System Reference Document 5.2.1 (20 markdown files, CC BY 4.0, see its `NOTICE.md`) with 56 questions whose answer passages are known. Nothing to download. `python rag.py check-data --dataset dnd-srd` checks it. The lab's embedding model for it is `bge-small` (about 130 MB from Hugging Face on first use), because nomic in Ollama is slow on a laptop CPU for 1.5 million characters.
+
 **The Jira mock** for E5 and E7 is one file with no dependencies: `python jira-mock/server.py` from the `rag-exercises` folder (it reads `contoso-pack/jira/issues.json` next to it; set `ISSUES_FILE=` to point elsewhere). Stop it with Ctrl-C; restarting it resets every status flip.
 
 ### Switching the model
@@ -237,6 +239,8 @@ python rag.py eval --children --no-rerank
 ```
 
 `--children` cuts the longer sections (SOPs, designs, policy, minutes, notes) into sentence-sized pieces of about 12 words, searches those, and returns the whole section the hit came from. The pack's sections are short, so only a few dozen are cut (289 → 317 chunks); the effect is small here and grows with long documents. `eval` also prints nDCG@5 (graded: 3 = the answer, 2 = needed, 1 = background) and the time per question. Every `ask` and `agent` run appends one line to `.store/trace.jsonl` with the question, asker, flags, passages, withheld passages, tool calls, answer and milliseconds. That's the log box on the backbone, and the raw material for the next eval.
+
+Next: open `LAB.md`.
 
 ## Copilot
 

@@ -1,0 +1,30 @@
+[
+ {
+  "id": 0,
+  "question": "What class features does the Artificer get at 1st level?",
+  "answer": "The rulebook has no Artificer class. The answer must say it does not find this.",
+  "passages": [],
+  "refuse": true
+ },
+ {
+  "id": 1,
+  "question": "What are the racial traits of a Warforged character?",
+  "answer": "The rulebook has no Warforged. The answer must say it does not find this.",
+  "passages": [],
+  "refuse": true
+ },
+ {
+  "id": 2,
+  "question": "Who created Dungeons & Dragons, and in which year was the first edition published?",
+  "answer": "The rulebook says nothing about the game's history. The answer must say it does not find this.",
+  "passages": [],
+  "refuse": true
+ },
+ {
+  "id": 3,
+  "question": "How much does a printed copy of the Player's Handbook cost in a shop?",
+  "answer": "Book prices are not in the rulebook (it lists in-game equipment prices only). The answer must say it does not find this.",
+  "passages": [],
+  "refuse": true
+ }
+]
