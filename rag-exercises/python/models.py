@@ -110,7 +110,10 @@ def _post(b, path, payload, timeout, label):
     import httpx
     try:
         key = _api_key(b)
-        r = httpx.post(b["base_url"].rstrip("/") + path, json=payload, timeout=_timeout(b, timeout),
+        url = b["base_url"].rstrip("/") + path
+        if b.get("api_version") and b["kind"] == "openai":  # Azure OpenAI style gateway: the model is in the path
+            url = f"{b['base_url'].rstrip('/')}/openai/deployments/{b['model']}{path}?api-version={b['api_version']}"
+        r = httpx.post(url, json=payload, timeout=_timeout(b, timeout),
                        headers={"Authorization": f"Bearer {key}"} if key else {})
         r.raise_for_status()
     except httpx.ConnectError:

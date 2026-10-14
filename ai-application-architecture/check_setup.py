@@ -32,7 +32,13 @@ def provider_reachable(provider):
             return True, ""
         if kind == "openai":
             headers = {"Authorization": f"Bearer {os.environ[provider['api_key_env']]}"}
-            httpx.get(provider["base_url"].rstrip("/") + "/models", headers=headers, timeout=15).raise_for_status()
+            if provider.get("api_version"):
+                url = (f"{provider['base_url'].rstrip('/')}/openai/deployments/{provider['model']}"
+                       f"/chat/completions?api-version={provider['api_version']}")
+                httpx.post(url, headers=headers, json={"messages": [{"role": "user", "content": "hi"}], "max_tokens": 1},
+                           timeout=30).raise_for_status()
+            else:
+                httpx.get(provider["base_url"].rstrip("/") + "/models", headers=headers, timeout=15).raise_for_status()
             return True, ""
         if kind == "ollama":
             try:
