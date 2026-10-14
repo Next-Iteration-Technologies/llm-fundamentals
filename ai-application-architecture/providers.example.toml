@@ -11,9 +11,10 @@ api_key_env = "ANTHROPIC_API_KEY"
 input_price_per_million = 4.00 # USD, for the cost line in the traces
 
 [nexus]                        # the room's laptops
-kind = "openai"                # VERIFY: assumes Nexus speaks the OpenAI chat-completions format
-base_url = "https://nexus.example.internal/v1"   # VERIFY
-model = "MODEL-NAME"           # VERIFY
+kind = "openai"                # Nexus speaks the Azure OpenAI format (api_version below)
+base_url = "https://nexus.example.internal"      # override with NEXUS_BASE_URL in .env
+model = "MODEL-NAME"           # the deployment name; override with NEXUS_MODEL in .env
+api_version = "2024-02-01"     # remove this line for a plain OpenAI-style /v1 endpoint
 api_key_env = "NEXUS_API_KEY"
 input_price_per_million = 0
 

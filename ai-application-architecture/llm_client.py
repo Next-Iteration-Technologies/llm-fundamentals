@@ -73,7 +73,15 @@ def load_providers():
     own_file = HERE / "providers.toml"
     config_file = own_file if own_file.exists() else HERE / "providers.example.toml"
     with open(config_file, "rb") as file:
-        return tomllib.load(file)
+        providers = tomllib.load(file)
+    for name, provider in providers.items():       # NEXUS_BASE_URL, NEXUS_MODEL, ... override providers.toml
+        if isinstance(provider, dict):
+            prefix = name.upper().replace("-", "_")
+            for setting in ("base_url", "model"):
+                value = os.environ.get(f"{prefix}_{setting.upper()}")
+                if value:
+                    provider[setting] = value
+    return providers
 
 
 def request_key(kind, **request):
@@ -232,9 +240,14 @@ class Session:
         if tools:
             request["tools"] = openai_tools(tools)
         key = self._api_key()
+        base = self.provider["base_url"].rstrip("/")
+        if self.provider.get("api_version"):       # Azure OpenAI style: the model is in the path
+            url = f"{base}/openai/deployments/{self.provider['model']}/chat/completions?api-version={self.provider['api_version']}"
+        else:
+            url = base + "/chat/completions"
         try:
             response = httpx.post(
-                self.provider["base_url"].rstrip("/") + "/chat/completions",
+                url,
                 headers={"Authorization": f"Bearer {key}"} if key else {},
                 json=request,
                 timeout=120,
