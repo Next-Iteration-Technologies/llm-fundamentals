@@ -1,7 +1,7 @@
 {
  "chunks": 2806,
  "dataset": "dnd-srd",
- "date": "2026-10-13 23:18",
+ "date": "2026-10-14 01:29",
  "name": "hierarchical",
  "order": 4,
  "phase": "chunking",
@@ -6347,5 +6347,5 @@
   "n": 55,
   "nDCG@5": 0.3929
  },
- "took_s": 1.4
+ "took_s": 1.9
 }

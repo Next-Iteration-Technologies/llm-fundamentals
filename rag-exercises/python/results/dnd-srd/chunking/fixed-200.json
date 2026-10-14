@@ -1,7 +1,7 @@
 {
  "chunks": 1999,
  "dataset": "dnd-srd",
- "date": "2026-10-13 23:18",
+ "date": "2026-10-14 01:29",
  "name": "fixed-200",
  "order": 0,
  "phase": "chunking",
@@ -6347,5 +6347,5 @@
   "n": 55,
   "nDCG@5": 0.4437
  },
- "took_s": 0.5
+ "took_s": 0.6
 }
