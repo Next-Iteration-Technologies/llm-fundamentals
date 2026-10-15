@@ -1,7 +1,7 @@
 """Tiny Jira mock for the Contoso RAG lab (fictional data). Standard library only.
-GET  /rest/api/2/search?jql=project = POC AND status != Done AND text ~ "vendor B"
-GET  /rest/api/2/issue/POC-12
-PUT  /rest/api/2/issue/POC-12   body {"fields": {"status": {"name": "Open"}}}   (or {"status": "Open"})
+GET  /rest/api/2/search?jql=project = ONB AND status != Done AND text ~ "BlueRiver"
+GET  /rest/api/2/issue/ONB-15
+PUT  /rest/api/2/issue/ONB-15   body {"fields": {"status": {"name": "Open"}}}   (or {"status": "Open"})
 Reads ISSUES_FILE once; changes live in memory until restart."""
 import json, os, re
 from datetime import datetime, timezone
@@ -44,7 +44,7 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, {"jql": jql, "total": len(hits), "issues": hits})
         if u.path.startswith("/rest/api/2/issue/") and u.path.rsplit("/", 1)[1] in BY_KEY:
             return self.send(200, BY_KEY[u.path.rsplit("/", 1)[1]])
-        self.send(404, {"error": "not found", "try": "/rest/api/2/search?jql=project=POC"})
+        self.send(404, {"error": "not found", "try": "/rest/api/2/search?jql=project=ONB"})
 
     def do_PUT(self):
         key = urlparse(self.path).path.rsplit("/", 1)[1]

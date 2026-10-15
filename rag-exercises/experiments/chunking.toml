@@ -4,7 +4,7 @@ phase = "chunking"
 keep = { retriever = "semantic", rerank = false, k = 5 }
 
 [[rows]]
-name = "structure"        # Contoso only: rag.py's own loaders (E1), one section, row, message, log line per chunk
+name = "structure"        # Contoso only: rag.py's own loaders (E1), one policy section, price row, mail, log line per chunk
 only = ["contoso"]
 
 [[rows]]

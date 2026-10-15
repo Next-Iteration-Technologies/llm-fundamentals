@@ -4,7 +4,7 @@ A chunk's text may be changed on purpose (a sheet row with its column names writ
 replies), but its position never lies: all scoring uses positions (SPEC "One rule makes both datasets work").
 
 A chunk is a dict: file, start, end, text, source (the label the model cites), and metadata where the dataset has it:
-cls (data class), access, date, platform, type, untrusted, parent (hierarchical: the section it hands over).
+cls (data class), access, date, country, type, untrusted, parent (hierarchical: the section it hands over).
 """
 import bisect, re
 
@@ -42,10 +42,10 @@ _file_meta = {}
 
 def file_meta(ds):
     """Per-file metadata for chunkings that don't know a file's structure: the most restrictive data class of the
-    file's structure-aware chunks (Contoso), else Public. Dates and platform the same way."""
+    file's structure-aware chunks (Contoso), else Public. Dates and country the same way."""
     if ds.name in _file_meta:
         return _file_meta[ds.name]
-    meta = {f: {"cls": ds.cfg.get("class", "Public"), "access": ["team", "priya", "vendor"]} for f in ds.docs}
+    meta = {f: {"cls": ds.cfg.get("class", "Public"), "access": ["team", "hr", "client"]} for f in ds.docs}
     if ds.cfg.get("chunking") == "structure":
         rank = {"Public": 0, "Internal": 1, "Confidential": 2}
         for c in chunk(ds, "structure"):
@@ -53,11 +53,11 @@ def file_meta(ds):
             if rank.get(c.get("cls"), 1) >= rank.get(m.get("cls"), 0):
                 m["cls"] = c.get("cls") or "Internal"
             m["date"] = max(m.get("date") or "", c.get("date") or "")
-            m.setdefault("platforms", set()).add(c.get("platform"))
+            m.setdefault("countries", set()).add(c.get("country"))
             m["access"] = sorted(set(m["access"]) & set(c.get("access", m["access"])) or set(c.get("access", [])))
         for m in meta.values():
-            ps = m.pop("platforms", set())
-            m["platform"] = ps.pop() if len(ps) == 1 else ""
+            ps = m.pop("countries", set())
+            m["country"] = ps.pop() if len(ps) == 1 else ""
     _file_meta[ds.name] = meta
     return meta
 
@@ -113,8 +113,8 @@ def _record(raw, field, value):
 
 
 def structure(ds, **_):
-    """Contoso's structure-aware chunking, exactly as rag.py ingests it (E1): one SOP or minutes section, one sheet
-    row, one mail message without quoted replies, one log line, one ticket per chunk. Positions are added here."""
+    """Contoso's structure-aware chunking, exactly as rag.py ingests it (E1): one policy or minutes section, one price
+    list row, one mail message without quoted replies, one log line, one ticket per chunk. Positions are added here."""
     from . import host
     h = host()
     h.PACK = ds.cfg["_root"]
@@ -124,7 +124,7 @@ def structure(ds, **_):
     for c in chunks:
         f, raw = c["file"], ds.docs[c["file"]]
         t = c["type"]
-        if t in ("sop", "design", "policy", "minutes", "onedrive"):
+        if t in ("policy", "minutes", "onedrive"):
             if f not in sections:
                 sections[f] = _sections(raw)
             body_at, secs = sections[f]
@@ -138,11 +138,11 @@ def structure(ds, **_):
                 s, e = secs[k][1], secs[k][2]
         elif t == "mail":
             s, e = 0, len(raw)
-        elif t == "ki":
+        elif t == "price":
             ident = c["source"].split()[-1]
             m = re.search(rf"(?m)^{re.escape(ident)},.*$", raw)
             s, e = m.span()
-        elif t in ("config", "log"):
+        elif t == "log":
             if f not in lines:
                 lines[f] = _line_spans(raw)
             k = used.get(f, 0)

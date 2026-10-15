@@ -1,8 +1,8 @@
-# Phase 5 (LAB chapter 6): two documents disagree. SOP-OPS-02 (revised 2025-11-20) says logs are kept 14 days,
-# the Content Hub cleanup config (revised 2026-08-04) says 30. Which one does the answer use?
+# Phase 5 (LAB chapter 6): two documents disagree. The old remote-work policy (HR-REM-01 v2024, still in the library)
+# says up to 2 days a week from home, the current one (revised 2026-03-01) says 3. Which one does the answer use?
 # We change: search filters and a "prefer the newest" rule. We keep: the best setup so far (embedding phase, else retrieval).
 phase = "filters"
-only = ["contoso"]        # D&D has no dates, platforms or askers
+only = ["contoso"]        # D&D has no dates, countries or askers
 from = ["embedding", "retrieval"]
 
 [[rows]]
@@ -13,8 +13,8 @@ name = "asker"            # each question asked as its golden-set asker: only wh
 filters = { asker = "golden" }
 
 [[rows]]
-name = "platform"         # a question that names a platform only searches that platform
-filters = { platform = "question" }
+name = "country"          # a question that names a country only searches that country's documents (and "All")
+filters = { country = "question" }
 
 [[rows]]
 name = "after-2026"       # only documents dated 2026 or later
@@ -30,6 +30,6 @@ filters = { asker = "golden", prefer_newest = true }
 
 [[watch]]                 # printed for every row: which of the two comes first for this question
 question = "g10"
-old = "contenthub/SOP-OPS-02.md"
-new = "contenthub/config/contenthub-cleanup.xml"
-say = "14 days (SOP-OPS-02, 2025) or 30 days (cleanup config, 2026)?"
+old = "policies/archive/HR-REM-01_2024.md"
+new = "policies/HR-REM-01.md"
+say = "2 days (HR-REM-01 v2024) or 3 days (HR-REM-01, 2026)?"

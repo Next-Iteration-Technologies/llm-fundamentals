@@ -347,7 +347,7 @@ def check(name):
     say("\nChecking ...")
     if name == "offline":
         say("Offline: no model to check. Add --dry to every command, for example:\n"
-            '  python rag.py ingest --dry\n  python rag.py ask "why did we drop vendor A?" --dry')
+            '  python rag.py ingest --dry\n  python rag.py ask "why did we drop ClearSpring?" --dry')
         return
     subprocess.run([str(py), str(HERE / "rag.py"), "check"])
     # the rulebook dataset embeds with bge-small whatever the default is: fetch it now, not in the middle of the lab
@@ -358,7 +358,7 @@ def check(name):
     say(line)
     if "[ok]" not in line:
         say(HF_HINT)
-    say('\nNext:  python rag.py ingest   then   python rag.py ask "why did we drop vendor A?"')
+    say('\nNext:  python rag.py ingest   then   python rag.py ask "why did we drop ClearSpring?"')
     say("Switch models any time with:  python setup.py provider")
 
 

@@ -40,7 +40,7 @@ class Question:
     text: str
     gold: list = field(default_factory=list)
     level: str = ""         # D&D: easy, medium, unanswerable
-    asker: str = "sam"
+    asker: str = "employee"
     must_say: list = field(default_factory=list)
     must_not_say: list = field(default_factory=list)
     refuse: bool = False    # the answer must say it doesn't find it
@@ -188,7 +188,7 @@ def expand(raw, start, end, how):
 
 
 def locate(raw, quote, how=None):
-    """Find a quoted passage in its file. A rewritten record ("Known issue KI-014.") falls back to its id."""
+    """Find a quoted passage in its file. A rewritten record ("Price list WC-300.") falls back to its id."""
     span = find_text(raw, quote)
     if span is None:
         ids = re.findall(r"\b[A-Z]{2,}-\d+\b", quote)
@@ -248,7 +248,7 @@ def read_contoso(path, cfg, docs, base):
             gold = [] if q.get("should_refuse") else [Gold(f, 0, len(docs.get(f, "")), 1, "file", f, f in docs,
                                                            "" if f in docs else "file not in the dataset")
                                                       for f in q.get("expected_files", [])]
-        out.append(Question(0, q["id"], q["question"], gold, asker=q.get("asker", "sam"), must_say=q.get("must_say", []),
+        out.append(Question(0, q["id"], q["question"], gold, asker=q.get("asker", "employee"), must_say=q.get("must_say", []),
                             must_not_say=q.get("must_not_say", []), refuse=bool(q.get("should_refuse")),
                             reference=q.get("note", ""), date=q.get("date", "")))
     return out

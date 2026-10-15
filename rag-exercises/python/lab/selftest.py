@@ -124,7 +124,7 @@ def _old_exercises():
     expect(len(cmds) > 30, f"found only {len(cmds)} commands in README E1-E11")
     mock = None
     try:
-        urllib.request.urlopen("http://localhost:8080/rest/api/2/search?jql=project%20%3D%20POC", timeout=2)
+        urllib.request.urlopen("http://localhost:8080/rest/api/2/search?jql=project%20%3D%20ONB", timeout=2)
     except Exception:
         mock = subprocess.Popen([sys.executable, str(ROOT / "jira-mock" / "server.py")], cwd=ROOT,
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -161,7 +161,7 @@ STEPS8 = ["1. LOAD", "2. CHUNK", "3. EMBED", "4. SEARCH", "5. RERANK", "6. PROMP
 
 @check(2, "walkthrough --dry: steps 1-5, then stops and says so (Contoso and D&D)")
 def _walk_dry():
-    for args in (["Why did we drop vendor A?"], ["Which race best resists a Red Dragon's breath?", "--dataset", "dnd-srd"]):
+    for args in (["Why did we drop ClearSpring?"], ["Which race best resists a Red Dragon's breath?", "--dataset", "dnd-srd"]):
         out = rag("walkthrough", *args, "--dry", RAG_DATASET="")
         for s in STEPS8[:5]:
             expect(s in out, f"step '{s}' missing in walkthrough {args}:\n{out[-1500:]}")
@@ -240,7 +240,7 @@ def _baseline_report():
 
 
 # ------------------------------------------------------------------ step 4: chunking
-CHANGED_ON_PURPOSE = {"ki", "mail", "ticket", "jira"}   # rows with column names written in, mail without quotes, records
+CHANGED_ON_PURPOSE = {"price", "mail", "ticket", "jira"}   # rows with column names written in, mail without quotes, records
 
 
 @check(4, "data: every chunk's position matches its file, for every chunking (text changed on purpose only where meant)")
@@ -256,9 +256,9 @@ def _positions():
                 expect(0 <= c["start"] < c["end"] <= len(raw), f"{name} {ch}: bad span {c['file']} {c['start']}-{c['end']}")
                 piece = raw[c["start"]:c["end"]]
                 if c.get("type") in CHANGED_ON_PURPOSE:
-                    ident = re.search(r"\b(KI-\d+|TCK-\d+|POC-\d+)\b", c["text"])
+                    ident = re.search(r"\b(WC-\d+|TKT-\d+|ONB-\d+)\b", c["text"])
                     expect(c["type"] == "mail" or (ident and ident.group(1) in piece), f"{name} {ch}: {c['source']} not at its record")
-                elif c.get("type"):  # structure-aware sections, config and log lines: the text is the section, normalized
+                elif c.get("type"):  # structure-aware sections and log lines: the text is the section, normalized
                     flat = re.sub(r"\s+", " ", re.sub(r"<!--.*?-->", "", piece, flags=re.S))
                     expect(c["text"] in flat, f"{name} {ch}: {c['source']} text is not at its position")
                 else:
@@ -365,18 +365,17 @@ def _embedding():
 
 
 # ------------------------------------------------------------------ step 7: filters and freshness (Contoso)
-@check(7, "filters: prefer-newest puts the 2026 config (30 days) before the 2025 SOP (14 days); D&D is refused; same output twice")
+@check(7, "filters: prefer-newest puts the 2026 remote-work policy (3 days) before the 2024 one (2 days); D&D is refused; same output twice")
 def _filters():
     runs = compare_twice("--phase", "filters", "--dataset", "contoso", "--dry")
     names = {k.split("/")[-1][:-5] for k in runs}
-    expect({"no-filters", "asker", "platform", "after-2026", "prefer-newest"} <= names, f"rows: {names}")
-    # on the real embedding (all Contoso chunks are embedded once, then cached): hash may not find the config at all
-    # pinned to the recorded setup (hierarchical, semantic, nomic): a hash setup may not find the 2026 config at all
+    expect({"no-filters", "asker", "country", "after-2026", "prefer-newest"} <= names, f"rows: {names}")
+    # pinned to the recorded setup (hierarchical, semantic, nomic): a hash setup may not find the 2026 policy at all
     out = rag("compare", "--phase", "filters", "--dataset", "contoso", "--setup", "chunking/hierarchical",
               "--embed", "ollama-embed" if has_ollama() else "bge-small")
     lines = out.splitlines()
     i = next(n for n, l in enumerate(lines) if l.strip().startswith("prefer-newest "))
-    expect("the newer one first: contenthub-cleanup.xml" in lines[i + 1], "prefer-newest:\n" + "\n".join(lines[i:i + 2]))
+    expect("the newer one first: HR-REM-01.md" in lines[i + 1], "prefer-newest:\n" + "\n".join(lines[i:i + 2]))
     code, out = rag("compare", "--phase", "filters", "--dataset", "dnd-srd", ok=False)
     expect(code != 0 and "needs contoso" in out, f"D&D should be refused with a message:\n{out}")
 
@@ -488,7 +487,7 @@ LOOK_FOR = {1: STEPS8, 2: ["Recall@3", "MRR", "PERFECT student", "RANDOM guesser
             3: ["GOLD 1 of", "»", "cut in two", "COMPARE chunking", "won"],
             4: ["COMPARE retrieval", "keyword", "hybrid-rerank", "won", "R@50"],
             5: ["COMPARE embedding", "hash", "bge-small", "bge-base"],
-            6: ["COMPARE filters", "prefer-newest", "14 days", " one first"],
+            6: ["COMPARE filters", "prefer-newest", "2 days", " one first"],
             7: ["context", "faithful", "answers", "judged by"],
             8: ["cut apart", "half found", "ranked too low", "wrong document", "not found at all"],
             9: ["tokens to send", "rag", "full"],

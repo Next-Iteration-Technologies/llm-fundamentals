@@ -41,21 +41,27 @@ def _transform(question, how, chat):
     sys.exit(f"! no query transformation '{how}': rewrite, multi or hyde.")
 
 
-PLATFORMS = ["Content Hub", "Legacy Archive", "Capture"]
+COUNTRIES = {"UK": ["uk", "united kingdom", "britain", "london"], "Netherlands": ["netherlands", "dutch", "holland", "utrecht"],
+             "Germany": ["germany", "german", "cologne"]}
+
+
+def countries_in(text):
+    """The countries a question names, by name, adjective or office city."""
+    return [c for c, words in COUNTRIES.items() if any(re.search(rf"\b{w}\b", text.lower()) for w in words)]
 
 
 def passes(chunk, filters, ds, q=None):
     """Phase 5 filters, applied before ranking (like rag.py's permission filter):
       asker = "golden"  each question asked as its golden-set asker: only chunks that role may see (E6)
-      platform = "question"  a question that names a platform only searches that platform (and "All")
+      country = "question"  a question that names a country only searches that country (and "All")
       after = "YYYY-MM-DD"  only documents dated on or after this day (undated ones stay)"""
     if filters.get("asker"):
-        role = (q.asker if q and filters["asker"] == "golden" else filters["asker"]) or "sam"
-        if not set(chunk.get("access", ["team", "priya", "vendor"])) & set(host().ROLES.get(role, [role])):
+        role = (q.asker if q and filters["asker"] == "golden" else filters["asker"]) or "employee"
+        if not set(chunk.get("access", ["team", "hr", "client"])) & set(host().ROLES.get(role, [role])):
             return False
-    if filters.get("platform") and q is not None:
-        named = [p for p in PLATFORMS if p.lower() in q.text.lower()]
-        if named and chunk.get("platform", "") not in named + ["", "All"]:
+    if filters.get("country") and q is not None:
+        named = countries_in(q.text)
+        if named and chunk.get("country", "") not in named + ["", "All"]:
             return False
     if filters.get("after") and chunk.get("date") and str(chunk["date"]) < filters["after"]:
         return False

@@ -127,7 +127,7 @@ def compare(a):
     ds = datasets.load(a.dataset)
     exp = experiment(a.phase)
     if exp.get("only") and ds.name not in exp["only"]:
-        sys.exit(f"! phase {a.phase} needs {' or '.join(exp['only'])} (dates, platforms, askers); add --dataset {exp['only'][0]}.")
+        sys.exit(f"! phase {a.phase} needs {' or '.join(exp['only'])} (dates, countries, askers); add --dataset {exp['only'][0]}.")
     rows = plan(a, ds, exp)
     chat = None if a.dry else llm.chat_name(a.chat)
     print(f"COMPARE {exp['phase']} on {ds.name}: {len(rows)} setups, {len(ds.scored)} questions each. "
