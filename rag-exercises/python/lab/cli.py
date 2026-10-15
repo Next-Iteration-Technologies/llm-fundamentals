@@ -51,6 +51,8 @@ def add_commands(sub):
     p.add_argument("--dry", action="store_true", help="no model: stop after step 5")
     p.add_argument("--fresh", action="store_true", help="ask the model again instead of reusing a saved reply")
     p.add_argument("--compare-with", metavar="RUN", help="also run it with RUN's setup, side by side")
+    p.add_argument("--explain", action="store_true",
+                   help="step 9: what happened in plain words: what was sent, where the right passages were, what the scores mean")
 
 
     p = sub.add_parser("chunks", help="what each chunking looks like: count, sizes, gold passages cut in two")

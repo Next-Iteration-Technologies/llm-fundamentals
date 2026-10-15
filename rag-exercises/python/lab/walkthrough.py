@@ -23,6 +23,108 @@ def show_hits(hits, n=10, gold=()):
         print(f"   {r:>2}.{mark}{s:>8.4f}  [{c['source'][:48]}]  {short(c['text'], 60)}")
 
 
+def is_held(c, held):
+    return any(c is h for h in held)
+
+
+def say(text):
+    print(textwrap.fill(text, W, initial_indent="   ", subsequent_indent="   "))
+
+
+def explain(ds, setup, final, demo, sent, held, where, cited, gold, ranks):
+    """Step 9 (--explain): the run in plain words, from what steps 4 to 8 already know. No model is asked."""
+    head(9, "Explain", "what happened, in plain words")
+    k, n = min(setup.k, len(final)), len(final)
+
+    # what was sent, and in which order
+    say(f"The prompt took the top {k} in the reranker's order (step 5)." if setup.rerank else
+        f"The prompt took the top {k} in the search order (step 4). Rerank is not part of this setup"
+        + (": the step 5 list was only a preview and changed nothing." if demo else "."))
+    for r, (c, _) in enumerate(final[:k], 1):
+        mark = "*" if any(metrics.matches(c, g) for g in gold) else " "
+        print(f"   {r:>2}. {mark} {'held back' if is_held(c, held) else 'sent':<9}  [{c['source'][:70]}]")
+
+    # the data-class rule (flow 9.4)
+    if held:
+        may = ", ".join(sorted(x for x in models.MAY_READ[where] if x))
+        classes = ", ".join(sorted({c.get("cls") or "no class" for c in held}))
+        if sent:
+            say(f"{len(held)} of the {k} were held back: a '{where}' chat model may read {may}, and they are {classes}. "
+                f"The model answered from the other {len(sent)}.")
+        else:
+            say(f"All {k} were held back: a '{where}' chat model may read {may}, and they are {classes}. "
+                f"The model got no passages at all, so an \"I don't find this\" comes from the data-class rule, not from search.")
+        say("To let the model read them: --chat NAME with a block whose where is \"tenant\" or \"local\", "
+            "CHAT_MODEL_WHERE=tenant for one run, or where = \"tenant\" under the block in providers.toml.")
+    if not ranks:
+        return
+
+    # where each gold passage was
+    order = "reranked" if setup.rerank else "search"
+    preview = metrics.gold_ranks([c for c, _ in demo], gold) if demo else [None] * len(gold)
+    print()
+    say(f"Where each right passage (gold, * above) was, in the {order} order:")
+    for g, r, dr in zip(gold, ranks, preview):
+        label = f"[{g.file}] \"{short(ds.docs[g.file][g.start:g.end], 50)}\""
+        if r and r <= k:
+            why = f"rank {r}: " + ("in the top k, but held back (data class)." if is_held(final[r - 1][0], held) else "sent.")
+        elif r:
+            why = f"rank {r}: in the top {n}, but not in the {k} sent."
+            if dr:
+                why += f" The reranker would move it to {dr}, " + (f"inside the {k}." if dr <= k else f"still outside the {k}.")
+        else:
+            why = f"not in the top {n} at all."
+            same = next(((i, c) for i, (c, _) in enumerate(final, 1) if c["file"] == g.file), None)
+            if same:
+                why += (f" A chunk from the same file is at rank {same[0]} ([{same[1]['source'][:50]}]), but it's another part "
+                        f"of the file: gold counts by character range, so it doesn't match.")
+        say(f"- {label}: {why}")
+
+    # the scores, worked out
+    s = metrics.score(ranks, [g.grade for g in gold])
+    hit = [r for r in ranks if r]
+    print()
+    say(f"The scores (they use the {order} order" + (", not the step 5 preview):" if demo else "):"))
+    for key, cut in (("R@3", 3), ("R@5", 5), ("R@50", 50)):
+        got, out_of = sum(1 for r in ranks if r and r <= cut), min(cut, len(ranks))
+        say(f"- Recall@{cut} = {got} of {out_of} = {s[key]:.2f}. {metrics.EXPLAIN[key]}")
+    say(f"- MRR = 1 / {min(hit)} = {s['MRR']:.2f}, because the first right chunk is at rank {min(hit)}." if hit else
+        f"- MRR = 0, because no right chunk is in the top {n}.")
+    say(f"  {metrics.EXPLAIN['MRR']}")
+    if held:
+        say("  The scores measure search only: a held-back chunk still counts as found.")
+
+    # the answer next to retrieval
+    if sent:
+        by_src = {c["source"]: c for c in sent}
+        cg = [x for x in cited if x in by_src and any(metrics.matches(by_src[x], g) for g in gold)]
+        other = [x for x in cited if x in by_src and x not in cg]
+        unknown = [x for x in cited if x not in by_src]
+        print()
+        if not cited:
+            say("The answer cites nothing.")
+        else:
+            say(f"The answer cites {len(cited)} passage{'s' if len(cited) > 1 else ''}: {len(cg)} gold, {len(other)} not gold."
+                + (f" {len(unknown)} citation{'s' if len(unknown) > 1 else ''} match no passage that was sent: check them."
+                   if unknown else ""))
+        if other or (cited and not cg):
+            say("A chunk that isn't gold can still hold the answer, for example the same fact in another note. "
+                "The scores above judge the search; Chapter 7 scores the answers themselves.")
+
+    # what to try
+    tips = []
+    if held and (not sent or any(r and r <= k and is_held(final[r - 1][0], held) for r in ranks)):
+        tips.append("let the model read the held-back passages (see above)")
+    if any(r and r > k for r in ranks):
+        tips.append(f"gold in the top {n} but past the {k} sent: try --rerank, --retriever hybrid, or a larger --k")
+    if any(r is None for r in ranks):
+        tips.append(f"gold not in the top {n}: try --retriever hybrid, or another --chunking "
+                    f"(python rag.py chunks shows which chunkings cut a gold passage in two)")
+    print()
+    say("What to try: " + "; ".join(tips) + "." if tips else
+        f"Every right passage was in the {k} sent: search did its job for this question.")
+
+
 def run(a):
     ds = datasets.load(a.dataset)
     q = ds.question(a.question_n) if a.question_n else None
@@ -76,8 +178,9 @@ def walk(a, ds, q, text, setup, title=""):
     show_hits(first, 10, gold)
 
     # 5. rerank
+    demo = None
     if setup.rerank:
-        head(5, "Rerank", f"a second, slower model ({pipeline.RERANKER}) reread the top {len(first)} with the question; new order:")
+        head(5, "Rerank", f"a second, slower model ({models.rerank_id()}) reread the top {len(first)} with the question; new order:")
         show_hits(final, 10, gold)
     elif a.no_rerank_demo:
         head(5, "Rerank", "skipped (--no-rerank).")
@@ -85,7 +188,7 @@ def walk(a, ds, q, text, setup, title=""):
         try:
             demo = pipeline.rerank(text, first)
             head(5, "Rerank", f"not part of this setup (Chapter 4 tries it), so the prompt keeps the search order. "
-                              f"For a look, the order a second, slower model ({pipeline.RERANKER}) would give:")
+                              f"For a look, the order a second, slower model ({models.rerank_id()}) would give:")
             show_hits(demo, 10, gold)
         except Exception as e:
             head(5, "Rerank", f"skipped: the reranker is not available ({type(e).__name__}: {str(e)[:100]}).")
@@ -127,15 +230,20 @@ def walk(a, ds, q, text, setup, title=""):
     elif not gold:
         head(8, "Check", "this question has no gold passages" + (": the right answer is to say it isn't in the documents."
                                                                   if q.refuse else "."))
-    else:
+    ranks = None
+    if q and gold:
         ranked = [c for c, _ in final]
         ranks = metrics.gold_ranks(ranked, gold)
         head(8, "Check", f"the {len(gold)} gold passage{'s' if len(gold) > 1 else ''} for this question, and whether we found them")
         for g, r in zip(gold, ranks):
-            state = f"found (rank {r})" + (", sent" if r <= setup.k else ", not sent") if r else "not found"
-            print(f"   {state:<24} [{g.file} {g.start}-{g.end}] {short(ds.docs[g.file][g.start:g.end], 60)}")
+            state = f"found (rank {r})" + (", not sent" if r > setup.k else ", held back" if is_held(ranked[r - 1], held)
+                                           else ", sent") if r else "not found"
+            print(f"   {state:<26} [{g.file} {g.start}-{g.end}] {short(ds.docs[g.file][g.start:g.end], 60)}")
         s = metrics.score(ranks, [g.grade for g in gold])
-        print(f"   {sum(1 for r in ranks if r and r <= setup.k)} of {len(gold)} in the {setup.k} chunks sent, "
+        n_sent = sum(1 for r in ranks if r and r <= setup.k and not is_held(ranked[r - 1], held))
+        print(f"   {n_sent} of {len(gold)} in the {len(sent)} chunks sent, "
               f"{sum(1 for r in ranks if r)} in the top {len(ranked)}.  Recall@3 {s['R@3']:.2f}, MRR {s['MRR']:.2f}")
+    if getattr(a, "explain", False):
+        explain(ds, setup, final, demo, sent, held, where, cited, gold, ranks)
     print(f"\n({time.time() - t_all:.0f} s)")
     return final

@@ -81,6 +81,8 @@ The first time, this takes a while: every chunk has to be turned into numbers on
 7. **ANSWER:** what the model wrote, and which passages it cited
 8. **CHECK:** did it find the passages we know contain the answer? Each one says **found (rank N)** or **not found**. In steps 4 and 5, a `*` marks them.
 
+Add `--explain` for a ninth step, **EXPLAIN**: the run in plain words. It covers what was sent, where each right passage was and why it was or wasn't sent, how the scores were worked out, and what to try next.
+
 Try a question of your own too:
 ```
 python rag.py walkthrough "your question here"

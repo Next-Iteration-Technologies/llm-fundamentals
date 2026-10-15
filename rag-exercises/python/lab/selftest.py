@@ -176,8 +176,18 @@ def _walk_full():
     expect(re.search(r"6\. PROMPT: exactly what the model is sent: about [\d,]+ tokens", out), "the prompt step must show its size")
     expect(re.search(r"7\. ANSWER: \S+ \(.+\) answered", out), "the answer step must name the model")
     expect(re.search(r"found \(rank \d+\)|not found", out), "the check step must list found (rank N) / not found")
+    expect("9. EXPLAIN" not in out, "step 9 only comes with --explain")
     out = rag("walkthrough", "Which race best resists a Red Dragon's breath?", "--dataset", "dnd-srd")
     expect("8. CHECK: skipped" in out, "a typed question must skip the check step")
+
+
+@check(2, "walkthrough --explain: step 9 says what was sent and works out Recall@3 and MRR")
+def _walk_explain():
+    out = rag("walkthrough", "--question", "1", "--explain", RAG_DATASET="dnd-srd")
+    expect("9. EXPLAIN" in out, f"step 9 missing:\n{out[-2000:]}")
+    for s in ("The prompt took the top", "Recall@3 = ", "MRR = "):
+        expect(s in out, f"'{s}' missing in step 9:\n{out[-2000:]}")
+    expect("What to try:" in out or "search did its job" in out, "step 9 must end with what to try")
 
 
 @check(2, "LAB_NO_API: a paid block stops with the message and sends nothing; check reports it")
