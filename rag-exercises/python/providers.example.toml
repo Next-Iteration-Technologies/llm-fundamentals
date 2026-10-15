@@ -16,11 +16,11 @@ embed = "bge-small"       # default embed block: what the chunks and questions a
 # CHAT_MODEL_WHERE=... overrides it.
 
 [nexus]                   # the room's laptops: the company gateway
-kind = "openai"           # VERIFY: assumes Nexus speaks the OpenAI chat-completions format
-base_url = "https://nexus.example.internal/v1"   # VERIFY
+kind = "openai"           # Nexus speaks the Azure OpenAI format (api_version below)
+base_url = "https://nexus.example.internal"      # the host only, no /v1
 base_url_env = "NEXUS_BASE_URL"                  # set in .env (e.g. the test gateway): wins over base_url
-model = "MODEL-NAME"      # VERIFY: `agent` needs a model that calls tools
-# api_version = "2024-10-21"   # Azure OpenAI layout: the model is a deployment, /openai/deployments/MODEL/...?api-version=
+model = "MODEL-NAME"      # the deployment name; `agent` needs a model that calls tools
+api_version = "2024-02-01"  # remove this line for a plain OpenAI-style /v1 endpoint
 api_key_env = "NEXUS_API_KEY"
 where = "tenant"
 
@@ -54,9 +54,10 @@ num_ctx = 8192            # the window sent to Ollama; a longer prompt stops wit
 
 [nexus-embed]
 kind = "openai"
-base_url = "https://nexus.example.internal/v1"   # VERIFY
+base_url = "https://nexus.example.internal"      # the host only, no /v1
 base_url_env = "NEXUS_BASE_URL"
-model = "EMBED-MODEL-NAME"                       # VERIFY
+model = "EMBED-MODEL-NAME"                       # the embedding deployment name
+api_version = "2024-02-01"
 api_key_env = "NEXUS_API_KEY"
 
 [ollama-embed]            # only where Ollama is allowed

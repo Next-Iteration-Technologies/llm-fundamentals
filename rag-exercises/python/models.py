@@ -117,7 +117,7 @@ def base_url(b):
 def _post(b, path, payload, timeout, label):
     import httpx
     url = base_url(b)
-    if b.get("api_version"):  # Azure OpenAI layout (Nexus): the model is a deployment in the path
+    if b.get("api_version") and b["kind"] == "openai":  # Azure OpenAI style gateway (Nexus): the model is in the path
         path = f"/openai/deployments/{b['model']}{path}?api-version={b['api_version']}"
     try:
         key = _api_key(b)
