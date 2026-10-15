@@ -1,0 +1,3502 @@
+{
+ "chunks": 380,
+ "dataset": "contoso",
+ "date": "2026-10-15 06:31",
+ "name": "keyword@hierarchical",
+ "order": 7,
+ "phase": "retrieval",
+ "questions": [
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     769,
+     892,
+     3
+    ],
+    [
+     "mail/2026-09-30_mark_re-re-re-clearspring-utrecht.eml",
+     592,
+     652,
+     3
+    ],
+    [
+     "minutes/2026-09-03.md",
+     1618,
+     1681,
+     1
+    ]
+   ],
+   "id": "g01",
+   "level": "",
+   "n": 1,
+   "ranks": [
+    11,
+    9,
+    26
+   ],
+   "scores": {
+    "MRR": 0.1111,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 5,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "tickets/tickets.json",
+     8747,
+     11766,
+     8.4209
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     238,
+     888,
+     8.1801
+    ],
+    [
+     "policies/HR-REV-01.md",
+     2400,
+     3180,
+     8.0955
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     4952,
+     5597,
+     6.862
+    ],
+    [
+     "minutes/2026-09-17.md",
+     0,
+     1784,
+     6.7464
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     6.5258
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     6.3309
+    ],
+    [
+     "mail/2026-09-19_mark_re-clearspring-utrecht.eml",
+     0,
+     959,
+     6.2208
+    ],
+    [
+     "mail/2026-09-30_mark_re-re-re-clearspring-utrecht.eml",
+     0,
+     1343,
+     6.2208
+    ],
+    [
+     "tickets/tickets.json",
+     11773,
+     14690,
+     6.2208
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-HYG-01.md",
+     3331,
+     3427,
+     3
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     3949,
+     4050,
+     3
+    ]
+   ],
+   "id": "g02",
+   "level": "",
+   "n": 2,
+   "ranks": [
+    33,
+    null
+   ],
+   "scores": {
+    "MRR": 0.0303,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.5,
+    "all@5": 0.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/SV-HYG-01.md",
+     2655,
+     3298,
+     17.6216
+    ],
+    [
+     "tickets/tickets.json",
+     17697,
+     20714,
+     17.2184
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-taste.eml",
+     0,
+     574,
+     16.2966
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     16.2287
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     15.8085
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     218,
+     782,
+     15.6083
+    ],
+    [
+     "mail/2026-09-22_lee_re-fabrikam-taste.eml",
+     0,
+     760,
+     15.5289
+    ],
+    [
+     "policies/HR-JOI-01.md",
+     179,
+     822,
+     14.7441
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     4952,
+     5597,
+     14.6471
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     186,
+     665,
+     13.5875
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "logs/deliveries.log",
+     3665,
+     3770,
+     3
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     3446,
+     3515,
+     2
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     2140,
+     2247,
+     1
+    ]
+   ],
+   "id": "g03",
+   "level": "",
+   "n": 3,
+   "ranks": [
+    4,
+    null,
+    null
+   ],
+   "scores": {
+    "MRR": 0.25,
+    "R@2k": 0.3333,
+    "R@3": 0.0,
+    "R@5": 0.3333,
+    "R@50": 0.3333,
+    "all@5": 0.0,
+    "chunks@2k": 8,
+    "nDCG@5": 0.2713
+   },
+   "top": [
+    [
+     "policies/CL-DAT-01.md",
+     4761,
+     5387,
+     11.2089
+    ],
+    [
+     "mail/2026-10-06_0714_missed_ord-7f3a.eml",
+     0,
+     459,
+     9.904
+    ],
+    [
+     "onedrive/hr-notes/difficult-conversations.md",
+     0,
+     634,
+     9.7661
+    ],
+    [
+     "logs/deliveries.log",
+     2495,
+     4988,
+     8.6086
+    ],
+    [
+     "tickets/tickets.json",
+     20721,
+     21896,
+     7.3522
+    ],
+    [
+     "policies/HR-JOI-01.md",
+     3185,
+     4034,
+     7.1284
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     1388,
+     2002,
+     6.9968
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     2728,
+     3307,
+     5.633
+    ],
+    [
+     "policies/HR-REV-01.md",
+     1600,
+     2398,
+     5.6249
+    ],
+    [
+     "mail/2026-10-06_lee_re-missed-deliveries.eml",
+     0,
+     602,
+     5.3083
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-DAT-01.md",
+     2530,
+     2633,
+     3
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     2971,
+     3106,
+     2
+    ]
+   ],
+   "id": "g04",
+   "level": "",
+   "n": 4,
+   "ranks": [
+    1,
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 15,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/CL-DAT-01.md",
+     2483,
+     3270,
+     28.9011
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     5149,
+     5747,
+     27.493
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     182,
+     236,
+     26.9852
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     0,
+     180,
+     25.4762
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     20.4343
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     238,
+     888,
+     18.1633
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     18.1423
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     196,
+     837,
+     18.0995
+    ],
+    [
+     "policies/SV-INS-01.md",
+     218,
+     797,
+     16.8252
+    ],
+    [
+     "policies/SV-INS-01.md",
+     3879,
+     4603,
+     14.1981
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "tickets/tickets.json",
+     18066,
+     18499,
+     3
+    ],
+    [
+     "tickets/tickets.json",
+     12041,
+     12480,
+     3
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     3331,
+     3427,
+     2
+    ],
+    [
+     "tickets/tickets.json",
+     4092,
+     4535,
+     1
+    ]
+   ],
+   "id": "g06",
+   "level": "",
+   "n": 6,
+   "ranks": [
+    16,
+    19,
+    7,
+    null
+   ],
+   "scores": {
+    "MRR": 0.1429,
+    "R@2k": 0.25,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.75,
+    "all@5": 0.0,
+    "chunks@2k": 12,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/SV-CMP-01.md",
+     2004,
+     2639,
+     13.4599
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-taste.eml",
+     0,
+     574,
+     11.925
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     10.383
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     224,
+     729,
+     9.9102
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     4669,
+     5269,
+     9.4823
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     1641,
+     2371,
+     9.4273
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     3300,
+     3955,
+     9.4269
+    ],
+    [
+     "policies/SV-INS-01.md",
+     218,
+     797,
+     9.3873
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     196,
+     837,
+     9.2215
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     3078,
+     3818,
+     9.0315
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-MIS-01.md",
+     705,
+     820,
+     3
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     2140,
+     2247,
+     2
+    ]
+   ],
+   "id": "g07",
+   "level": "",
+   "n": 7,
+   "ranks": [
+    null,
+    null
+   ],
+   "scores": {
+    "MRR": 0.0,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.0,
+    "all@5": 0.0,
+    "chunks@2k": 7,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/HR-SAF-01.md",
+     3574,
+     4291,
+     10.208
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3285,
+     3882,
+     9.8922
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     9.5073
+    ],
+    [
+     "policies/archive/HR-REM-01_2024.md",
+     2736,
+     3342,
+     8.4289
+    ],
+    [
+     "policies/HR-IT-01.md",
+     917,
+     1773,
+     8.2785
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     7.9933
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     7.6005
+    ],
+    [
+     "tickets/tickets.json",
+     8747,
+     11766,
+     7.1036
+    ],
+    [
+     "policies/HR-IT-01.md",
+     1775,
+     2531,
+     7.0807
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     3099,
+     3824,
+     7.0638
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "price-list.csv",
+     615,
+     808,
+     3
+    ]
+   ],
+   "id": "g08",
+   "level": "",
+   "n": 8,
+   "ranks": [
+    15
+   ],
+   "scores": {
+    "MRR": 0.0667,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 2,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     5.8655
+    ],
+    [
+     "tickets/tickets.json",
+     11773,
+     14690,
+     5.8655
+    ],
+    [
+     "tickets/tickets.json",
+     17697,
+     20714,
+     5.8655
+    ],
+    [
+     "policies/SV-INS-01.md",
+     2686,
+     3349,
+     5.3735
+    ],
+    [
+     "tickets/tickets.json",
+     14697,
+     17690,
+     4.9577
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     1369,
+     2018,
+     4.7145
+    ],
+    [
+     "tickets/tickets.json",
+     0,
+     2922,
+     4.7145
+    ],
+    [
+     "tickets/tickets.json",
+     8747,
+     11766,
+     4.6016
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     738,
+     1509,
+     4.3913
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     1641,
+     2371,
+     4.1994
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "price-list.csv",
+     615,
+     808,
+     3
+    ]
+   ],
+   "id": "g09",
+   "level": "",
+   "n": 9,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 9,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "price-list.csv",
+     0,
+     1737,
+     8.6398
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     738,
+     1509,
+     8.5711
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     4461,
+     5015,
+     7.6271
+    ],
+    [
+     "mail/2026-10-02_emma_fwd-alpenquell-call.eml",
+     0,
+     983,
+     6.693
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     1511,
+     2136,
+     6.4015
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     2138,
+     2937,
+     6.4015
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     1576,
+     2258,
+     6.1669
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     1641,
+     2371,
+     5.4944
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     4694,
+     5496,
+     5.3594
+    ],
+    [
+     "tickets/tickets.json",
+     0,
+     2922,
+     5.3434
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-REM-01.md",
+     972,
+     1106,
+     3
+    ],
+    [
+     "policies/archive/HR-REM-01_2024.md",
+     919,
+     1032,
+     3
+    ]
+   ],
+   "id": "g10",
+   "level": "",
+   "n": 10,
+   "ranks": [
+    2,
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 12,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/archive/HR-REM-01_2024.md",
+     876,
+     1506,
+     26.7884
+    ],
+    [
+     "policies/HR-REM-01.md",
+     929,
+     1680,
+     25.9835
+    ],
+    [
+     "policies/HR-REM-01.md",
+     181,
+     927,
+     15.8007
+    ],
+    [
+     "policies/archive/HR-REM-01_2024.md",
+     187,
+     874,
+     15.1435
+    ],
+    [
+     "policies/HR-REM-01.md",
+     4583,
+     5360,
+     13.6281
+    ],
+    [
+     "policies/HR-IT-01.md",
+     4866,
+     5576,
+     13.436
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     933,
+     1723,
+     12.6661
+    ],
+    [
+     "policies/archive/HR-REM-01_2024.md",
+     3902,
+     4733,
+     12.3464
+    ],
+    [
+     "policies/HR-REM-01.md",
+     2408,
+     3123,
+     12.3272
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     1622,
+     2362,
+     11.9974
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "jira/snapshot-2026-10-06.json",
+     3825,
+     4432,
+     1
+    ],
+    [
+     "minutes/2026-09-24.md",
+     1025,
+     1097,
+     1
+    ]
+   ],
+   "id": "g11",
+   "level": "",
+   "n": 11,
+   "ranks": [
+    1,
+    2
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 6,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "jira/snapshot-2026-10-06.json",
+     2947,
+     5943,
+     25.3121
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     1753,
+     23.3533
+    ],
+    [
+     "mail/2026-09-24_lee_blueriver-price.eml",
+     0,
+     547,
+     20.1972
+    ],
+    [
+     "mail/2026-09-26_ruth_re-blueriver-price.eml",
+     0,
+     712,
+     19.6479
+    ],
+    [
+     "mail/2026-10-07_ruth_re-re-blueriver-price.eml",
+     0,
+     879,
+     19.1276
+    ],
+    [
+     "mail/2026-10-07_lee_re-re-re-blueriver-price.eml",
+     0,
+     785,
+     18.6342
+    ],
+    [
+     "minutes/2026-10-01.md",
+     0,
+     1487,
+     13.8697
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     2194,
+     13.7339
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3884,
+     4482,
+     11.7406
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2938,
+     11.3823
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "tickets/tickets.json",
+     12041,
+     12480,
+     3
+    ],
+    [
+     "tickets/tickets.json",
+     18066,
+     18499,
+     3
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     3331,
+     3427,
+     2
+    ]
+   ],
+   "id": "g12",
+   "level": "",
+   "n": 12,
+   "ranks": [
+    null,
+    null,
+    3
+   ],
+   "scores": {
+    "MRR": 0.3333,
+    "R@2k": 0.3333,
+    "R@3": 0.3333,
+    "R@5": 0.3333,
+    "R@50": 0.3333,
+    "all@5": 0.0,
+    "chunks@2k": 11,
+    "nDCG@5": 0.1697
+   },
+   "top": [
+    [
+     "policies/HR-LVR-01.md",
+     4952,
+     5597,
+     17.2394
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     4308,
+     5007,
+     16.6514
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     3300,
+     3955,
+     16.0712
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     2483,
+     3270,
+     15.4238
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3884,
+     4482,
+     15.1104
+    ],
+    [
+     "policies/HR-JOI-01.md",
+     179,
+     822,
+     14.5303
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     14.0959
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     3957,
+     4667,
+     13.8768
+    ],
+    [
+     "minutes/2026-09-17.md",
+     0,
+     1784,
+     13.5822
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     1703,
+     2567,
+     13.5165
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "onedrive/hr-notes/payslip-fix.md",
+     249,
+     356,
+     3
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     2940,
+     3084,
+     1
+    ]
+   ],
+   "id": "g13",
+   "level": "",
+   "n": 13,
+   "ranks": [
+    2,
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 12,
+    "nDCG@5": 0.7967
+   },
+   "top": [
+    [
+     "policies/HR-PAY-01.md",
+     2898,
+     3784,
+     25.1611
+    ],
+    [
+     "onedrive/hr-notes/payslip-fix.md",
+     0,
+     707,
+     24.2639
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     169,
+     785,
+     20.9576
+    ],
+    [
+     "policies/HR-IT-01.md",
+     3343,
+     4086,
+     20.5644
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     17.8304
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     2215,
+     2896,
+     15.5045
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     179,
+     811,
+     13.3454
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     4546,
+     5177,
+     11.7769
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     4952,
+     5597,
+     11.7239
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     3589,
+     4279,
+     11.4317
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-09-24.md",
+     626,
+     735,
+     1
+    ]
+   ],
+   "id": "g14",
+   "level": "",
+   "n": 14,
+   "ranks": [
+    2
+   ],
+   "scores": {
+    "MRR": 0.5,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 0.6309
+   },
+   "top": [
+    [
+     "mail/2026-10-02_anna_discount.eml",
+     0,
+     612,
+     13.8366
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     1753,
+     13.2216
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     2194,
+     10.2641
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     2376,
+     3317,
+     9.7875
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     2939,
+     3720,
+     9.3817
+    ],
+    [
+     "policies/HR-IT-01.md",
+     3343,
+     4086,
+     8.666
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     3722,
+     4459,
+     8.3807
+    ],
+    [
+     "policies/HR-CON-01.md",
+     1883,
+     2752,
+     8.2262
+    ],
+    [
+     "policies/HR-REV-01.md",
+     4705,
+     5281,
+     7.523
+    ],
+    [
+     "policies/HR-REV-01.md",
+     1600,
+     2398,
+     7.435
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     769,
+     892,
+     2
+    ],
+    [
+     "minutes/2026-10-01.md",
+     1249,
+     1285,
+     2
+    ],
+    [
+     "minutes/2026-10-01.md",
+     928,
+     1003,
+     1
+    ]
+   ],
+   "id": "g15",
+   "level": "",
+   "n": 15,
+   "ranks": [
+    1,
+    1,
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-10-01.md",
+     0,
+     1487,
+     12.0674
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     2194,
+     11.1657
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     1753,
+     10.5679
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     760,
+     1470,
+     9.5456
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     3888,
+     4440,
+     8.8436
+    ],
+    [
+     "mail/2026-10-01_sam_minutes-approved.eml",
+     0,
+     574,
+     8.5173
+    ],
+    [
+     "mail/2026-10-07_lee_re-re-re-blueriver-price.eml",
+     0,
+     785,
+     8.1697
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     2728,
+     3307,
+     8.041
+    ],
+    [
+     "tickets/tickets.json",
+     11773,
+     14690,
+     7.9618
+    ],
+    [
+     "policies/HR-SAF-01.md",
+     958,
+     1851,
+     7.8616
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-10-01.md",
+     928,
+     1003,
+     3
+    ]
+   ],
+   "id": "g16",
+   "level": "",
+   "n": 16,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 9,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-10-01.md",
+     0,
+     1487,
+     17.046
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     3888,
+     4440,
+     14.1302
+    ],
+    [
+     "mail/2026-10-07_lee_re-re-re-blueriver-price.eml",
+     0,
+     785,
+     11.3219
+    ],
+    [
+     "mail/2026-10-07_priya_review-cycle-reminder.eml",
+     0,
+     1061,
+     10.1575
+    ],
+    [
+     "mail/2026-08-26_priya_fire-drill.eml",
+     0,
+     989,
+     9.8642
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     1472,
+     2077,
+     9.7093
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     760,
+     1470,
+     9.3313
+    ],
+    [
+     "mail/2026-10-02_emma_fwd-alpenquell-call.eml",
+     0,
+     983,
+     9.1558
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     2040,
+     2624,
+     8.6141
+    ],
+    [
+     "minutes/2026-09-17.md",
+     0,
+     1784,
+     8.4983
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-LEA-DE.md",
+     978,
+     1091,
+     3
+    ]
+   ],
+   "id": "g17",
+   "level": "",
+   "n": 17,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 13,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-LEA-DE.md",
+     933,
+     1723,
+     27.2373
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     877,
+     1620,
+     25.0389
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     930,
+     1713,
+     24.9748
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     185,
+     931,
+     17.2583
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     2360,
+     3144,
+     16.4066
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     1725,
+     2358,
+     16.1154
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     197,
+     928,
+     16.0504
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     194,
+     875,
+     15.6263
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     149,
+     183,
+     14.6719
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     4048,
+     4907,
+     14.6262
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "minutes/2026-09-03.md",
+     1026,
+     1149,
+     3
+    ]
+   ],
+   "id": "g18",
+   "level": "",
+   "n": 18,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 6,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "minutes/2026-09-03.md",
+     0,
+     2194,
+     10.9711
+    ],
+    [
+     "policies/HR-REV-01.md",
+     1600,
+     2398,
+     10.8824
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     4761,
+     5387,
+     10.2981
+    ],
+    [
+     "policies/HR-REM-01.md",
+     4583,
+     5360,
+     9.3674
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     9.21
+    ],
+    [
+     "policies/SV-INS-01.md",
+     3351,
+     3877,
+     8.8964
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     1970,
+     2756,
+     8.7151
+    ],
+    [
+     "policies/HR-SAF-01.md",
+     1853,
+     2717,
+     8.5701
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     4669,
+     5269,
+     8.2946
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     3436,
+     4306,
+     8.2331
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-ONB-01.md",
+     504,
+     615,
+     3
+    ]
+   ],
+   "id": "g19",
+   "level": "",
+   "n": 19,
+   "ranks": [
+    4
+   ],
+   "scores": {
+    "MRR": 0.25,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 10,
+    "nDCG@5": 0.4307
+   },
+   "top": [
+    [
+     "policies/CL-DOC-01.md",
+     218,
+     782,
+     14.6645
+    ],
+    [
+     "policies/SV-INS-01.md",
+     218,
+     797,
+     13.864
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     210,
+     865,
+     11.8313
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     262,
+     915,
+     11.5811
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     4461,
+     5015,
+     9.5695
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     0,
+     2938,
+     9.2623
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     173,
+     735,
+     9.0683
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     196,
+     837,
+     8.8905
+    ],
+    [
+     "policies/HR-PAY-02.md",
+     3187,
+     3947,
+     8.8259
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     2138,
+     2937,
+     8.7954
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-CRD-01.md",
+     773,
+     929,
+     3
+    ]
+   ],
+   "id": "g20",
+   "level": "",
+   "n": 20,
+   "ranks": [
+    2
+   ],
+   "scores": {
+    "MRR": 0.5,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 13,
+    "nDCG@5": 0.6309
+   },
+   "top": [
+    [
+     "policies/CL-CRD-01.md",
+     2276,
+     3025,
+     16.4254
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     737,
+     1595,
+     15.7551
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     173,
+     735,
+     15.4179
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     4539,
+     5206,
+     15.0301
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     2569,
+     3434,
+     13.979
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     3027,
+     3833,
+     13.4502
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     3835,
+     4537,
+     13.4321
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     169,
+     216,
+     13.0074
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     12.5415
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     0,
+     167,
+     12.237
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-CRD-01.md",
+     2316,
+     2390,
+     3
+    ]
+   ],
+   "id": "g21",
+   "level": "",
+   "n": 21,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 11,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/CL-CRD-01.md",
+     2276,
+     3025,
+     23.6055
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     173,
+     735,
+     16.2328
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     1597,
+     2274,
+     14.5705
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     1753,
+     12.7717
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3285,
+     3882,
+     12.7051
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     2569,
+     3434,
+     12.6538
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     3027,
+     3833,
+     11.7337
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     917,
+     1701,
+     11.1517
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     737,
+     1595,
+     10.4305
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     3099,
+     3824,
+     10.0649
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-PRC-01.md",
+     1667,
+     1714,
+     3
+    ]
+   ],
+   "id": "g22",
+   "level": "",
+   "n": 22,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 11,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/CL-PRC-01.md",
+     1511,
+     2136,
+     17.7222
+    ],
+    [
+     "minutes/2026-09-24.md",
+     0,
+     1753,
+     14.4985
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     2138,
+     2937,
+     13.6041
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     211,
+     736,
+     12.005
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     2939,
+     3720,
+     10.9044
+    ],
+    [
+     "mail/2026-10-02_anna_discount.eml",
+     0,
+     612,
+     9.1092
+    ],
+    [
+     "policies/HR-CON-01.md",
+     3553,
+     4439,
+     8.7336
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3884,
+     4482,
+     8.5785
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     3722,
+     4459,
+     8.2919
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     804,
+     1386,
+     7.9805
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-EXP-01.md",
+     2380,
+     2482,
+     3
+    ]
+   ],
+   "id": "g23",
+   "level": "",
+   "n": 23,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-EXP-01.md",
+     2272,
+     3121,
+     31.1058
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     1597,
+     2274,
+     17.3064
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     737,
+     1595,
+     17.1636
+    ],
+    [
+     "policies/HR-SAF-01.md",
+     1853,
+     2717,
+     16.9167
+    ],
+    [
+     "policies/HR-EXP-01.md",
+     193,
+     841,
+     16.8348
+    ],
+    [
+     "policies/SV-INS-01.md",
+     1498,
+     2013,
+     14.6516
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     2569,
+     3434,
+     14.4941
+    ],
+    [
+     "policies/HR-SAF-01.md",
+     958,
+     1851,
+     13.7544
+    ],
+    [
+     "tickets/tickets.json",
+     5908,
+     8740,
+     13.232
+    ],
+    [
+     "policies/HR-EXP-01.md",
+     843,
+     1589,
+     13.172
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-CON-01.md",
+     2067,
+     2157,
+     3
+    ]
+   ],
+   "id": "g24",
+   "level": "",
+   "n": 24,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 13,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-CON-01.md",
+     1883,
+     2752,
+     10.3011
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     238,
+     888,
+     9.7257
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     9.6952
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     2655,
+     3298,
+     8.0312
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     804,
+     1386,
+     7.9805
+    ],
+    [
+     "mail/2026-07-15_emma_re-office-move-utrecht.eml",
+     0,
+     1218,
+     7.8295
+    ],
+    [
+     "policies/HR-CON-01.md",
+     4441,
+     5179,
+     7.8103
+    ],
+    [
+     "policies/HR-IT-01.md",
+     3343,
+     4086,
+     7.5892
+    ],
+    [
+     "policies/CL-DOC-01.md",
+     169,
+     216,
+     7.4304
+    ],
+    [
+     "mail/2026-09-19_mark_re-clearspring-utrecht.eml",
+     0,
+     959,
+     7.3835
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-SIC-01.md",
+     907,
+     1000,
+     3
+    ]
+   ],
+   "id": "g25",
+   "level": "",
+   "n": 25,
+   "ranks": [
+    7
+   ],
+   "scores": {
+    "MRR": 0.1429,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 10,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     19.0806
+    ],
+    [
+     "policies/HR-SIC-01.md",
+     201,
+     851,
+     15.4952
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-taste.eml",
+     0,
+     574,
+     14.3514
+    ],
+    [
+     "policies/HR-SIC-01.md",
+     3608,
+     4550,
+     14.2743
+    ],
+    [
+     "mail/2026-08-12_noor_re-extra-cups.eml",
+     0,
+     1170,
+     14.1032
+    ],
+    [
+     "policies/HR-IT-01.md",
+     3343,
+     4086,
+     14.0217
+    ],
+    [
+     "policies/HR-SIC-01.md",
+     853,
+     1811,
+     13.9694
+    ],
+    [
+     "mail/2026-10-07_priya_review-cycle-reminder.eml",
+     0,
+     1061,
+     12.5365
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     4442,
+     4974,
+     11.906
+    ],
+    [
+     "mail/2026-09-23_maria_holiday-party.eml",
+     0,
+     1011,
+     11.8786
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-PAY-01.md",
+     801,
+     877,
+     3
+    ]
+   ],
+   "id": "g26",
+   "level": "",
+   "n": 26,
+   "ranks": [
+    null
+   ],
+   "scores": {
+    "MRR": 0.0,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 0.0,
+    "all@5": 0.0,
+    "chunks@2k": 7,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     9.2987
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     8.8418
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     169,
+     785,
+     7.9174
+    ],
+    [
+     "tickets/tickets.json",
+     20721,
+     21896,
+     7.6497
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     4066,
+     4914,
+     7.58
+    ],
+    [
+     "mail/2026-09-21_noor_fabrikam-taste.eml",
+     0,
+     574,
+     7.5462
+    ],
+    [
+     "tickets/tickets.json",
+     14697,
+     17690,
+     7.5462
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     3786,
+     4544,
+     7.54
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     4952,
+     5597,
+     7.0827
+    ],
+    [
+     "policies/HR-REM-01.md",
+     3125,
+     3904,
+     6.8996
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-PAR-01.md",
+     3445,
+     3599,
+     3
+    ]
+   ],
+   "id": "g27",
+   "level": "",
+   "n": 27,
+   "ranks": [
+    4
+   ],
+   "scores": {
+    "MRR": 0.25,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 11,
+    "nDCG@5": 0.4307
+   },
+   "top": [
+    [
+     "policies/HR-LEA-UK.md",
+     877,
+     1620,
+     11.7929
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     930,
+     1713,
+     11.5912
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     933,
+     1723,
+     10.8503
+    ],
+    [
+     "policies/HR-PAR-01.md",
+     3395,
+     4249,
+     10.102
+    ],
+    [
+     "policies/HR-PAR-01.md",
+     5096,
+     5761,
+     9.853
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     204,
+     758,
+     9.5243
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     8.8015
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     3589,
+     4279,
+     8.6361
+    ],
+    [
+     "policies/HR-PAR-01.md",
+     4251,
+     5094,
+     8.0855
+    ],
+    [
+     "policies/HR-PAR-01.md",
+     165,
+     847,
+     7.7735
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-LEA-UK.md",
+     4272,
+     4409,
+     3
+    ]
+   ],
+   "id": "g28",
+   "level": "",
+   "n": 28,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 12,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-LEA-UK.md",
+     4066,
+     4914,
+     15.4865
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     4048,
+     4907,
+     11.7596
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     4305,
+     5017,
+     9.4606
+    ],
+    [
+     "policies/HR-SAF-01.md",
+     1853,
+     2717,
+     8.7904
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     194,
+     875,
+     8.7201
+    ],
+    [
+     "policies/SV-SUP-01.md",
+     760,
+     1470,
+     8.6016
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     2961,
+     3587,
+     8.3641
+    ],
+    [
+     "policies/HR-PAR-01.md",
+     1655,
+     2544,
+     8.3568
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     1715,
+     2633,
+     8.3144
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     4308,
+     5007,
+     8.2974
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-LEA-NL.md",
+     983,
+     1070,
+     3
+    ]
+   ],
+   "id": "g29",
+   "level": "",
+   "n": 29,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 11,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-LEA-NL.md",
+     930,
+     1713,
+     30.9943
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     877,
+     1620,
+     26.4916
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     933,
+     1723,
+     23.265
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     197,
+     928,
+     19.7723
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     2635,
+     3428,
+     17.8491
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     194,
+     875,
+     17.6939
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     185,
+     931,
+     17.5582
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     1715,
+     2633,
+     16.6717
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     1622,
+     2362,
+     16.1919
+    ],
+    [
+     "policies/HR-LEA-UK.md",
+     5558,
+     6149,
+     15.6349
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-REV-01.md",
+     449,
+     536,
+     3
+    ]
+   ],
+   "id": "g30",
+   "level": "",
+   "n": 30,
+   "ranks": [
+    3
+   ],
+   "scores": {
+    "MRR": 0.3333,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 14,
+    "nDCG@5": 0.5
+   },
+   "top": [
+    [
+     "policies/HR-REV-01.md",
+     156,
+     201,
+     14.9408
+    ],
+    [
+     "policies/HR-REV-01.md",
+     0,
+     154,
+     14.0001
+    ],
+    [
+     "policies/HR-REV-01.md",
+     203,
+     859,
+     12.9052
+    ],
+    [
+     "policies/HR-REV-01.md",
+     5283,
+     5901,
+     12.4343
+    ],
+    [
+     "mail/2026-10-07_priya_review-cycle-reminder.eml",
+     0,
+     1061,
+     11.6149
+    ],
+    [
+     "onedrive/hr-notes/difficult-conversations.md",
+     0,
+     634,
+     6.598
+    ],
+    [
+     "policies/HR-REV-01.md",
+     861,
+     1598,
+     6.5281
+    ],
+    [
+     "policies/HR-PAY-02.md",
+     4774,
+     5418,
+     6.4517
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     5.7776
+    ],
+    [
+     "policies/HR-IT-01.md",
+     2533,
+     3341,
+     5.6285
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/HR-LVR-01.md",
+     1055,
+     1101,
+     3
+    ]
+   ],
+   "id": "g31",
+   "level": "",
+   "n": 31,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 9,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/HR-LVR-01.md",
+     813,
+     1648,
+     15.2584
+    ],
+    [
+     "policies/HR-LVR-01.md",
+     2376,
+     3317,
+     13.0013
+    ],
+    [
+     "policies/HR-JOI-01.md",
+     3185,
+     4034,
+     10.9945
+    ],
+    [
+     "policies/HR-LEA-NL.md",
+     4305,
+     5017,
+     10.191
+    ],
+    [
+     "policies/HR-PAY-01.md",
+     2215,
+     2896,
+     9.6527
+    ],
+    [
+     "minutes/2026-09-03.md",
+     0,
+     2194,
+     9.1851
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     4909,
+     5534,
+     8.5908
+    ],
+    [
+     "mail/2026-09-02_priya_first-aid-course.eml",
+     0,
+     1026,
+     7.9092
+    ],
+    [
+     "onedrive/hr-notes/new-starter-checklist.md",
+     0,
+     744,
+     7.8007
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     7.7949
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-SLA-01.md",
+     3406,
+     3505,
+     3
+    ]
+   ],
+   "id": "g32",
+   "level": "",
+   "n": 32,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 3,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/SV-SLA-01.md",
+     3193,
+     3733,
+     13.4986
+    ],
+    [
+     "tickets/tickets.json",
+     11773,
+     14690,
+     12.8741
+    ],
+    [
+     "tickets/tickets.json",
+     20721,
+     21896,
+     12.4321
+    ],
+    [
+     "tickets/tickets.json",
+     8747,
+     11766,
+     11.5594
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     11.5208
+    ],
+    [
+     "policies/HR-IT-01.md",
+     3343,
+     4086,
+     11.0796
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     11.0595
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     3589,
+     4279,
+     10.6694
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     4694,
+     5496,
+     10.4854
+    ],
+    [
+     "policies/HR-CON-01.md",
+     926,
+     1881,
+     10.2742
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-SLA-01.md",
+     2646,
+     2729,
+     3
+    ]
+   ],
+   "id": "g33",
+   "level": "",
+   "n": 33,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 9,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/SV-SLA-01.md",
+     2626,
+     3191,
+     10.9739
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     1970,
+     2756,
+     9.7284
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     9.2987
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     890,
+     1815,
+     8.8418
+    ],
+    [
+     "onedrive/hr-notes/payslip-fix.md",
+     0,
+     707,
+     8.7474
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     2020,
+     2653,
+     8.3896
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     238,
+     888,
+     8.2592
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     182,
+     236,
+     8.0698
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     811,
+     1433,
+     7.8729
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     7.8458
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-SLA-01.md",
+     4644,
+     4761,
+     3
+    ]
+   ],
+   "id": "g34",
+   "level": "",
+   "n": 34,
+   "ranks": [
+    10
+   ],
+   "scores": {
+    "MRR": 0.1,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 15,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/SV-CMP-01.md",
+     2641,
+     3283,
+     15.448
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3285,
+     3882,
+     15.3371
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     186,
+     809,
+     13.228
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     196,
+     837,
+     12.7572
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     224,
+     729,
+     12.2977
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     811,
+     1433,
+     11.2766
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     173,
+     735,
+     10.5764
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     186,
+     665,
+     10.5606
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     182,
+     236,
+     10.3172
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     4270,
+     4827,
+     10.2206
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-MIS-01.md",
+     3928,
+     3962,
+     3
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     3446,
+     3515,
+     1
+    ]
+   ],
+   "id": "g35",
+   "level": "",
+   "n": 35,
+   "ranks": [
+    8,
+    8
+   ],
+   "scores": {
+    "MRR": 0.125,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 4,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     12.7758
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     2758,
+     3411,
+     12.7246
+    ],
+    [
+     "tickets/tickets.json",
+     8747,
+     11766,
+     12.6232
+    ],
+    [
+     "tickets/tickets.json",
+     14697,
+     17690,
+     12.4038
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     667,
+     1260,
+     11.8804
+    ],
+    [
+     "tickets/tickets.json",
+     2929,
+     5901,
+     11.7865
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     3285,
+     3882,
+     11.5525
+    ],
+    [
+     "policies/SV-MIS-01.md",
+     3413,
+     4038,
+     11.26
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     3589,
+     4279,
+     10.4842
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     4281,
+     4888,
+     10.2685
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-SIT-01.md",
+     1836,
+     1932,
+     3
+    ]
+   ],
+   "id": "g36",
+   "level": "",
+   "n": 36,
+   "ranks": [
+    1
+   ],
+   "scores": {
+    "MRR": 1.0,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 8,
+    "nDCG@5": 1.0
+   },
+   "top": [
+    [
+     "policies/CL-SIT-01.md",
+     1641,
+     2371,
+     19.6185
+    ],
+    [
+     "price-list.csv",
+     0,
+     1737,
+     16.2585
+    ],
+    [
+     "policies/CL-OFF-01.md",
+     2260,
+     3013,
+     16.1674
+    ],
+    [
+     "policies/SV-INS-01.md",
+     3879,
+     4603,
+     14.7192
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     3946,
+     4692,
+     14.7177
+    ],
+    [
+     "minutes/2026-09-17.md",
+     0,
+     1784,
+     14.411
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     4694,
+     5496,
+     13.9406
+    ],
+    [
+     "policies/SV-SLA-01.md",
+     3193,
+     3733,
+     12.8282
+    ],
+    [
+     "policies/CL-SIT-01.md",
+     3065,
+     3944,
+     12.4248
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     3436,
+     4306,
+     12.0014
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/CL-WEL-01.md",
+     881,
+     968,
+     3
+    ]
+   ],
+   "id": "g37",
+   "level": "",
+   "n": 37,
+   "ranks": [
+    3
+   ],
+   "scores": {
+    "MRR": 0.3333,
+    "R@2k": 1.0,
+    "R@3": 1.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 14,
+    "nDCG@5": 0.5
+   },
+   "top": [
+    [
+     "policies/CL-WEL-01.md",
+     216,
+     842,
+     18.3586
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     3820,
+     4595,
+     17.1846
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     844,
+     1594,
+     16.1478
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     1596,
+     2375,
+     15.2201
+    ],
+    [
+     "policies/HR-JOI-01.md",
+     179,
+     822,
+     14.589
+    ],
+    [
+     "policies/CL-ONB-01.md",
+     4308,
+     5007,
+     14.0459
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     2377,
+     3076,
+     12.8134
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     168,
+     214,
+     12.7275
+    ],
+    [
+     "policies/CL-WEL-01.md",
+     0,
+     166,
+     11.9737
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     4281,
+     4888,
+     11.8911
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "price-list.csv",
+     965,
+     1111,
+     3
+    ]
+   ],
+   "id": "g38",
+   "level": "",
+   "n": 38,
+   "ranks": [
+    19
+   ],
+   "scores": {
+    "MRR": 0.0526,
+    "R@2k": 0.0,
+    "R@3": 0.0,
+    "R@5": 0.0,
+    "R@50": 1.0,
+    "all@5": 0.0,
+    "chunks@2k": 7,
+    "nDCG@5": 0.0
+   },
+   "top": [
+    [
+     "policies/SV-SUP-01.md",
+     204,
+     758,
+     9.5243
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     1725,
+     2358,
+     9.2699
+    ],
+    [
+     "policies/HR-HRS-01.md",
+     4973,
+     5611,
+     8.6167
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     2360,
+     3144,
+     8.2868
+    ],
+    [
+     "mail/2026-10-05_jonas_q3-sales-figures.eml",
+     0,
+     1055,
+     8.229
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     2276,
+     3025,
+     8.2076
+    ],
+    [
+     "jira/snapshot-2026-10-06.json",
+     2947,
+     5943,
+     8.1657
+    ],
+    [
+     "policies/CL-PRC-01.md",
+     738,
+     1509,
+     8.1037
+    ],
+    [
+     "policies/SV-DEL-01.md",
+     3589,
+     4279,
+     8.0321
+    ],
+    [
+     "policies/HR-LEA-DE.md",
+     933,
+     1723,
+     7.9191
+    ]
+   ]
+  },
+  {
+   "gold": [
+    [
+     "policies/SV-CMP-01.md",
+     1591,
+     1647,
+     3
+    ]
+   ],
+   "id": "g39",
+   "level": "",
+   "n": 39,
+   "ranks": [
+    5
+   ],
+   "scores": {
+    "MRR": 0.2,
+    "R@2k": 1.0,
+    "R@3": 0.0,
+    "R@5": 1.0,
+    "R@50": 1.0,
+    "all@5": 1.0,
+    "chunks@2k": 14,
+    "nDCG@5": 0.3869
+   },
+   "top": [
+    [
+     "policies/CL-DAT-01.md",
+     182,
+     236,
+     13.9235
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     0,
+     180,
+     13.1449
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     804,
+     1386,
+     12.544
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     238,
+     888,
+     11.8683
+    ],
+    [
+     "policies/SV-CMP-01.md",
+     1388,
+     2002,
+     10.7816
+    ],
+    [
+     "policies/HR-IT-01.md",
+     1775,
+     2531,
+     9.8449
+    ],
+    [
+     "policies/CL-CRD-01.md",
+     2276,
+     3025,
+     9.4296
+    ],
+    [
+     "policies/CL-DAT-01.md",
+     1817,
+     2481,
+     9.2987
+    ],
+    [
+     "policies/HR-CON-01.md",
+     167,
+     924,
+     9.1753
+    ],
+    [
+     "policies/SV-HYG-01.md",
+     224,
+     729,
+     9.0193
+    ]
+   ]
+  }
+ ],
+ "retriever": "pipeline",
+ "setup": {
+  "chunking": "hierarchical",
+  "embed": "ollama-embed",
+  "embedder": "ollama-embed (nomic-embed-text)",
+  "filters": {},
+  "k": 5,
+  "rerank": false,
+  "retriever": "keyword",
+  "transform": ""
+ },
+ "summary": {
+  "MRR": 0.5979,
+  "R@2k": 0.761,
+  "R@3": 0.614,
+  "R@5": 0.7018,
+  "R@50": 0.8925,
+  "all@5": 0.6842,
+  "n": 38,
+  "nDCG@5": 0.5986
+ },
+ "took_s": 1.2
+}

@@ -2,11 +2,11 @@
 
 A code wiki for `rag.py`, the Python rung of the RAG lab. The lab `README.md` (one folder up) says what to run and what to expect in each exercise; this page says what the code does when you run it. Flow numbers refer to `../../content-src/rag-day.md`.
 
-One file, ~570 lines, four commands, no framework. Every stage of the RAG loop is a plain function you can read top to bottom, print from, and break on purpose.
+One file, ~600 lines, five commands, no framework. Every stage of the RAG loop is a plain function you can read top to bottom, print from, and break on purpose.
 
 ## Contents
 
-1. [The four commands](#1-the-four-commands)
+1. [The five commands](#1-the-five-commands)
 2. [Configuration](#2-configuration)
 3. [The chunk record](#3-the-chunk-record)
 4. [Loading and chunking](#4-loading-and-chunking)
@@ -21,7 +21,7 @@ One file, ~570 lines, four commands, no framework. Every stage of the RAG loop i
 13. [Things that bite](#13-things-that-bite)
 14. [Extending it](#14-extending-it)
 
-## 1. The four commands
+## 1. The five commands
 
 ```
 python rag.py check    # can this laptop reach the chosen chat and embed blocks?
@@ -45,7 +45,9 @@ The pipeline, with the function that owns each step:
                                                  ask()
 ```
 
-`ingest` writes; `ask`, `agent` and `eval` only read the store and append to the trace.
+`ingest` writes; `ask`, `agent` and `eval` only read the store, and `ask` and `agent` append to the trace. `check` touches nothing: it probes both blocks with `models.reachable`, confirms the pack exists, and prints which classes the chat model may read.
+
+At the bottom of the file, `__main__` builds one subparser per command, sets `CHAT` and `EMBED` from `--chat` / `--embed`, sets `WHERE` (`local` under `--dry`, otherwise `models.where(CHAT)`) and `MAY_READ`, then dispatches to `check`, `ingest`, `ask`, `agent` or `evaluate`.
 
 ## 2. Configuration
 
@@ -57,7 +59,7 @@ Models come from `providers.toml` (fallback `providers.example.toml`), keys from
 | `embed = "nexus-embed"` | top of the file | the embed block when no `--embed` / `LLM_EMBED` is given |
 | `kind` | every block | `anthropic` (official SDK), `openai` (any OpenAI-compatible endpoint: Nexus), `ollama`, or `hash` (no model, embed only) |
 | `base_url`, `model`, `api_key_env` | openai, ollama | the endpoint, the model name, the environment variable that holds the key |
-| `where` | chat blocks | `local`, `tenant` or `external`: where the model runs, hence `MAY_READ` (flow 9.4). `CHAT_MODEL_WHERE` overrides it. |
+| `where` | chat blocks | `local`, `tenant` or `external`: where the model runs, hence `MAY_READ` (flow 9.4). `CHAT_MODEL_WHERE` overrides it; a block without `where` counts as `external`. |
 | `timeout`, `temperature`, `think`, `effort` | optional | per block; `LLM_TIMEOUT` is the env fallback for the timeout |
 
 The rest is at module top in `rag.py`, overridable by environment variable:
@@ -71,7 +73,7 @@ The rest is at module top in `rag.py`, overridable by environment variable:
 Three tables encode policy:
 
 - `ROLES` maps an asker to the access tags they may see: `sam` sees `team`; `priya` sees `team` and `priya`; `vendor` sees only `vendor`. This is the permission filter of flow 9.
-- `MAY_READ` is the data-residency rule of flow 9.4, derived from `WHERE`: a local model may read every class, the tenant's model Public and Internal, an external model Public only. The empty class (naive chunks) counts as readable only for `local`.
+- `MAY_READ` is the data-residency rule of flow 9.4. The table lives in `models.MAY_READ`; `rag.py` picks the row for `WHERE`: a local model may read every class, the tenant's model Public and Internal, an external model Public only. The empty class (naive chunks) counts as readable only for `local`.
 - `SYSTEM` is the grounding prompt of flow 5.2: answer from the passages only, cite with the bracketed name that starts each passage, refuse with a fixed sentence, treat passage text as data, prefer newer passages and "jira live" over the snapshot.
 
 Two helpers are used everywhere: `norm` collapses whitespace, `tokens` lowercases and splits into words, keeping IDs like `7f3a-91c2` and `SOP-CH-03` together.
@@ -127,7 +129,7 @@ The whole record is stored as the Qdrant payload and again in the sidecar JSON, 
 
 `strip_mail` keeps lines until the first signature marker (`--`, `Best,`, `Regards,`...) and drops every line starting with `>`.
 
-Three transformations run after loading:
+Four transformations run after loading:
 
 - `naive_chunks` (with `--naive`) ignores all of the above: every text file in the pack is flattened and cut every 500 characters, with `access` open to everyone and no class or date. It is the flow 6 baseline the structured loader is measured against.
 - `split_children` (with `--children`) cuts markdown-derived sections into roughly 12-word pieces at sentence boundaries, each carrying `parent` = the section's `uid`. Short sections and non-markdown types pass through unchanged. Flow 2.5.
@@ -186,7 +188,7 @@ The sidecar is not a cache of Qdrant; it is the primary store for BM25, `find_ti
 4. **Search.** For each tuple: BM25 (`rank_bm25.BM25Okapi` over `tokens(embed_text)`) returns up to 30 indices with a positive score; Qdrant returns 30 nearest points. `--keyword-only` and `--semantic-only` drop one side.
 5. **Fuse** every ranked list with Reciprocal Rank Fusion, `1 / (60 + rank)`. With `multi` that is up to eight lists.
 6. **Parent swap and dedupe.** Walk the fused order; if a chunk has a `parent`, substitute the parent section. Keep the first 20 distinct `uid`s as candidates, each with its RRF score.
-7. **Rerank** (unless `--no-rerank`): lazy-load the cross-encoder `BAAI/bge-reranker-base` once per process, score `(question, text)` for every candidate, replace `score` and re-sort. Flow 4.5. If the import or download fails, print a warning, set `a.no_rerank = True` so it is not retried, and return the RRF order.
+7. **Rerank** (unless `--no-rerank`): lazy-load the cross-encoder `BAAI/bge-reranker-base` once per process (forced onto the CPU on Intel Macs, where torch on MPS returns wrong scores), score `(question, text)` for every candidate, replace `score` and re-sort. Flow 4.5. If the import or download fails, print a warning, set `a.no_rerank = True` so it is not retried, and return the RRF order.
 
 `retrieve` returns up to 20 candidates; callers cut to `--k`.
 
@@ -229,6 +231,7 @@ The trace row for `agent` records every call with its arguments, every source us
 - retrieves as `sam`, or as the question's own `asker` with `--as-in-set`
 - `cids` = the demo ids of the hits in rank order, deduplicated
 - `expected_ids` is a dict `cid -> grade` (3 = the answer, 2 = needed, 1 = background)
+- the three retrieval metrics are computed only when `expected_ids` is non-empty (refusal questions have none)
 - **R@5** = relevant ids in the top 5 / relevant ids
 - **MRR** = 1 / rank of the first relevant id, 0 if none
 - **nDCG@5** = DCG over the top 5 with the grades as gain, divided by the ideal DCG
@@ -237,7 +240,7 @@ The trace row for `agent` records every call with its arguments, every source us
 
 One line per question is printed, then the mean of each metric over the questions that have it. `ms` is retrieval only under `--dry`, retrieval plus answer plus judge otherwise.
 
-The judge uses the same `CHAT_MODEL` as the answer. For the room that is fine; for a real eval the judge should be a stronger model than the one being judged.
+The judge uses the same `--chat` block as the answer. For the room that is fine; for a real eval the judge should be a stronger model than the one being judged.
 
 ## 11. Files on disk
 
@@ -247,7 +250,7 @@ All under `STORE` (`python/.store/` by default), created on first use:
 |---|---|---|
 | `qdrant/` | `ingest` | `retrieve` (vector side). Qdrant local mode: one process at a time, so do not run two commands concurrently. |
 | `contoso.json`, `contoso_naive.json`, `contoso_children.json` | `ingest` | `retrieve`, `find_tickets`, incremental diff. Holds `embedder`, `chunks`, `parents`. |
-| `trace.jsonl` | `ask`, `agent` | you, and a future eval. One JSON object per line: `ts`, `kind`, `chat_model`, `where`, question, asker, flags, hits, withheld, answer, `ms`. The backbone's log box from flow 1.8. |
+| `trace.jsonl` | `ask`, `agent` | you, and a future eval. One JSON object per line: `ts`, `kind`, `chat` (the block name), `where`, question, asker, flags, hits, withheld, answer, `ms`. The backbone's log box from flow 1.8. |
 
 Deleting `.store/` is a clean reset. The reranker model is cached by Hugging Face under `~/.cache/huggingface`, not here.
 
@@ -256,9 +259,9 @@ Deleting `.store/` is a clean reset. The reranker model is cached by Hugging Fac
 | Flag | Commands | Effect |
 |---|---|---|
 | `--chat NAME` / `--embed NAME` | all | the blocks from `providers.toml` (default: its `chat` / `embed`, or `LLM_CHAT` / `LLM_EMBED`) |
-| `--dry` | all | no chat calls; hashed embedding if the embed block is unreachable; nothing withheld; `agent` runs the fixed workflow; `transform` is skipped |
-| `--naive` | all | collection `contoso_naive`, 500-character slices (ingest) or query it (others) |
-| `--children` | all | collection `contoso_children`, sentence-sized children with parent swap on retrieval |
+| `--dry` | all but check | no chat calls; hashed embedding if the embed block is unreachable; nothing withheld; `agent` runs the fixed workflow; `transform` is skipped |
+| `--naive` | all but check | collection `contoso_naive`, 500-character slices (ingest) or query it (others) |
+| `--children` | all but check | collection `contoso_children`, sentence-sized children with parent swap on retrieval |
 | `--contextual` | ingest | one-sentence LLM prefix per chunk in `embed_text` |
 | `--incremental` | ingest | diff against the previous sidecar by `uid` and `hash` |
 | `--no-rerank` | ask, agent, eval | keep the RRF order, skip the cross-encoder |
@@ -292,7 +295,7 @@ Deleting `.store/` is a clean reset. The reranker model is cached by Hugging Fac
 - **A new source.** Add a loop in `load_pack` that produces `chunk(text, source=..., file=..., type=..., date=..., cls=..., platform=...)`. Choose the chunk boundary that matches the source's shape. Add the new `type` to the `source_type` enum in `TOOLS` if the agent should filter on it. Add it to `split_children`'s type list only if it is prose.
 - **A new role.** Add an entry to `ROLES` and put the tag in the pack's `access:` front matter. Nothing else changes: the filter and the Qdrant query read `ROLES`.
 - **A new tool.** Add a schema to `TOOLS` and a branch in `run_tool` returning a list of chunk-like dicts with at least `source`, `text`, `cls`. `call_tool` handles errors, residency and formatting.
-- **A different policy.** Edit `MAY_READ`. It is consulted in three places: contextual prefixes at ingest, `residency` before every prompt, and nothing else.
+- **A different policy.** Edit `MAY_READ` in `models.py`. `rag.py` consults it in two places: contextual prefixes at ingest, and `residency` before every prompt (`check` only prints it).
 - **A different embedding model.** Add or edit an embed block in `providers.toml`. The `search_query:` / `search_document:` prefixes are applied only to models whose name starts with `nomic`. Re-ingest: the vector width is read from the first batch.
 - **A different provider.** Add a `kind` branch in `models.chat` and, if it embeds, in `models.embed`, plus a message translator if its wire format is new. `rag.py` does not change.
 - **A different store.** Everything Qdrant-specific is in `ingest` (create, upsert, delete) and one `query_points` call in `retrieve`. The payload filter on `access` must be reproduced in whatever replaces it, or the permission filter degrades to post-filtering.
