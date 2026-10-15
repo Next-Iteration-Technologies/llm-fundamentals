@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Content Hub application servers: scheduled cleanup tasks. Revised 2026-08-04. Class: Confidential. Access: team. -->
-<cleanupTasks platform="Content Hub">
-  <cleanup task="server-logs" retentionDays="30" schedule="daily 03:00"/>
-  <cleanup task="index-temp" retentionDays="2" schedule="daily 04:00"/>
-  <cleanup task="render-cache" retentionDays="7" schedule="weekly Sun 05:00"/>
-</cleanupTasks>

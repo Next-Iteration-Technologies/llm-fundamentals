@@ -2,269 +2,404 @@
  "about": "Every text file of the pack, for an ingest that fetches over HTTP (the hosted n8n rung). access is the coarse tag the n8n ingest stores; the Python rung reads front matter instead.",
  "files": [
   {
-   "path": "contenthub/POL-RET-01.md",
-   "access": "team",
-   "bytes": 939
-  },
-  {
-   "path": "contenthub/SD-CH-02.md",
-   "access": "team",
-   "bytes": 954
-  },
-  {
-   "path": "contenthub/SD-LOG-01.md",
-   "access": "team",
-   "bytes": 1063
-  },
-  {
-   "path": "contenthub/SOP-CAP-01.md",
-   "access": "team",
-   "bytes": 732
-  },
-  {
-   "path": "contenthub/SOP-CH-03.md",
-   "access": "team",
-   "bytes": 1037
-  },
-  {
-   "path": "contenthub/SOP-CH-07.md",
-   "access": "team",
-   "bytes": 1182
-  },
-  {
-   "path": "contenthub/SOP-LA-02.md",
-   "access": "team",
-   "bytes": 737
-  },
-  {
-   "path": "contenthub/SOP-OPS-02.md",
-   "access": "team",
-   "bytes": 636
-  },
-  {
-   "path": "contenthub/config/contenthub-cleanup.xml",
-   "access": "team",
-   "bytes": 440
-  },
-  {
-   "path": "jira/issues.json",
-   "access": "team",
-   "bytes": 5047
-  },
-  {
    "path": "jira/snapshot-2026-10-06.json",
    "access": "team",
-   "bytes": 6060
+   "bytes": 6538
   },
   {
-   "path": "known-issues.csv",
+   "path": "logs/deliveries.log",
    "access": "team",
-   "bytes": 2551
+   "bytes": 7237
   },
   {
-   "path": "logs/index.log",
+   "path": "mail/2026-07-01_lee_new-driver-starting.eml",
    "access": "team",
-   "bytes": 4467
+   "bytes": 1003
   },
   {
-   "path": "logs/transfer.log",
+   "path": "mail/2026-07-08_lee_van-service.eml",
    "access": "team",
-   "bytes": 4382
+   "bytes": 1053
   },
   {
-   "path": "mail/2026-07-23_lee_capture-batch.eml",
+   "path": "mail/2026-07-15_emma_re-office-move-utrecht.eml",
    "access": "team",
-   "bytes": 403
+   "bytes": 1219
   },
   {
-   "path": "mail/2026-09-08_jonas_change-window.eml",
+   "path": "mail/2026-07-22_priya_peoplehub-app-update.eml",
    "access": "team",
-   "bytes": 432
+   "bytes": 1059
   },
   {
-   "path": "mail/2026-09-15_jonas_retention-reminder.eml",
+   "path": "mail/2026-07-29_lee_warehouse-stock-count.eml",
    "access": "team",
-   "bytes": 511
+   "bytes": 1022
   },
   {
-   "path": "mail/2026-09-17_sam_on-prem-parser.eml",
+   "path": "mail/2026-08-12_noor_re-extra-cups.eml",
    "access": "team",
-   "bytes": 579
+   "bytes": 1171
   },
   {
-   "path": "mail/2026-09-19_vendor-a_re-on-prem-parser.eml",
-   "access": "team",
-   "bytes": 824
-  },
-  {
-   "path": "mail/2026-09-21_noor_fabrikam-search.eml",
-   "access": "team",
-   "bytes": 447
-  },
-  {
-   "path": "mail/2026-09-22_priya_re-fabrikam-search.eml",
-   "access": "priya",
-   "bytes": 505
-  },
-  {
-   "path": "mail/2026-09-24_sam_vendor-b-pricing.eml",
-   "access": "team",
-   "bytes": 563
-  },
-  {
-   "path": "mail/2026-09-25_sam_re-re-on-prem-parser.eml",
+   "path": "mail/2026-08-19_katrin_thank-you.eml",
    "access": "team",
    "bytes": 824
   },
   {
-   "path": "mail/2026-09-26_vendor-b_re-pricing.eml",
+   "path": "mail/2026-08-26_priya_fire-drill.eml",
    "access": "team",
-   "bytes": 634
+   "bytes": 990
   },
   {
-   "path": "mail/2026-09-29_0205_alert_5e90-a3f7.eml",
+   "path": "mail/2026-09-02_priya_first-aid-course.eml",
    "access": "team",
-   "bytes": 517
+   "bytes": 1027
   },
   {
-   "path": "mail/2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
+   "path": "mail/2026-09-09_lee_re-parking-london-office.eml",
    "access": "team",
-   "bytes": 1207
+   "bytes": 1248
   },
   {
-   "path": "mail/2026-10-01_sam_minutes-approved.eml",
+   "path": "mail/2026-09-17_sam_clearspring-utrecht.eml",
    "access": "team",
-   "bytes": 467
+   "bytes": 678
   },
   {
-   "path": "mail/2026-10-02_2340_alert_c4d8-2b16.eml",
+   "path": "mail/2026-09-19_mark_re-clearspring-utrecht.eml",
    "access": "team",
-   "bytes": 511
+   "bytes": 960
   },
   {
-   "path": "mail/2026-10-02_lee_vendor-b-server-versions.eml",
+   "path": "mail/2026-09-21_noor_fabrikam-taste.eml",
    "access": "team",
-   "bytes": 557
+   "bytes": 575
   },
   {
-   "path": "mail/2026-10-02_noor_fwd-transcript-vendor-c.eml",
+   "path": "mail/2026-09-22_lee_re-fabrikam-taste.eml",
    "access": "team",
-   "bytes": 871
+   "bytes": 761
   },
   {
-   "path": "mail/2026-10-03_sam_vendor-c-demo-invite.eml",
-   "access": "team",
-   "bytes": 535
-  },
-  {
-   "path": "mail/2026-10-04_0231_alert_a19e-77d0.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-05_0148_alert_0f6b-ce23.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-05_priya_on-call-handover.eml",
-   "access": "priya",
-   "bytes": 476
-  },
-  {
-   "path": "mail/2026-10-06_0209_alert_9d41-6a0e.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-06_0211_alert_b2e0-17f4.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-06_0214_alert_7f3a-91c2.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-06_0216_alert_e7c3-58b1.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-06_0302_alert_41aa-0c9d.eml",
-   "access": "team",
-   "bytes": 509
-  },
-  {
-   "path": "mail/2026-10-06_noor_legacy-viewer.eml",
-   "access": "team",
-   "bytes": 419
-  },
-  {
-   "path": "mail/2026-10-06_sam_re-night-alerts.eml",
-   "access": "team",
-   "bytes": 411
-  },
-  {
-   "path": "mail/2026-10-07_0222_alert_3b7c-e104.eml",
-   "access": "team",
-   "bytes": 517
-  },
-  {
-   "path": "mail/2026-10-07_sam_re-re-re-pricing.eml",
-   "access": "team",
-   "bytes": 690
-  },
-  {
-   "path": "mail/2026-10-07_vendor-b_re-re-pricing.eml",
-   "access": "team",
-   "bytes": 846
-  },
-  {
-   "path": "mail/index.json",
-   "access": "team",
-   "bytes": 7574
-  },
-  {
-   "path": "minutes/2026-09-03.md",
+   "path": "mail/2026-09-23_maria_holiday-party.eml",
    "access": "team",
    "bytes": 1012
   },
   {
-   "path": "minutes/2026-09-17.md",
+   "path": "mail/2026-09-24_lee_blueriver-price.eml",
    "access": "team",
-   "bytes": 835
+   "bytes": 548
+  },
+  {
+   "path": "mail/2026-09-25_sam_re-re-clearspring-utrecht.eml",
+   "access": "team",
+   "bytes": 926
+  },
+  {
+   "path": "mail/2026-09-26_ruth_re-blueriver-price.eml",
+   "access": "team",
+   "bytes": 713
+  },
+  {
+   "path": "mail/2026-09-30_mark_re-re-re-clearspring-utrecht.eml",
+   "access": "team",
+   "bytes": 1344
+  },
+  {
+   "path": "mail/2026-09-30_priya_expenses-reminder.eml",
+   "access": "team",
+   "bytes": 988
+  },
+  {
+   "path": "mail/2026-10-01_sam_minutes-approved.eml",
+   "access": "team",
+   "bytes": 575
+  },
+  {
+   "path": "mail/2026-10-02_anna_discount.eml",
+   "access": "team",
+   "bytes": 613
+  },
+  {
+   "path": "mail/2026-10-02_emma_fwd-alpenquell-call.eml",
+   "access": "team",
+   "bytes": 984
+  },
+  {
+   "path": "mail/2026-10-03_lee_alpenquell-tasting-invite.eml",
+   "access": "team",
+   "bytes": 542
+  },
+  {
+   "path": "mail/2026-10-05_jonas_q3-sales-figures.eml",
+   "access": "team",
+   "bytes": 1056
+  },
+  {
+   "path": "mail/2026-10-05_lee_driver-handover.eml",
+   "access": "team",
+   "bytes": 595
+  },
+  {
+   "path": "mail/2026-10-06_0714_missed_ord-7f3a.eml",
+   "access": "team",
+   "bytes": 460
+  },
+  {
+   "path": "mail/2026-10-06_0741_missed_ord-7f3b.eml",
+   "access": "team",
+   "bytes": 462
+  },
+  {
+   "path": "mail/2026-10-06_0809_missed_ord-b483.eml",
+   "access": "team",
+   "bytes": 485
+  },
+  {
+   "path": "mail/2026-10-06_1014_missed_ord-fc2f.eml",
+   "access": "team",
+   "bytes": 484
+  },
+  {
+   "path": "mail/2026-10-06_1451_missed_ord-2f82.eml",
+   "access": "team",
+   "bytes": 461
+  },
+  {
+   "path": "mail/2026-10-06_1526_missed_ord-4173.eml",
+   "access": "team",
+   "bytes": 462
+  },
+  {
+   "path": "mail/2026-10-06_1553_missed_ord-967a.eml",
+   "access": "team",
+   "bytes": 465
+  },
+  {
+   "path": "mail/2026-10-06_lee_re-missed-deliveries.eml",
+   "access": "team",
+   "bytes": 603
+  },
+  {
+   "path": "mail/2026-10-07_lee_re-re-re-blueriver-price.eml",
+   "access": "team",
+   "bytes": 786
+  },
+  {
+   "path": "mail/2026-10-07_priya_review-cycle-reminder.eml",
+   "access": "team",
+   "bytes": 1062
+  },
+  {
+   "path": "mail/2026-10-07_ruth_re-re-blueriver-price.eml",
+   "access": "team",
+   "bytes": 880
+  },
+  {
+   "path": "minutes/2026-09-03.md",
+   "access": "team, client",
+   "bytes": 2195
+  },
+  {
+   "path": "minutes/2026-09-17.md",
+   "access": "team, client",
+   "bytes": 1785
   },
   {
    "path": "minutes/2026-09-24.md",
-   "access": "team",
-   "bytes": 994
+   "access": "team, client",
+   "bytes": 1754
   },
   {
    "path": "minutes/2026-10-01.md",
+   "access": "team, client",
+   "bytes": 1488
+  },
+  {
+   "path": "onedrive/hr-notes/difficult-conversations.md",
+   "access": "hr",
+   "bytes": 635
+  },
+  {
+   "path": "onedrive/hr-notes/new-starter-checklist.md",
+   "access": "hr",
+   "bytes": 745
+  },
+  {
+   "path": "onedrive/hr-notes/payslip-fix.md",
+   "access": "hr",
+   "bytes": 708
+  },
+  {
+   "path": "policies/archive/HR-REM-01_2024.md",
    "access": "team",
-   "bytes": 932
+   "bytes": 5245
   },
   {
-   "path": "onedrive/priya-notes/capture-remote-sites.md",
-   "access": "priya",
-   "bytes": 416
+   "path": "policies/CL-CRD-01.md",
+   "access": "team",
+   "bytes": 5897
   },
   {
-   "path": "onedrive/priya-notes/index-worker-fix.md",
-   "access": "priya",
-   "bytes": 562
+   "path": "policies/CL-DAT-01.md",
+   "access": "team, client",
+   "bytes": 6140
   },
   {
-   "path": "onedrive/priya-notes/on-call-cheatsheet.md",
-   "access": "priya",
-   "bytes": 467
+   "path": "policies/CL-DOC-01.md",
+   "access": "team",
+   "bytes": 6108
+  },
+  {
+   "path": "policies/CL-OFF-01.md",
+   "access": "team",
+   "bytes": 6504
+  },
+  {
+   "path": "policies/CL-ONB-01.md",
+   "access": "team",
+   "bytes": 6882
+  },
+  {
+   "path": "policies/CL-PRC-01.md",
+   "access": "team",
+   "bytes": 5729
+  },
+  {
+   "path": "policies/CL-SIT-01.md",
+   "access": "team",
+   "bytes": 6111
+  },
+  {
+   "path": "policies/CL-WEL-01.md",
+   "access": "team",
+   "bytes": 5968
+  },
+  {
+   "path": "policies/HR-CON-01.md",
+   "access": "team",
+   "bytes": 6483
+  },
+  {
+   "path": "policies/HR-EXP-01.md",
+   "access": "team",
+   "bytes": 5992
+  },
+  {
+   "path": "policies/HR-HRS-01.md",
+   "access": "team",
+   "bytes": 6168
+  },
+  {
+   "path": "policies/HR-IT-01.md",
+   "access": "team",
+   "bytes": 6237
+  },
+  {
+   "path": "policies/HR-JOI-01.md",
+   "access": "team",
+   "bytes": 5983
+  },
+  {
+   "path": "policies/HR-LEA-DE.md",
+   "access": "team",
+   "bytes": 6152
+  },
+  {
+   "path": "policies/HR-LEA-NL.md",
+   "access": "team",
+   "bytes": 6263
+  },
+  {
+   "path": "policies/HR-LEA-UK.md",
+   "access": "team",
+   "bytes": 6150
+  },
+  {
+   "path": "policies/HR-LVR-01.md",
+   "access": "team",
+   "bytes": 6208
+  },
+  {
+   "path": "policies/HR-PAR-01.md",
+   "access": "team",
+   "bytes": 6415
+  },
+  {
+   "path": "policies/HR-PAY-01.md",
+   "access": "team",
+   "bytes": 5803
+  },
+  {
+   "path": "policies/HR-PAY-02.md",
+   "access": "hr",
+   "bytes": 6070
+  },
+  {
+   "path": "policies/HR-REM-01.md",
+   "access": "team",
+   "bytes": 5999
+  },
+  {
+   "path": "policies/HR-REV-01.md",
+   "access": "team",
+   "bytes": 5902
+  },
+  {
+   "path": "policies/HR-SAF-01.md",
+   "access": "team",
+   "bytes": 6399
+  },
+  {
+   "path": "policies/HR-SIC-01.md",
+   "access": "team",
+   "bytes": 6814
+  },
+  {
+   "path": "policies/SV-CMP-01.md",
+   "access": "team, client",
+   "bytes": 5050
+  },
+  {
+   "path": "policies/SV-DEL-01.md",
+   "access": "team, client",
+   "bytes": 5460
+  },
+  {
+   "path": "policies/SV-HYG-01.md",
+   "access": "team",
+   "bytes": 5276
+  },
+  {
+   "path": "policies/SV-INS-01.md",
+   "access": "team",
+   "bytes": 5125
+  },
+  {
+   "path": "policies/SV-MIS-01.md",
+   "access": "team",
+   "bytes": 5331
+  },
+  {
+   "path": "policies/SV-SLA-01.md",
+   "access": "team, client",
+   "bytes": 4840
+  },
+  {
+   "path": "policies/SV-SUP-01.md",
+   "access": "team",
+   "bytes": 4975
+  },
+  {
+   "path": "price-list.csv",
+   "access": "team, client",
+   "bytes": 1738
   },
   {
    "path": "tickets/tickets.json",
    "access": "team",
-   "bytes": 19759
+   "bytes": 21897
   }
  ]
 }

@@ -1,0 +1,25 @@
+From: Lee Wong <lee@contoso-water.example>
+To: warehouse-london@contoso-water.example
+Date: Wed, 29 Jul 2026 14:45:00 +0100
+Subject: Warehouse stock count on Friday
+Message-ID: <2026-07-29_lee_warehouse-stock-count@contoso-water.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Hi team,
+
+We do the half-year stock count in the London warehouse this Friday, 31 July, from 13:00.
+
+We count:
+- full 19-litre bottles and empty bottles
+- spare coolers, by product id (WC-100, WC-150, WC-200 and so on)
+- boxes of paper cups
+- filters and spare parts on the shelves at the back
+
+Please have all returned bottles stacked in the returns area by 12:30, and do not move stock between areas while we count. Each pair of people gets a count sheet and one area of the warehouse. When your area is done, hand the sheet to me in the warehouse office.
+
+Drivers will be back from their routes by 13:00 that day, so we have enough hands. We should be finished by 16:00.
+
+Kind regards,
+Lee

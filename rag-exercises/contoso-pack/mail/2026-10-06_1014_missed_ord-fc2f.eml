@@ -1,0 +1,10 @@
+From: Delivery app <noreply@contoso-water.example>
+To: service@contoso-water.example
+Date: Tue, 06 Oct 2026 10:14:47 +0100
+Subject: MISSED delivery ORD-FC2F Fourth Street Studio
+Message-ID: <2026-10-06_1014_missed_ord-fc2f@contoso-water.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+MISSED delivery. order ORD-FC2F client Fourth Street Studio route U2 time 10:14:47 reason=no-access. Card left: yes. Rebook within 2 working days.

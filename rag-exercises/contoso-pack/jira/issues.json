@@ -2,9 +2,9 @@
   "source": "Jira (mock), live state 2026-10-08",
   "issues": [
     {
-      "key": "POC-1",
+      "key": "ONB-1",
       "fields": {
-        "summary": "Central log platform POC",
+        "summary": "Northwind onboarding",
         "status": {
           "name": "In Progress"
         },
@@ -13,18 +13,41 @@
           "name": "Epic"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
           "displayName": "Sam"
         },
-        "description": "Evaluate vendors A, B and C. Content Hub server logs first."
+        "description": "New client Northwind, Utrecht, 7 coolers, 36 months."
       }
     },
     {
-      "key": "POC-10",
+      "key": "ONB-10",
       "fields": {
-        "summary": "Book demo slots with vendors A, B and C",
+        "summary": "Book the site survey with Northwind",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-09-15T16:00:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "ONB"
+        },
+        "assignee": {
+          "displayName": "Sam"
+        },
+        "description": "Survey done 2026-09-15.",
+        "parent": {
+          "key": "ONB-1"
+        }
+      }
+    },
+    {
+      "key": "ONB-11",
+      "fields": {
+        "summary": "Ask ClearSpring, BlueRiver and Alpenquell for price and start date",
         "status": {
           "name": "Done"
         },
@@ -33,21 +56,44 @@
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
-          "displayName": "Sam"
+          "displayName": "Lee"
         },
         "description": "",
         "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     },
     {
-      "key": "POC-11",
+      "key": "ONB-12",
       "fields": {
-        "summary": "Ask vendor A: does an on-premise parser exist?",
+        "summary": "Credit check for Northwind",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-09-25T11:30:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "ONB"
+        },
+        "assignee": {
+          "displayName": "Jonas"
+        },
+        "description": "Result: Pass. Done late (8 working days).",
+        "parent": {
+          "key": "ONB-1"
+        }
+      }
+    },
+    {
+      "key": "ONB-13",
+      "fields": {
+        "summary": "Chase ClearSpring for a written answer about Utrecht deliveries",
         "status": {
           "name": "Done"
         },
@@ -56,44 +102,67 @@
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
-          "displayName": "Sam"
+          "displayName": "Lee"
         },
         "description": "Answered 2026-09-30: not before next year.",
         "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     },
     {
-      "key": "POC-12",
+      "key": "ONB-14",
       "fields": {
-        "summary": "Ask vendor B: pricing per GB at 200 GB/day",
+        "summary": "Branded coolers for Northwind: possible and cost?",
         "status": {
-          "name": "Done"
+          "name": "Open"
         },
-        "updated": "2026-10-07T10:41:00+02:00",
+        "updated": "2026-09-17T17:00:00+02:00",
         "issuetype": {
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
-          "displayName": "Sam"
+          "displayName": "Noor"
         },
-        "description": "Answered 2026-10-07: 0.85 EUR per GB per day.",
+        "description": "",
         "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     },
     {
-      "key": "POC-13",
+      "key": "ONB-15",
       "fields": {
-        "summary": "Vendor B asked: Windows Server 2019?",
+        "summary": "Ask BlueRiver for the price at 550 bottles a week",
+        "status": {
+          "name": "Done"
+        },
+        "updated": "2026-10-07T15:20:00+02:00",
+        "issuetype": {
+          "name": "Task"
+        },
+        "project": {
+          "key": "ONB"
+        },
+        "assignee": {
+          "displayName": "Lee"
+        },
+        "description": "Answered 2026-10-07.",
+        "parent": {
+          "key": "ONB-1"
+        }
+      }
+    },
+    {
+      "key": "ONB-16",
+      "fields": {
+        "summary": "BlueRiver asked: glass bottles instead of plastic?",
         "status": {
           "name": "Open"
         },
@@ -102,44 +171,21 @@
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
           "displayName": "Lee"
         },
         "description": "",
         "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     },
     {
-      "key": "POC-14",
+      "key": "ONB-17",
       "fields": {
-        "summary": "Send vendor B the server versions",
-        "status": {
-          "name": "In Progress"
-        },
-        "updated": "2026-10-02T14:20:00+02:00",
-        "issuetype": {
-          "name": "Task"
-        },
-        "project": {
-          "key": "POC"
-        },
-        "assignee": {
-          "displayName": "Lee"
-        },
-        "description": "",
-        "parent": {
-          "key": "POC-1"
-        }
-      }
-    },
-    {
-      "key": "POC-15",
-      "fields": {
-        "summary": "Vendor C demo",
+        "summary": "Alpenquell tasting and offer",
         "status": {
           "name": "Scheduled"
         },
@@ -148,44 +194,21 @@
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
-          "displayName": "Sam"
+          "displayName": "Lee"
         },
-        "description": "Scheduled 2026-10-15 10:00.",
+        "description": "Scheduled 2026-10-15 10:00, Utrecht.",
         "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     },
     {
-      "key": "POC-16",
+      "key": "ONB-18",
       "fields": {
-        "summary": "Solution design SD-LOG-01",
-        "status": {
-          "name": "In Progress"
-        },
-        "updated": "2026-09-10T16:00:00+02:00",
-        "issuetype": {
-          "name": "Task"
-        },
-        "project": {
-          "key": "POC"
-        },
-        "assignee": {
-          "displayName": "Sam"
-        },
-        "description": "",
-        "parent": {
-          "key": "POC-1"
-        }
-      }
-    },
-    {
-      "key": "POC-17",
-      "fields": {
-        "summary": "Decision record: vendor A dropped",
+        "summary": "Decision record: ClearSpring dropped for the Netherlands",
         "status": {
           "name": "Done"
         },
@@ -194,37 +217,14 @@
           "name": "Task"
         },
         "project": {
-          "key": "POC"
+          "key": "ONB"
         },
         "assignee": {
           "displayName": "Sam"
         },
         "description": "",
         "parent": {
-          "key": "POC-1"
-        }
-      }
-    },
-    {
-      "key": "POC-18",
-      "fields": {
-        "summary": "Define alert rules for known patterns (KI-022 first)",
-        "status": {
-          "name": "Open"
-        },
-        "updated": "2026-09-17T11:00:00+02:00",
-        "issuetype": {
-          "name": "Task"
-        },
-        "project": {
-          "key": "POC"
-        },
-        "assignee": {
-          "displayName": "Priya"
-        },
-        "description": "",
-        "parent": {
-          "key": "POC-1"
+          "key": "ONB-1"
         }
       }
     }

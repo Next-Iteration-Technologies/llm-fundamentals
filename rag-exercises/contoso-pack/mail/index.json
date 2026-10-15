@@ -1,212 +1,261 @@
 [
   {
-    "file": "2026-07-23_lee_capture-batch.eml",
-    "from": "Lee <lee@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-07-23T16:00:00+02:00",
-    "subject": "Capture batch stuck at site Harbour"
+    "file": "2026-07-01_lee_new-driver-starting.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-07-01T09:12:00+01:00",
+    "subject": "New driver starting in London"
   },
   {
-    "file": "2026-09-08_jonas_change-window.eml",
-    "from": "Jonas <jonas@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-09-08T12:00:00+02:00",
-    "subject": "Change window Saturday 2026-09-12"
+    "file": "2026-07-08_lee_van-service.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "drivers-london@contoso-water.example",
+    "date": "2026-07-08T15:30:00+01:00",
+    "subject": "Van service next week"
   },
   {
-    "file": "2026-09-15_jonas_retention-reminder.eml",
-    "from": "Jonas <jonas@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-09-15T10:00:00+02:00",
-    "subject": "Reminder: retention policy POL-RET-01"
+    "file": "2026-07-15_emma_re-office-move-utrecht.eml",
+    "from": "Emma de Vries <emma@contoso-water.example>",
+    "to": "Maria Lopez <maria@contoso-water.example>",
+    "date": "2026-07-15T11:05:00+02:00",
+    "subject": "Re: Office move in Utrecht"
   },
   {
-    "file": "2026-09-17_sam_on-prem-parser.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "Dana (vendor A) <dana@vendor-a.example>",
-    "date": "2026-09-17T15:40:00+02:00",
-    "subject": "on-prem parser?"
+    "file": "2026-07-22_priya_peoplehub-app-update.eml",
+    "from": "Priya Shah <priya@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-07-22T10:20:00+01:00",
+    "subject": "PeopleHub app update"
   },
   {
-    "file": "2026-09-19_vendor-a_re-on-prem-parser.eml",
-    "from": "Dana (vendor A) <dana@vendor-a.example>",
-    "to": "Sam <sam@contoso.example>",
-    "date": "2026-09-19T10:05:00+02:00",
-    "subject": "Re: on-prem parser?"
+    "file": "2026-07-29_lee_warehouse-stock-count.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "warehouse-london@contoso-water.example",
+    "date": "2026-07-29T14:45:00+01:00",
+    "subject": "Warehouse stock count on Friday"
   },
   {
-    "file": "2026-09-21_noor_fabrikam-search.eml",
-    "from": "Noor <noor@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-09-21T09:45:00+02:00",
-    "subject": "Fabrikam Legal: search empty again?"
+    "file": "2026-08-12_noor_re-extra-cups.eml",
+    "from": "Noor Haddad <noor@contoso-water.example>",
+    "to": "Helen Carter <helen.carter@woodgrove.example>",
+    "date": "2026-08-12T12:10:00+01:00",
+    "subject": "Re: Extra cups for our staff meeting"
   },
   {
-    "file": "2026-09-22_priya_re-fabrikam-search.eml",
-    "from": "Priya <priya@contoso.example>",
-    "to": "Noor <noor@contoso.example>",
-    "date": "2026-09-22T08:15:00+02:00",
-    "subject": "Re: Fabrikam Legal: search empty again?"
+    "file": "2026-08-19_katrin_thank-you.eml",
+    "from": "Katrin Vogel <katrin.vogel@tailspin.example>",
+    "to": "Lee Wong <lee@contoso-water.example>",
+    "date": "2026-08-19T16:02:00+02:00",
+    "subject": "Thank you"
   },
   {
-    "file": "2026-09-24_sam_vendor-b-pricing.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "Marek (vendor B) <marek@vendor-b.example>",
-    "date": "2026-09-24T16:30:00+02:00",
-    "subject": "Pricing at 200 GB per day"
+    "file": "2026-08-26_priya_fire-drill.eml",
+    "from": "Priya Shah <priya@contoso-water.example>",
+    "to": "london-staff@contoso-water.example",
+    "date": "2026-08-26T09:40:00+01:00",
+    "subject": "Fire drill at the London office"
   },
   {
-    "file": "2026-09-25_sam_re-re-on-prem-parser.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "Dana (vendor A) <dana@vendor-a.example>",
-    "date": "2026-09-25T09:12:00+02:00",
-    "subject": "Re: Re: on-prem parser?"
+    "file": "2026-09-02_priya_first-aid-course.eml",
+    "from": "Priya Shah <priya@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-09-02T13:15:00+01:00",
+    "subject": "First-aid course in October"
   },
   {
-    "file": "2026-09-26_vendor-b_re-pricing.eml",
-    "from": "Marek (vendor B) <marek@vendor-b.example>",
-    "to": "Sam <sam@contoso.example>",
-    "date": "2026-09-26T11:02:00+02:00",
-    "subject": "Re: Pricing at 200 GB per day"
+    "file": "2026-09-09_lee_re-parking-london-office.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "Priya Shah <priya@contoso-water.example>",
+    "date": "2026-09-09T10:25:00+01:00",
+    "subject": "Re: Parking at the London office"
   },
   {
-    "file": "2026-09-29_0205_alert_5e90-a3f7.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-09-29T02:05:00+02:00",
-    "subject": "ALERT doc-id 5e90-a3f7 stage=transfer result=TIMEOUT"
+    "file": "2026-09-17_sam_clearspring-utrecht.eml",
+    "from": "Sam Patel <sam@contoso-water.example>",
+    "to": "Mark Evans <mark@clearspring.example>",
+    "date": "2026-09-17T16:10:00+01:00",
+    "subject": "Bottles for Utrecht?"
   },
   {
-    "file": "2026-09-30_vendor-a_re-re-re-on-prem-parser.eml",
-    "from": "Dana (vendor A) <dana@vendor-a.example>",
-    "to": "Sam <sam@contoso.example>",
-    "date": "2026-09-30T17:48:00+02:00",
-    "subject": "Re: Re: Re: on-prem parser?"
+    "file": "2026-09-19_mark_re-clearspring-utrecht.eml",
+    "from": "Mark Evans <mark@clearspring.example>",
+    "to": "Sam Patel <sam@contoso-water.example>",
+    "date": "2026-09-19T09:30:00+01:00",
+    "subject": "Re: Bottles for Utrecht?"
+  },
+  {
+    "file": "2026-09-21_noor_fabrikam-taste.eml",
+    "from": "Noor Haddad <noor@contoso-water.example>",
+    "to": "delivery-ops@contoso-water.example",
+    "date": "2026-09-21T09:40:00+01:00",
+    "subject": "Fabrikam: water tastes odd again"
+  },
+  {
+    "file": "2026-09-22_lee_re-fabrikam-taste.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "Noor Haddad <noor@contoso-water.example>",
+    "date": "2026-09-22T15:10:00+01:00",
+    "subject": "Re: Fabrikam: water tastes odd again"
+  },
+  {
+    "file": "2026-09-23_maria_holiday-party.eml",
+    "from": "Maria Lopez <maria@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-09-23T16:00:00+01:00",
+    "subject": "Save the date: holiday party"
+  },
+  {
+    "file": "2026-09-24_lee_blueriver-price.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "Ruth Jansen <ruth@blueriver.example>",
+    "date": "2026-09-24T17:20:00+01:00",
+    "subject": "Price for 550 bottles a week"
+  },
+  {
+    "file": "2026-09-25_sam_re-re-clearspring-utrecht.eml",
+    "from": "Sam Patel <sam@contoso-water.example>",
+    "to": "Mark Evans <mark@clearspring.example>",
+    "date": "2026-09-25T10:05:00+01:00",
+    "subject": "Re: Re: Bottles for Utrecht?"
+  },
+  {
+    "file": "2026-09-26_ruth_re-blueriver-price.eml",
+    "from": "Ruth Jansen <ruth@blueriver.example>",
+    "to": "Lee Wong <lee@contoso-water.example>",
+    "date": "2026-09-26T11:00:00+02:00",
+    "subject": "Re: Price for 550 bottles a week"
+  },
+  {
+    "file": "2026-09-30_mark_re-re-re-clearspring-utrecht.eml",
+    "from": "Mark Evans <mark@clearspring.example>",
+    "to": "Sam Patel <sam@contoso-water.example>",
+    "date": "2026-09-30T17:48:00+01:00",
+    "subject": "Re: Re: Re: Bottles for Utrecht?"
+  },
+  {
+    "file": "2026-09-30_priya_expenses-reminder.eml",
+    "from": "Priya Shah <priya@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-09-30T17:48:00+01:00",
+    "subject": "Expenses reminder"
   },
   {
     "file": "2026-10-01_sam_minutes-approved.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-01T17:05:00+02:00",
-    "subject": "Minutes 2026-10-01 approved"
+    "from": "Sam Patel <sam@contoso-water.example>",
+    "to": "onboarding@contoso-water.example",
+    "date": "2026-10-01T17:30:00+01:00",
+    "subject": "Minutes approved: Northwind supplier decision"
   },
   {
-    "file": "2026-10-02_noor_fwd-transcript-vendor-c.eml",
-    "from": "Noor <noor@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-02T09:30:00+02:00",
-    "subject": "Fwd: transcript vendor C intro"
+    "file": "2026-10-02_anna_discount.eml",
+    "from": "Anna Visser <anna@northwind.example>",
+    "to": "Sam Patel <sam@contoso-water.example>",
+    "date": "2026-10-02T16:00:00+02:00",
+    "subject": "Discount for Northwind?"
   },
   {
-    "file": "2026-10-02_lee_vendor-b-server-versions.eml",
-    "from": "Lee <lee@contoso.example>",
-    "to": "Marek (vendor B) <marek@vendor-b.example>",
-    "date": "2026-10-02T14:15:00+02:00",
-    "subject": "Server versions for the POC"
+    "file": "2026-10-02_emma_fwd-alpenquell-call.eml",
+    "from": "Emma de Vries <emma@contoso-water.example>",
+    "to": "onboarding@contoso-water.example",
+    "date": "2026-10-02T12:15:00+02:00",
+    "subject": "Fwd: notes from the Alpenquell call"
   },
   {
-    "file": "2026-10-02_2340_alert_c4d8-2b16.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-02T23:40:00+02:00",
-    "subject": "ALERT doc-id c4d8-2b16 stage=render result=FAILED"
+    "file": "2026-10-03_lee_alpenquell-tasting-invite.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "onboarding@contoso-water.example",
+    "date": "2026-10-03T09:00:00+01:00",
+    "subject": "Invitation: Alpenquell tasting, 15 October"
   },
   {
-    "file": "2026-10-03_sam_vendor-c-demo-invite.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "Ines (vendor C) <ines@vendor-c.example>, archive-ops@contoso.example",
-    "date": "2026-10-03T08:55:00+02:00",
-    "subject": "Vendor C demo 2026-10-15"
+    "file": "2026-10-05_jonas_q3-sales-figures.eml",
+    "from": "Jonas Becker <jonas@contoso-water.example>",
+    "to": "Maria Lopez <maria@contoso-water.example>",
+    "date": "2026-10-05T08:55:00+02:00",
+    "subject": "Q3 sales figures"
   },
   {
-    "file": "2026-10-04_0231_alert_a19e-77d0.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-04T02:31:00+02:00",
-    "subject": "ALERT doc-id a19e-77d0 stage=transfer result=TIMEOUT"
+    "file": "2026-10-05_lee_driver-handover.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "delivery-ops@contoso-water.example",
+    "date": "2026-10-05T18:00:00+01:00",
+    "subject": "Weekly driver handover"
   },
   {
-    "file": "2026-10-05_0148_alert_0f6b-ce23.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-05T01:48:00+02:00",
-    "subject": "ALERT doc-id 0f6b-ce23 stage=transfer result=TIMEOUT"
+    "file": "2026-10-06_0714_missed_ord-7f3a.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T07:14:07+01:00",
+    "subject": "MISSED delivery ORD-7F3A Fabrikam"
   },
   {
-    "file": "2026-10-05_priya_on-call-handover.eml",
-    "from": "Priya <priya@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-05T08:30:00+02:00",
-    "subject": "On-call handover week 41"
+    "file": "2026-10-06_0741_missed_ord-7f3b.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T07:41:52+01:00",
+    "subject": "MISSED delivery ORD-7F3B Woodgrove"
   },
   {
-    "file": "2026-10-06_0209_alert_9d41-6a0e.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T02:09:00+02:00",
-    "subject": "ALERT doc-id 9d41-6a0e stage=transfer result=TIMEOUT"
+    "file": "2026-10-06_0809_missed_ord-b483.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T08:09:47+01:00",
+    "subject": "MISSED delivery ORD-B483 Fourth Street Studio"
   },
   {
-    "file": "2026-10-06_0211_alert_b2e0-17f4.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T02:11:00+02:00",
-    "subject": "ALERT doc-id b2e0-17f4 stage=transfer result=TIMEOUT"
+    "file": "2026-10-06_1014_missed_ord-fc2f.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T10:14:47+01:00",
+    "subject": "MISSED delivery ORD-FC2F Fourth Street Studio"
   },
   {
-    "file": "2026-10-06_0214_alert_7f3a-91c2.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T02:14:00+02:00",
-    "subject": "ALERT doc-id 7f3a-91c2 stage=transfer result=TIMEOUT"
+    "file": "2026-10-06_1451_missed_ord-2f82.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T14:51:04+01:00",
+    "subject": "MISSED delivery ORD-2F82 Litware"
   },
   {
-    "file": "2026-10-06_0216_alert_e7c3-58b1.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T02:16:00+02:00",
-    "subject": "ALERT doc-id e7c3-58b1 stage=transfer result=TIMEOUT"
+    "file": "2026-10-06_1526_missed_ord-4173.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T15:26:59+01:00",
+    "subject": "MISSED delivery ORD-4173 Woodgrove"
   },
   {
-    "file": "2026-10-06_0302_alert_41aa-0c9d.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T03:02:00+02:00",
-    "subject": "ALERT doc-id 41aa-0c9d stage=index result=FAILED"
+    "file": "2026-10-06_1553_missed_ord-967a.eml",
+    "from": "Delivery app <noreply@contoso-water.example>",
+    "to": "service@contoso-water.example",
+    "date": "2026-10-06T15:53:56+01:00",
+    "subject": "MISSED delivery ORD-967A Woodgrove"
   },
   {
-    "file": "2026-10-06_sam_re-night-alerts.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T07:10:00+02:00",
-    "subject": "Night alerts 2026-10-06"
+    "file": "2026-10-06_lee_re-missed-deliveries.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "delivery-ops@contoso-water.example",
+    "date": "2026-10-06T16:30:00+01:00",
+    "subject": "Re: missed deliveries this morning"
   },
   {
-    "file": "2026-10-06_noor_legacy-viewer.eml",
-    "from": "Noor <noor@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-06T11:20:00+02:00",
-    "subject": "Legacy Archive viewer slow"
+    "file": "2026-10-07_lee_re-re-re-blueriver-price.eml",
+    "from": "Lee Wong <lee@contoso-water.example>",
+    "to": "Ruth Jansen <ruth@blueriver.example>",
+    "date": "2026-10-07T15:20:00+01:00",
+    "subject": "Re: Re: Re: Price for 550 bottles a week"
   },
   {
-    "file": "2026-10-07_0222_alert_3b7c-e104.eml",
-    "from": "Content Hub Monitoring <alerts@contoso.example>",
-    "to": "archive-ops@contoso.example",
-    "date": "2026-10-07T02:22:00+02:00",
-    "subject": "ALERT doc-id 3b7c-e104 stage=transfer result=TIMEOUT"
+    "file": "2026-10-07_priya_review-cycle-reminder.eml",
+    "from": "Priya Shah <priya@contoso-water.example>",
+    "to": "all-staff@contoso-water.example",
+    "date": "2026-10-07T09:30:00+01:00",
+    "subject": "October review cycle"
   },
   {
-    "file": "2026-10-07_vendor-b_re-re-pricing.eml",
-    "from": "Marek (vendor B) <marek@vendor-b.example>",
-    "to": "Sam <sam@contoso.example>",
-    "date": "2026-10-07T10:20:00+02:00",
-    "subject": "Re: Re: Pricing at 200 GB per day"
-  },
-  {
-    "file": "2026-10-07_sam_re-re-re-pricing.eml",
-    "from": "Sam <sam@contoso.example>",
-    "to": "Lee <lee@contoso.example>, Priya <priya@contoso.example>",
-    "date": "2026-10-07T10:41:00+02:00",
-    "subject": "Fwd: Re: Re: Pricing at 200 GB per day"
+    "file": "2026-10-07_ruth_re-re-blueriver-price.eml",
+    "from": "Ruth Jansen <ruth@blueriver.example>",
+    "to": "Lee Wong <lee@contoso-water.example>",
+    "date": "2026-10-07T14:40:00+02:00",
+    "subject": "Re: Re: Price for 550 bottles a week"
   }
 ]

@@ -1,0 +1,13 @@
+ID,Name,Type,Monthly price GBP,Monthly price EUR,Included,Notes,Added
+WC-100,"Bottle cooler, cold",Bottle cooler,18,21,4 bottles a week,Our most common cooler. Cold water only.,2025-01-10
+WC-150,"Bottle cooler, hot and cold",Bottle cooler,24,28,4 bottles a week,Hot tap has a child lock.,2025-01-10
+WC-200,"Plumbed-in cooler, cold",Plumbed-in cooler,29,34,No bottles; filter change every 6 months included,Needs a water pipe within 3 metres.,2025-01-10
+WC-250,"Plumbed-in cooler, hot and cold",Plumbed-in cooler,35,41,No bottles; filter change every 6 months included,Needs a water pipe within 3 metres.,2025-01-10
+WC-300,"Plumbed-in cooler, still and sparkling",Plumbed-in cooler,49,57,No bottles; filter change and CO2 cylinder included,"Sparkling water from a CO2 cylinder, swapped when empty.",2025-09-01
+WC-350,"Countertop cooler, cold",Countertop cooler,22,26,No bottles; filter change every 6 months included,For small offices of up to 15 people.,2026-02-01
+WC-400,Extra 19-litre bottle,Bottles,6.50,7.50,"Per bottle, per delivery",On top of the 4 bottles a week included with a bottle cooler.,2025-01-10
+WC-410,Filter change,Service,25,29,Per visit,Only when a client wants a change outside the included one every 6 months.,2025-01-10
+WC-420,"Paper cups, box of 1,000",Supplies,12,14,Per box,Delivered with the next bottle delivery.,2025-01-10
+WC-450,Deep clean visit,Service,40,46,Per visit,Sanitising every 3 months is included; this is an extra visit. Free after a taste or smell complaint.,2025-06-01
+WC-460,Installation,Service,60,70,One-off,Free on contracts of 12 months or more.,2025-01-10
+WC-470,Moving a cooler inside the same building,Service,30,35,Per cooler,Plumbed-in coolers need a new water pipe point.,2026-03-15

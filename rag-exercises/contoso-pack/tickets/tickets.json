@@ -1,455 +1,455 @@
 {
-  "source": "Ticket system export (fictional)",
+  "source": "Service desk export (fictional)",
   "tickets": [
     {
-      "id": "TCK-4402",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
+      "id": "TKT-5402",
+      "client": "Woodgrove",
+      "country": "UK",
       "opened": "2026-03-02",
-      "text": "Users report a document opens with an error.",
-      "resolution": "Document re-rendered, render cache cleared.",
-      "as_text": "Woodgrove Procurement: users report a document opens with an error. Resolved: document re-rendered, render cache cleared."
+      "text": "Sparkling water comes out flat on floor 2.",
+      "resolution": "CO2 cylinder replaced in the WC-300 cooler.",
+      "as_text": "Woodgrove: sparkling water comes out flat on floor 2. Resolved: CO2 cylinder replaced in the WC-300 cooler."
     },
     {
-      "id": "TCK-4403",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-03-07",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Northwind Finance: export of old documents for an audit. Resolved: export prepared and handed over."
+      "id": "TKT-5405",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-03-05",
+      "text": "The cooler in the kitchen on floor 1 is dripping onto the floor.",
+      "resolution": "Technician on site within 4 hours. Loose pipe joint under the WC-200 cooler tightened.",
+      "as_text": "Tailspin: the cooler in the kitchen on floor 1 is dripping onto the floor. Resolved: Technician on site within 4 hours. Loose pipe joint under the WC-200 cooler tightened."
     },
     {
-      "id": "TCK-4404",
-      "tenant": "Tailspin HR",
-      "platform": "Legacy Archive",
-      "opened": "2026-03-12",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Tailspin HR: export of old documents for an audit. Resolved: export prepared and handed over."
+      "id": "TKT-5409",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-03-10",
+      "text": "We need 6 extra bottles for a client event on Friday.",
+      "resolution": "6 extra bottles (WC-400) delivered on Thursday with the weekly delivery.",
+      "as_text": "Fabrikam: we need 6 extra bottles for a client event on Friday. Resolved: 6 extra bottles (WC-400) delivered on Thursday with the weekly delivery."
     },
     {
-      "id": "TCK-4415",
-      "tenant": "Tailspin HR",
-      "platform": "Legacy Archive",
-      "opened": "2026-03-15",
-      "text": "A document is missing from the old archive.",
-      "resolution": "Found under a different document class; user informed.",
-      "as_text": "Tailspin HR: a document is missing from the old archive. Resolved: found under a different document class; user informed."
+      "id": "TKT-5412",
+      "client": "Harbour Print",
+      "country": "UK",
+      "opened": "2026-03-13",
+      "text": "The invoice for February shows two coolers but we only have one.",
+      "resolution": "Invoice corrected and a new invoice sent. The second cooler was collected in January.",
+      "as_text": "Harbour Print: the invoice for February shows two coolers but we only have one. Resolved: Invoice corrected and a new invoice sent. The second cooler was collected in January."
     },
     {
-      "id": "TCK-4416",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Legacy Archive",
-      "opened": "2026-03-17",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Woodgrove Procurement: export of old documents for an audit. Resolved: export prepared and handed over."
+      "id": "TKT-5416",
+      "client": "Tulip Design",
+      "country": "Netherlands",
+      "opened": "2026-03-19",
+      "text": "The hot tap on our cooler gives only lukewarm water.",
+      "resolution": "Heating element replaced in the WC-150 cooler.",
+      "as_text": "Tulip Design: the hot tap on our cooler gives only lukewarm water. Resolved: Heating element replaced in the WC-150 cooler."
     },
     {
-      "id": "TCK-4418",
-      "tenant": "Tailspin HR",
-      "platform": "All",
-      "opened": "2026-03-27",
-      "text": "Request to restore a deleted mailbox.",
-      "resolution": "Restored within the period of POL-RET-01.",
-      "as_text": "Tailspin HR: request to restore a deleted mailbox. Resolved: restored within the period of POL-RET-01."
+      "id": "TKT-5419",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-03-24",
+      "text": "The cooler on floor 4 makes a loud humming noise.",
+      "resolution": "Fan cleaned and the WC-300 cooler moved 10 cm away from the wall.",
+      "as_text": "Woodgrove: the cooler on floor 4 makes a loud humming noise. Resolved: Fan cleaned and the WC-300 cooler moved 10 cm away from the wall."
     },
     {
-      "id": "TCK-4421",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
-      "opened": "2026-03-28",
-      "text": "Upload to the tenant folder is slow in the evening.",
-      "resolution": "Night batch overlap explained; uploads moved to daytime.",
-      "as_text": "Northwind Finance: upload to the tenant folder is slow in the evening. Resolved: night batch overlap explained; uploads moved to daytime."
+      "id": "TKT-5423",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-03-30",
+      "text": "We have run out of paper cups on floor 2.",
+      "resolution": "2 boxes of cups (WC-420) delivered the next day.",
+      "as_text": "Tailspin: we have run out of paper cups on floor 2. Resolved: 2 boxes of cups (WC-420) delivered the next day."
     },
     {
-      "id": "TCK-4426",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
-      "opened": "2026-04-01",
-      "text": "Alert mail forwarded by the tenant, transfer TIMEOUT.",
-      "resolution": "Reprocessed after 06:00.",
-      "as_text": "Northwind Finance: alert mail forwarded by the tenant, transfer TIMEOUT. Resolved: reprocessed after 06:00."
+      "id": "TKT-5427",
+      "client": "Lakeshore Dental",
+      "country": "UK",
+      "opened": "2026-04-03",
+      "text": "The weekly delivery did not arrive on Wednesday.",
+      "resolution": "The loading bay was closed. Driver left a card and the delivery was rebooked for Thursday, no charge.",
+      "as_text": "Lakeshore Dental: the weekly delivery did not arrive on Wednesday. Resolved: The loading bay was closed. Driver left a card and the delivery was rebooked for Thursday, no charge."
     },
     {
-      "id": "TCK-4428",
-      "tenant": "Fabrikam Legal",
-      "platform": "Content Hub",
-      "opened": "2026-04-02",
-      "text": "Users report a document opens with an error.",
-      "resolution": "Document re-rendered, render cache cleared.",
-      "as_text": "Fabrikam Legal: users report a document opens with an error. Resolved: document re-rendered, render cache cleared."
+      "id": "TKT-5430",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-04-09",
+      "text": "The tap on the cooler on floor 1 is broken and does not close properly.",
+      "resolution": "Tap replaced on the WC-150 cooler two days later.",
+      "as_text": "Fabrikam: the tap on the cooler on floor 1 is broken and does not close properly. Resolved: Tap replaced on the WC-150 cooler two days later."
     },
     {
-      "id": "TCK-4430",
-      "tenant": "Woodgrove Procurement",
-      "platform": "All",
-      "opened": "2026-04-05",
-      "text": "Question about how long documents are kept.",
-      "resolution": "Pointed to POL-RET-01.",
-      "as_text": "Woodgrove Procurement: question about how long documents are kept. Resolved: pointed to POL-RET-01."
-    },
-    {
-      "id": "TCK-4433",
-      "tenant": "Fabrikam Legal",
-      "platform": "Content Hub",
+      "id": "TKT-5433",
+      "client": "Fabrikam",
+      "country": "UK",
       "opened": "2026-04-14",
-      "text": "Search returns nothing for documents archived this week.",
-      "resolution": "Index worker restarted, folder re-queued.",
-      "as_text": "Fabrikam Legal: search returns nothing for documents archived this week. Resolved: index worker restarted, folder re-queued."
+      "text": "Water from the cooler on floor 3 tastes of plastic.",
+      "resolution": "Deep clean done and bottle batch replaced (WC-450 visit, free of charge).",
+      "as_text": "Fabrikam: water from the cooler on floor 3 tastes of plastic. Resolved: Deep clean done and bottle batch replaced (WC-450 visit, free of charge)."
     },
     {
-      "id": "TCK-4435",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Capture",
-      "opened": "2026-04-20",
-      "text": "Scanning batch did not arrive in Content Hub.",
-      "resolution": "Export retried at the remote site (KI-047).",
-      "as_text": "Woodgrove Procurement: scanning batch did not arrive in Content Hub. Resolved: export retried at the remote site (KI-047)."
+      "id": "TKT-5436",
+      "client": "Rheinblick Studio",
+      "country": "Germany",
+      "opened": "2026-04-17",
+      "text": "We would like to move our cooler from the meeting room to the kitchen.",
+      "resolution": "Lukas moved the WC-350 cooler to the kitchen on 22 April.",
+      "as_text": "Rheinblick Studio: we would like to move our cooler from the meeting room to the kitchen. Resolved: Lukas moved the WC-350 cooler to the kitchen on 22 April."
     },
     {
-      "id": "TCK-4436",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
-      "opened": "2026-04-25",
-      "text": "Alert mail forwarded by the tenant, transfer TIMEOUT.",
-      "resolution": "Reprocessed after 06:00.",
-      "as_text": "Northwind Finance: alert mail forwarded by the tenant, transfer TIMEOUT. Resolved: reprocessed after 06:00."
+      "id": "TKT-5438",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-04-21",
+      "text": "Water is leaking from under the cooler on floor 2.",
+      "resolution": "Technician on site within 3 hours. Worn seal replaced on the WC-300 cooler.",
+      "as_text": "Woodgrove: water is leaking from under the cooler on floor 2. Resolved: Technician on site within 3 hours. Worn seal replaced on the WC-300 cooler."
     },
     {
-      "id": "TCK-4437",
-      "tenant": "Woodgrove Procurement",
-      "platform": "All",
+      "id": "TKT-5441",
+      "client": "Tulip Design",
+      "country": "Netherlands",
+      "opened": "2026-04-27",
+      "text": "Can we have 4 extra bottles every week from May?",
+      "resolution": "Weekly order changed from 4 to 8 bottles, starting 4 May.",
+      "as_text": "Tulip Design: can we have 4 extra bottles every week from May? Resolved: Weekly order changed from 4 to 8 bottles, starting 4 May."
+    },
+    {
+      "id": "TKT-5443",
+      "client": "Tailspin",
+      "country": "Germany",
       "opened": "2026-04-30",
-      "text": "Request to restore a deleted mailbox.",
-      "resolution": "Restored within the period of POL-RET-01.",
-      "as_text": "Woodgrove Procurement: request to restore a deleted mailbox. Resolved: restored within the period of POL-RET-01."
+      "text": "There is no hot water from the cooler in reception.",
+      "resolution": "The heating switch at the back had been turned off during cleaning. Switched on and the WC-250 cooler checked.",
+      "as_text": "Tailspin: there is no hot water from the cooler in reception. Resolved: The heating switch at the back had been turned off during cleaning. Switched on and the WC-250 cooler checked."
     },
     {
-      "id": "TCK-4439",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
-      "opened": "2026-05-15",
-      "text": "A user needs access to the tenant's archive.",
-      "resolution": "Access granted after manager approval.",
-      "as_text": "Tailspin HR: a user needs access to the tenant's archive. Resolved: access granted after manager approval."
+      "id": "TKT-5446",
+      "client": "Harbour Print",
+      "country": "UK",
+      "opened": "2026-05-06",
+      "text": "Please send us a copy of our contract.",
+      "resolution": "Copy of the contract emailed to the office manager.",
+      "as_text": "Harbour Print: please send us a copy of our contract. Resolved: Copy of the contract emailed to the office manager."
     },
     {
-      "id": "TCK-4444",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Legacy Archive",
-      "opened": "2026-05-16",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Woodgrove Procurement: export of old documents for an audit. Resolved: export prepared and handed over."
+      "id": "TKT-5448",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-05-11",
+      "text": "We need 2 boxes of paper cups.",
+      "resolution": "2 boxes of cups (WC-420) delivered with the weekly bottles.",
+      "as_text": "Fabrikam: we need 2 boxes of paper cups. Resolved: 2 boxes of cups (WC-420) delivered with the weekly bottles."
     },
     {
-      "id": "TCK-4450",
-      "tenant": "Tailspin HR",
-      "platform": "All",
-      "opened": "2026-06-05",
-      "text": "Request to restore a deleted mailbox.",
-      "resolution": "Restored within the period of POL-RET-01.",
-      "as_text": "Tailspin HR: request to restore a deleted mailbox. Resolved: restored within the period of POL-RET-01."
+      "id": "TKT-5450",
+      "client": "Lakeshore Dental",
+      "country": "UK",
+      "opened": "2026-05-14",
+      "text": "The cooler makes a clicking noise at night.",
+      "resolution": "Normal sound of the cooling switching on. Technician checked the WC-100 cooler and found no fault.",
+      "as_text": "Lakeshore Dental: the cooler makes a clicking noise at night. Resolved: Normal sound of the cooling switching on. Technician checked the WC-100 cooler and found no fault."
     },
     {
-      "id": "TCK-4453",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Legacy Archive",
-      "opened": "2026-06-07",
-      "text": "A document is missing from the old archive.",
-      "resolution": "Found under a different document class; user informed.",
-      "as_text": "Woodgrove Procurement: a document is missing from the old archive. Resolved: found under a different document class; user informed."
+      "id": "TKT-5452",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-05-19",
+      "text": "The filter change is due soon. When will you come?",
+      "resolution": "Filter change done on 26 May, included in the contract.",
+      "as_text": "Tailspin: the filter change is due soon. When will you come? Resolved: Filter change done on 26 May, included in the contract."
     },
     {
-      "id": "TCK-4454",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
-      "opened": "2026-06-26",
-      "text": "File not found for a document that search lists.",
-      "resolution": "Document re-indexed after migration move (KI-040).",
-      "as_text": "Northwind Finance: file not found for a document that search lists. Resolved: document re-indexed after migration move (KI-040)."
+      "id": "TKT-5454",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-05-22",
+      "text": "The invoice for May is in euros but we pay in pounds.",
+      "resolution": "Invoice reissued in GBP.",
+      "as_text": "Woodgrove: the invoice for May is in euros but we pay in pounds. Resolved: Invoice reissued in GBP."
     },
     {
-      "id": "TCK-4459",
-      "tenant": "Fabrikam Legal",
-      "platform": "Legacy Archive",
-      "opened": "2026-06-26",
-      "text": "A document is missing from the old archive.",
-      "resolution": "Found under a different document class; user informed.",
-      "as_text": "Fabrikam Legal: a document is missing from the old archive. Resolved: found under a different document class; user informed."
+      "id": "TKT-5457",
+      "client": "Rheinblick Studio",
+      "country": "Germany",
+      "opened": "2026-05-28",
+      "text": "The cooler shows a red warning light and gives no water.",
+      "resolution": "Cooler swapped for a new WC-350 within 3 working days.",
+      "as_text": "Rheinblick Studio: the cooler shows a red warning light and gives no water. Resolved: Cooler swapped for a new WC-350 within 3 working days."
     },
     {
-      "id": "TCK-4461",
-      "tenant": "Tailspin HR",
-      "platform": "Capture",
-      "opened": "2026-06-28",
-      "text": "OCR failed on blurry scans.",
-      "resolution": "Pages rescanned at the site.",
-      "as_text": "Tailspin HR: OCR failed on blurry scans. Resolved: pages rescanned at the site."
+      "id": "TKT-5459",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-06-02",
+      "text": "The bottle on floor 4 was not swapped this week.",
+      "resolution": "Driver Tom could not get into floor 4 because it was locked. Bottle swapped the next day, no charge.",
+      "as_text": "Fabrikam: the bottle on floor 4 was not swapped this week. Resolved: Driver Tom could not get into floor 4 because it was locked. Bottle swapped the next day, no charge."
     },
     {
-      "id": "TCK-4462",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
-      "opened": "2026-06-28",
-      "text": "File not found for a document that search lists.",
-      "resolution": "Document re-indexed after migration move (KI-040).",
-      "as_text": "Woodgrove Procurement: file not found for a document that search lists. Resolved: document re-indexed after migration move (KI-040)."
+      "id": "TKT-5461",
+      "client": "Tulip Design",
+      "country": "Netherlands",
+      "opened": "2026-06-08",
+      "text": "The cooler is leaking a little water onto the carpet.",
+      "resolution": "Technician on site within 4 hours. The bottle was not seated properly; it was refitted and the floor dried.",
+      "as_text": "Tulip Design: the cooler is leaking a little water onto the carpet. Resolved: Technician on site within 4 hours. The bottle was not seated properly; it was refitted and the floor dried."
     },
     {
-      "id": "TCK-4464",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
-      "opened": "2026-06-30",
-      "text": "A user needs access to the tenant's archive.",
-      "resolution": "Access granted after manager approval.",
-      "as_text": "Woodgrove Procurement: a user needs access to the tenant's archive. Resolved: access granted after manager approval."
+      "id": "TKT-5463",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-06-12",
+      "text": "The sparkling water button does not work on floor 3.",
+      "resolution": "Button replaced on the WC-300 cooler.",
+      "as_text": "Woodgrove: the sparkling water button does not work on floor 3. Resolved: Button replaced on the WC-300 cooler."
     },
     {
-      "id": "TCK-4468",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
+      "id": "TKT-5465",
+      "client": "Elmstead Gym",
+      "country": "UK",
+      "opened": "2026-06-17",
+      "text": "We would like a second cooler for the changing rooms.",
+      "resolution": "Second WC-100 cooler installed on 26 June and added to the contract.",
+      "as_text": "Elmstead Gym: we would like a second cooler for the changing rooms. Resolved: Second WC-100 cooler installed on 26 June and added to the contract."
+    },
+    {
+      "id": "TKT-5467",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-06-23",
+      "text": "We are moving to a new floor next month. Can you move both coolers?",
+      "resolution": "Both WC-250 coolers moved and reconnected on 7 July.",
+      "as_text": "Tailspin: we are moving to a new floor next month. Can you move both coolers? Resolved: Both WC-250 coolers moved and reconnected on 7 July."
+    },
+    {
+      "id": "TKT-5468",
+      "client": "Harbour Print",
+      "country": "UK",
+      "opened": "2026-06-29",
+      "text": "We were charged for a delivery that did not happen.",
+      "resolution": "Charge removed and a credit note sent. Missed deliveries are not charged.",
+      "as_text": "Harbour Print: we were charged for a delivery that did not happen. Resolved: Charge removed and a credit note sent. Missed deliveries are not charged."
+    },
+    {
+      "id": "TKT-5470",
+      "client": "Lakeshore Dental",
+      "country": "UK",
       "opened": "2026-07-03",
-      "text": "Alert mail forwarded by the tenant, transfer TIMEOUT.",
-      "resolution": "Reprocessed after 06:00.",
-      "as_text": "Woodgrove Procurement: alert mail forwarded by the tenant, transfer TIMEOUT. Resolved: reprocessed after 06:00."
+      "text": "Please send more paper cups.",
+      "resolution": "1 box of cups (WC-420) delivered on 6 July.",
+      "as_text": "Lakeshore Dental: please send more paper cups. Resolved: 1 box of cups (WC-420) delivered on 6 July."
     },
     {
-      "id": "TCK-4470",
-      "tenant": "Tailspin HR",
-      "platform": "Legacy Archive",
-      "opened": "2026-07-08",
-      "text": "Web viewer shows an empty page, API works.",
-      "resolution": "Viewer app pool recycled (KI-031).",
-      "as_text": "Tailspin HR: web viewer shows an empty page, API works. Resolved: viewer app pool recycled (KI-031)."
-    },
-    {
-      "id": "TCK-4471",
-      "tenant": "Fabrikam Legal",
-      "platform": "Content Hub",
+      "id": "TKT-5471",
+      "client": "Fabrikam",
+      "country": "UK",
       "opened": "2026-07-09",
-      "text": "Users cannot find documents archived since Monday.",
-      "resolution": "Index worker restarted, temp folder cleared, folder re-queued.",
-      "as_text": "Fabrikam Legal: users cannot find documents archived since Monday. Resolved: index worker restarted, temp folder cleared, folder re-queued."
+      "text": "The water smells funny on floors 2 and 3.",
+      "resolution": "Deep clean and new bottles from a different batch. Supplier ClearSpring informed.",
+      "as_text": "Fabrikam: the water smells funny on floors 2 and 3. Resolved: Deep clean and new bottles from a different batch. Supplier ClearSpring informed."
     },
     {
-      "id": "TCK-4472",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
-      "opened": "2026-07-16",
-      "text": "Alert mail forwarded by the tenant, transfer TIMEOUT.",
-      "resolution": "Reprocessed after 06:00.",
-      "as_text": "Northwind Finance: alert mail forwarded by the tenant, transfer TIMEOUT. Resolved: reprocessed after 06:00."
+      "id": "TKT-5474",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-07-14",
+      "text": "The cooler on floor 1 has been very noisy since last week.",
+      "resolution": "Fan replaced in the WC-300 cooler.",
+      "as_text": "Woodgrove: the cooler on floor 1 has been very noisy since last week. Resolved: Fan replaced in the WC-300 cooler."
     },
     {
-      "id": "TCK-4475",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
-      "opened": "2026-07-21",
-      "text": "Users report a document opens with an error.",
-      "resolution": "Document re-rendered, render cache cleared.",
-      "as_text": "Woodgrove Procurement: users report a document opens with an error. Resolved: document re-rendered, render cache cleared."
+      "id": "TKT-5477",
+      "client": "Tulip Design",
+      "country": "Netherlands",
+      "opened": "2026-07-20",
+      "text": "Our office is closed for two weeks in August. Can you pause deliveries?",
+      "resolution": "Deliveries paused from 3 to 14 August and restarted on 17 August.",
+      "as_text": "Tulip Design: our office is closed for two weeks in August. Can you pause deliveries? Resolved: Deliveries paused from 3 to 14 August and restarted on 17 August."
     },
     {
-      "id": "TCK-4476",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
-      "opened": "2026-07-23",
-      "text": "Upload to the tenant folder is slow in the evening.",
-      "resolution": "Night batch overlap explained; uploads moved to daytime.",
-      "as_text": "Tailspin HR: upload to the tenant folder is slow in the evening. Resolved: night batch overlap explained; uploads moved to daytime."
+      "id": "TKT-5480",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-07-24",
+      "text": "Water drips from the tap after use.",
+      "resolution": "Tap valve replaced on the WC-200 cooler in the kitchen.",
+      "as_text": "Tailspin: water drips from the tap after use. Resolved: Tap valve replaced on the WC-200 cooler in the kitchen."
     },
     {
-      "id": "TCK-4480",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
-      "opened": "2026-07-29",
-      "text": "Upload to the tenant folder is slow in the evening.",
-      "resolution": "Night batch overlap explained; uploads moved to daytime.",
-      "as_text": "Tailspin HR: upload to the tenant folder is slow in the evening. Resolved: night batch overlap explained; uploads moved to daytime."
+      "id": "TKT-5483",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-07-30",
+      "text": "Please add 4 extra bottles to next week's delivery.",
+      "resolution": "4 extra bottles (WC-400) delivered on 5 August.",
+      "as_text": "Fabrikam: please add 4 extra bottles to next week's delivery. Resolved: 4 extra bottles (WC-400) delivered on 5 August."
     },
     {
-      "id": "TCK-4482",
-      "tenant": "Northwind Finance",
-      "platform": "Capture",
+      "id": "TKT-5486",
+      "client": "Elmstead Gym",
+      "country": "UK",
       "opened": "2026-08-05",
-      "text": "Scanning batch did not arrive in Content Hub.",
-      "resolution": "Export retried at the remote site (KI-047).",
-      "as_text": "Northwind Finance: scanning batch did not arrive in Content Hub. Resolved: export retried at the remote site (KI-047)."
+      "text": "One cooler in the changing rooms is leaking.",
+      "resolution": "Technician on site within 4 hours. Cracked drip tray replaced on the WC-100 cooler.",
+      "as_text": "Elmstead Gym: one cooler in the changing rooms is leaking. Resolved: Technician on site within 4 hours. Cracked drip tray replaced on the WC-100 cooler."
     },
     {
-      "id": "TCK-4487",
-      "tenant": "Northwind Finance",
-      "platform": "Capture",
-      "opened": "2026-08-05",
-      "text": "Scanning batch did not arrive in Content Hub.",
-      "resolution": "Export retried at the remote site (KI-047).",
-      "as_text": "Northwind Finance: scanning batch did not arrive in Content Hub. Resolved: export retried at the remote site (KI-047)."
-    },
-    {
-      "id": "TCK-4490",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
+      "id": "TKT-5489",
+      "client": "Harbour Print",
+      "country": "UK",
       "opened": "2026-08-11",
-      "text": "File not found for a document that search lists.",
-      "resolution": "Document re-indexed after migration move (KI-040).",
-      "as_text": "Tailspin HR: file not found for a document that search lists. Resolved: document re-indexed after migration move (KI-040)."
+      "text": "Our billing address is changing. Who do we tell?",
+      "resolution": "Billing address updated by the service desk. New invoices go to the new address.",
+      "as_text": "Harbour Print: our billing address is changing. Who do we tell? Resolved: Billing address updated by the service desk. New invoices go to the new address."
     },
     {
-      "id": "TCK-4491",
-      "tenant": "Woodgrove Procurement",
-      "platform": "All",
-      "opened": "2026-08-12",
-      "text": "Question about how long documents are kept.",
-      "resolution": "Pointed to POL-RET-01.",
-      "as_text": "Woodgrove Procurement: question about how long documents are kept. Resolved: pointed to POL-RET-01."
+      "id": "TKT-5492",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-08-17",
+      "text": "Sparkling water is flat again on floor 2.",
+      "resolution": "CO2 cylinder replaced and the gas valve checked on the WC-300 cooler.",
+      "as_text": "Woodgrove: sparkling water is flat again on floor 2. Resolved: CO2 cylinder replaced and the gas valve checked on the WC-300 cooler."
     },
     {
-      "id": "TCK-4493",
-      "tenant": "Northwind Finance",
-      "platform": "Capture",
-      "opened": "2026-08-13",
-      "text": "Scanning batch did not arrive in Content Hub.",
-      "resolution": "Export retried at the remote site (KI-047).",
-      "as_text": "Northwind Finance: scanning batch did not arrive in Content Hub. Resolved: export retried at the remote site (KI-047)."
+      "id": "TKT-5495",
+      "client": "Kessler Logistik",
+      "country": "Germany",
+      "opened": "2026-08-21",
+      "text": "We need a cooler for a new staff room in the warehouse.",
+      "resolution": "WC-250 cooler installed on 2 September after a site check.",
+      "as_text": "Kessler Logistik: we need a cooler for a new staff room in the warehouse. Resolved: WC-250 cooler installed on 2 September after a site check."
     },
     {
-      "id": "TCK-4495",
-      "tenant": "Fabrikam Legal",
-      "platform": "Legacy Archive",
-      "opened": "2026-08-15",
-      "text": "Web viewer shows an empty page, API works.",
-      "resolution": "Viewer app pool recycled (KI-031).",
-      "as_text": "Fabrikam Legal: web viewer shows an empty page, API works. Resolved: viewer app pool recycled (KI-031)."
+      "id": "TKT-5498",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-08-27",
+      "text": "The cooler on floor 2 is noisy during meetings.",
+      "resolution": "Cooler moved to the corridor outside the meeting room.",
+      "as_text": "Fabrikam: the cooler on floor 2 is noisy during meetings. Resolved: Cooler moved to the corridor outside the meeting room."
     },
     {
-      "id": "TCK-4500",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Capture",
-      "opened": "2026-08-22",
-      "text": "Scanning batch did not arrive in Content Hub.",
-      "resolution": "Export retried at the remote site (KI-047).",
-      "as_text": "Woodgrove Procurement: scanning batch did not arrive in Content Hub. Resolved: export retried at the remote site (KI-047)."
-    },
-    {
-      "id": "TCK-4501",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Legacy Archive",
+      "id": "TKT-5501",
+      "client": "Lakeshore Dental",
+      "country": "UK",
       "opened": "2026-09-02",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Woodgrove Procurement: export of old documents for an audit. Resolved: export prepared and handed over."
+      "text": "Our delivery was missed because reception was closed.",
+      "resolution": "Driver Aisha left a card. Delivery rebooked for the next day, no charge.",
+      "as_text": "Lakeshore Dental: our delivery was missed because reception was closed. Resolved: Driver Aisha left a card. Delivery rebooked for the next day, no charge."
     },
     {
-      "id": "TCK-4505",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
-      "opened": "2026-09-10",
-      "text": "Users report a document opens with an error.",
-      "resolution": "Document re-rendered, render cache cleared.",
-      "as_text": "Tailspin HR: users report a document opens with an error. Resolved: document re-rendered, render cache cleared."
+      "id": "TKT-5504",
+      "client": "Tailspin",
+      "country": "Germany",
+      "opened": "2026-09-08",
+      "text": "There is no cold water from the cooler on floor 3.",
+      "resolution": "Cooling unit faulty. WC-250 cooler swapped within 2 working days.",
+      "as_text": "Tailspin: there is no cold water from the cooler on floor 3. Resolved: Cooling unit faulty. WC-250 cooler swapped within 2 working days."
     },
     {
-      "id": "TCK-4506",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-09-12",
-      "text": "Web viewer shows an empty page, API works.",
-      "resolution": "Viewer app pool recycled (KI-031).",
-      "as_text": "Northwind Finance: web viewer shows an empty page, API works. Resolved: viewer app pool recycled (KI-031)."
+      "id": "TKT-5507",
+      "client": "Tulip Design",
+      "country": "Netherlands",
+      "opened": "2026-09-14",
+      "text": "We need 3 boxes of paper cups for an open day.",
+      "resolution": "3 boxes of cups (WC-420) delivered on 16 September.",
+      "as_text": "Tulip Design: we need 3 boxes of paper cups for an open day. Resolved: 3 boxes of cups (WC-420) delivered on 16 September."
     },
     {
-      "id": "TCK-4507",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-09-18",
-      "text": "Web viewer shows an empty page, API works.",
-      "resolution": "Viewer app pool recycled (KI-031).",
-      "as_text": "Northwind Finance: web viewer shows an empty page, API works. Resolved: viewer app pool recycled (KI-031)."
+      "id": "TKT-5509",
+      "client": "Woodgrove",
+      "country": "UK",
+      "opened": "2026-09-17",
+      "text": "Please move the cooler from floor 5 to floor 6.",
+      "resolution": "WC-300 cooler moved and reconnected on 24 September.",
+      "as_text": "Woodgrove: please move the cooler from floor 5 to floor 6. Resolved: WC-300 cooler moved and reconnected on 24 September."
     },
     {
-      "id": "TCK-4512",
-      "tenant": "Fabrikam Legal",
-      "platform": "Content Hub",
+      "id": "TKT-5512",
+      "client": "Fabrikam",
+      "country": "UK",
       "opened": "2026-09-21",
-      "text": "Search returns nothing for documents from last week.",
-      "resolution": "Temp folder cleared, index worker restarted, folder re-queued.",
-      "as_text": "Fabrikam Legal: search returns nothing for documents from last week. Resolved: temp folder cleared, index worker restarted, folder re-queued."
+      "text": "Staff say the water tastes odd again on floor 2.",
+      "resolution": "Deep clean done, bottle batch replaced, Noor called the office manager.",
+      "as_text": "Fabrikam: staff say the water tastes odd again on floor 2. Resolved: Deep clean done, bottle batch replaced, Noor called the office manager."
     },
     {
-      "id": "TCK-4516",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-09-22",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Northwind Finance: export of old documents for an audit. Resolved: export prepared and handed over."
+      "id": "TKT-5514",
+      "client": "Northwind",
+      "country": "Netherlands",
+      "opened": "2026-09-23",
+      "text": "Please confirm the delivery address and lift access for the first delivery.",
+      "resolution": "Address and lift access confirmed by phone with the site contact.",
+      "as_text": "Northwind: please confirm the delivery address and lift access for the first delivery. Resolved: Address and lift access confirmed by phone with the site contact."
     },
     {
-      "id": "TCK-4520",
-      "tenant": "Woodgrove Procurement",
-      "platform": "Content Hub",
-      "opened": "2026-09-26",
-      "text": "Alert mail forwarded by the tenant, transfer TIMEOUT.",
-      "resolution": "Reprocessed after 06:00.",
-      "as_text": "Woodgrove Procurement: alert mail forwarded by the tenant, transfer TIMEOUT. Resolved: reprocessed after 06:00."
+      "id": "TKT-5517",
+      "client": "Kessler Logistik",
+      "country": "Germany",
+      "opened": "2026-09-25",
+      "text": "The cooler in the staff room makes a rattling noise.",
+      "resolution": "Loose side panel fixed on the WC-250 cooler.",
+      "as_text": "Kessler Logistik: the cooler in the staff room makes a rattling noise. Resolved: Loose side panel fixed on the WC-250 cooler."
     },
     {
-      "id": "TCK-4524",
-      "tenant": "Tailspin HR",
-      "platform": "All",
-      "opened": "2026-09-27",
-      "text": "Question about how long documents are kept.",
-      "resolution": "Pointed to POL-RET-01.",
-      "as_text": "Tailspin HR: question about how long documents are kept. Resolved: pointed to POL-RET-01."
+      "id": "TKT-5519",
+      "client": "Harbour Print",
+      "country": "UK",
+      "opened": "2026-09-28",
+      "text": "We need 4 extra bottles this week.",
+      "resolution": "4 extra bottles (WC-400) delivered within 2 working days.",
+      "as_text": "Harbour Print: we need 4 extra bottles this week. Resolved: 4 extra bottles (WC-400) delivered within 2 working days."
     },
     {
-      "id": "TCK-4526",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-09-27",
-      "text": "Export of old documents for an audit.",
-      "resolution": "Export prepared and handed over.",
-      "as_text": "Northwind Finance: export of old documents for an audit. Resolved: export prepared and handed over."
-    },
-    {
-      "id": "TCK-4530",
-      "tenant": "Northwind Finance",
-      "platform": "Legacy Archive",
-      "opened": "2026-09-27",
-      "text": "A document is missing from the old archive.",
-      "resolution": "Found under a different document class; user informed.",
-      "as_text": "Northwind Finance: a document is missing from the old archive. Resolved: found under a different document class; user informed."
-    },
-    {
-      "id": "TCK-4532",
-      "tenant": "Tailspin HR",
-      "platform": "Content Hub",
+      "id": "TKT-5521",
+      "client": "Woodgrove",
+      "country": "UK",
       "opened": "2026-09-29",
-      "text": "A user needs access to the tenant's archive.",
-      "resolution": "Access granted after manager approval.",
-      "as_text": "Tailspin HR: a user needs access to the tenant's archive. Resolved: access granted after manager approval."
+      "text": "Water is pooling under the cooler on floor 3.",
+      "resolution": "Technician on site within 4 hours. Drain hose reconnected on the WC-300 cooler.",
+      "as_text": "Woodgrove: water is pooling under the cooler on floor 3. Resolved: Technician on site within 4 hours. Drain hose reconnected on the WC-300 cooler."
     },
     {
-      "id": "TCK-4534",
-      "tenant": "Tailspin HR",
-      "platform": "Legacy Archive",
+      "id": "TKT-5524",
+      "client": "Northwind",
+      "country": "Netherlands",
+      "opened": "2026-10-01",
+      "text": "Please send 5 boxes of paper cups with the first delivery.",
+      "resolution": "5 boxes of cups (WC-420) added to the first delivery.",
+      "as_text": "Northwind: please send 5 boxes of paper cups with the first delivery. Resolved: 5 boxes of cups (WC-420) added to the first delivery."
+    },
+    {
+      "id": "TKT-5526",
+      "client": "Tailspin",
+      "country": "Germany",
       "opened": "2026-10-02",
-      "text": "Web viewer shows an empty page, API works.",
-      "resolution": "Viewer app pool recycled (KI-031).",
-      "as_text": "Tailspin HR: web viewer shows an empty page, API works. Resolved: viewer app pool recycled (KI-031)."
+      "text": "Our invoice for September is missing our order number.",
+      "resolution": "Invoice reissued with the order number.",
+      "as_text": "Tailspin: our invoice for September is missing our order number. Resolved: Invoice reissued with the order number."
     },
     {
-      "id": "TCK-4540",
-      "tenant": "Northwind Finance",
-      "platform": "Content Hub",
+      "id": "TKT-5528",
+      "client": "Rheinblick Studio",
+      "country": "Germany",
       "opened": "2026-10-05",
-      "text": "A user needs access to the tenant's archive.",
-      "resolution": "Access granted after manager approval.",
-      "as_text": "Northwind Finance: a user needs access to the tenant's archive. Resolved: access granted after manager approval."
+      "text": "Can we get a second countertop cooler for the meeting room?",
+      "resolution": "Second WC-350 cooler installed on 9 October.",
+      "as_text": "Rheinblick Studio: can we get a second countertop cooler for the meeting room? Resolved: Second WC-350 cooler installed on 9 October."
+    },
+    {
+      "id": "TKT-5530",
+      "client": "Fabrikam",
+      "country": "UK",
+      "opened": "2026-10-05",
+      "text": "The cooler on floor 4 has a cracked drip tray.",
+      "resolution": "Drip tray replaced during the weekly delivery.",
+      "as_text": "Fabrikam: the cooler on floor 4 has a cracked drip tray. Resolved: Drip tray replaced during the weekly delivery."
     }
   ]
 }

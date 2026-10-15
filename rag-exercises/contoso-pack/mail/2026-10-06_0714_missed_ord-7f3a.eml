@@ -1,0 +1,10 @@
+From: Delivery app <noreply@contoso-water.example>
+To: service@contoso-water.example
+Date: Tue, 06 Oct 2026 07:14:07 +0100
+Subject: MISSED delivery ORD-7F3A Fabrikam
+Message-ID: <2026-10-06_0714_missed_ord-7f3a@contoso-water.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+MISSED delivery. order ORD-7F3A client Fabrikam route R3 time 07:14:07 reason=no-access. Card left: yes. Rebook within 2 working days.

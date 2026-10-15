@@ -1,0 +1,73 @@
+# deliveries.log, London, Utrecht and Cologne warehouses. One line per stop. Fictional.
+2026-10-05 07:04:55 route=R2 order=ORD-C48B client=Proseware item=WC-400x8 result=DELIVERED
+2026-10-05 07:05:27 route=R4 order=ORD-272D client=Fabrikam item=WC-420x1 result=DELIVERED
+2026-10-05 07:49:51 route=K1 order=ORD-54F3 client=Alpine Ski House item=WC-400x4 result=MISSED reason=no-access
+2026-10-05 08:10:28 route=R4 order=ORD-84D8 client=Contoso Bank Branch 4 item=WC-400x12 result=DELIVERED
+2026-10-05 08:14:40 route=R1 order=ORD-C171 client=Proseware item=WC-400x6 result=DELIVERED
+2026-10-05 08:21:38 route=R1 order=ORD-3043 client=Litware item=WC-420x1 result=DELIVERED
+2026-10-05 08:31:03 route=R2 order=ORD-947C client=Adatum item=WC-400x12 result=DELIVERED
+2026-10-05 08:32:28 route=K1 order=ORD-2EA6 client=Alpine Ski House item=WC-400x8 result=DELIVERED
+2026-10-05 08:46:10 route=U1 order=ORD-404E client=Wingtip item=WC-420x1 result=DELIVERED
+2026-10-05 08:47:21 route=U2 order=ORD-F506 client=Fourth Street Studio item=WC-400x6 result=DELIVERED
+2026-10-05 08:53:05 route=R3 order=ORD-F219 client=Contoso Bank Branch 4 item=WC-420x1 result=DELIVERED
+2026-10-05 09:27:55 route=K1 order=ORD-6086 client=Lucerne Publishing item=WC-420x1 result=DELIVERED
+2026-10-05 10:00:31 route=R2 order=ORD-8904 client=Adatum item=WC-420x1 result=DELIVERED
+2026-10-05 10:21:13 route=U2 order=ORD-0FB2 client=Northwind item=WC-400x12 result=DELIVERED
+2026-10-05 10:30:56 route=U1 order=ORD-DA2C client=Margie's Travel item=WC-400x12 result=DELIVERED
+2026-10-05 10:48:37 route=K2 order=ORD-8D41 client=Alpine Ski House item=WC-400x8 result=MISSED reason=bay-closed
+2026-10-05 11:26:09 route=R1 order=ORD-9536 client=Litware item=WC-400x4 result=DELIVERED
+2026-10-05 12:09:25 route=R1 order=ORD-23B1 client=Proseware item=WC-400x6 result=DELIVERED
+2026-10-05 12:28:51 route=U2 order=ORD-B273 client=Wingtip item=WC-400x12 result=DELIVERED
+2026-10-05 12:39:36 route=R3 order=ORD-41EC client=Adatum item=WC-400x12 result=DELIVERED
+2026-10-05 12:43:33 route=K2 order=ORD-3176 client=Lucerne Publishing item=WC-400x4 result=DELIVERED
+2026-10-05 12:43:56 route=R4 order=ORD-7425 client=Woodgrove item=WC-400x6 result=DELIVERED
+2026-10-05 12:46:28 route=R3 order=ORD-23D5 client=Litware item=WC-400x6 result=DELIVERED
+2026-10-05 13:06:30 route=R4 order=ORD-1626 client=Adatum item=WC-400x6 result=DELIVERED
+2026-10-05 14:07:07 route=U2 order=ORD-EFF9 client=Northwind item=WC-400x6 result=MISSED reason=bay-closed
+2026-10-05 14:18:45 route=R4 order=ORD-B0EB client=Woodgrove item=WC-420x1 result=MISSED reason=no-signature
+2026-10-05 14:23:19 route=R2 order=ORD-5729 client=Proseware item=WC-400x12 result=DELIVERED
+2026-10-05 14:26:02 route=R1 order=ORD-AABF client=Proseware item=WC-400x12 result=DELIVERED
+2026-10-05 14:32:34 route=K2 order=ORD-786E client=Tailspin item=WC-400x12 result=DELIVERED
+2026-10-05 14:42:37 route=K2 order=ORD-440E client=Tailspin item=WC-420x1 result=DELIVERED
+2026-10-05 14:42:59 route=U2 order=ORD-4400 client=Northwind item=WC-420x1 result=DELIVERED
+2026-10-05 15:31:22 route=U1 order=ORD-08F8 client=Wingtip item=WC-400x4 WC-420x1 result=DELIVERED
+2026-10-05 15:34:49 route=U2 order=ORD-767C client=Wingtip item=WC-400x6 result=MISSED reason=no-access
+2026-10-05 15:45:04 route=R1 order=ORD-6FDA client=Adatum item=WC-420x1 result=DELIVERED
+2026-10-05 15:58:01 route=U2 order=ORD-28B5 client=Fourth Street Studio item=WC-400x6 result=MISSED reason=bay-closed
+2026-10-06 07:05:42 route=R4 order=ORD-9791 client=Adatum item=WC-400x6 result=DELIVERED
+2026-10-06 07:11:12 route=R3 order=ORD-969E client=Proseware item=WC-400x4 WC-420x1 result=DELIVERED
+2026-10-06 07:14:07 route=R3 order=ORD-7F3A client=Fabrikam item=WC-400x12 result=MISSED reason=no-access
+2026-10-06 07:20:48 route=U2 order=ORD-C360 client=Fourth Street Studio item=WC-400x8 result=DELIVERED
+2026-10-06 07:25:01 route=R3 order=ORD-9724 client=Contoso Bank Branch 4 item=WC-400x4 WC-420x1 result=DELIVERED
+2026-10-06 07:31:17 route=U1 order=ORD-6F99 client=Margie's Travel item=WC-400x12 result=DELIVERED
+2026-10-06 07:41:52 route=R3 order=ORD-7F3B client=Woodgrove item=WC-400x6 result=MISSED reason=no-access
+2026-10-06 07:51:44 route=R2 order=ORD-D280 client=Contoso Bank Branch 4 item=WC-400x4 result=DELIVERED
+2026-10-06 08:03:53 route=K2 order=ORD-478D client=Alpine Ski House item=WC-400x8 result=DELIVERED
+2026-10-06 08:09:47 route=U2 order=ORD-B483 client=Fourth Street Studio item=WC-400x6 result=MISSED reason=bay-closed
+2026-10-06 08:52:32 route=U2 order=ORD-8C66 client=Northwind item=WC-420x1 result=DELIVERED
+2026-10-06 09:17:22 route=R1 order=ORD-8100 client=Contoso Bank Branch 4 item=WC-420x1 result=DELIVERED
+2026-10-06 09:17:28 route=R1 order=ORD-8BAA client=Woodgrove item=WC-400x4 result=DELIVERED
+2026-10-06 09:21:35 route=K1 order=ORD-A7B8 client=Alpine Ski House item=WC-400x6 result=DELIVERED
+2026-10-06 09:25:22 route=R1 order=ORD-4028 client=Adatum item=WC-400x6 result=DELIVERED
+2026-10-06 10:04:38 route=U1 order=ORD-A894 client=Northwind item=WC-400x12 result=DELIVERED
+2026-10-06 10:14:47 route=U2 order=ORD-FC2F client=Fourth Street Studio item=WC-400x4 result=MISSED reason=no-access
+2026-10-06 10:49:23 route=K2 order=ORD-0C62 client=Tailspin item=WC-400x4 WC-420x1 result=DELIVERED
+2026-10-06 11:02:57 route=R2 order=ORD-C4FA client=Fabrikam item=WC-400x8 result=DELIVERED
+2026-10-06 11:05:38 route=R2 order=ORD-283E client=Fabrikam item=WC-400x8 result=DELIVERED
+2026-10-06 11:13:22 route=R2 order=ORD-0AC2 client=Adatum item=WC-400x8 result=DELIVERED
+2026-10-06 12:04:25 route=U2 order=ORD-2BD8 client=Northwind item=WC-400x8 result=DELIVERED
+2026-10-06 12:06:24 route=R4 order=ORD-107F client=Litware item=WC-400x4 result=DELIVERED
+2026-10-06 13:21:18 route=K2 order=ORD-88C7 client=Lucerne Publishing item=WC-400x12 result=DELIVERED
+2026-10-06 13:28:39 route=K1 order=ORD-9F14 client=Tailspin item=WC-400x12 result=DELIVERED
+2026-10-06 13:46:44 route=R2 order=ORD-0720 client=Fabrikam item=WC-400x6 result=DELIVERED
+2026-10-06 13:48:20 route=R4 order=ORD-4941 client=Contoso Bank Branch 4 item=WC-420x1 result=DELIVERED
+2026-10-06 14:25:19 route=U1 order=ORD-DBCA client=Northwind item=WC-400x8 result=DELIVERED
+2026-10-06 14:49:07 route=U1 order=ORD-92F0 client=Fourth Street Studio item=WC-400x12 result=DELIVERED
+2026-10-06 14:51:04 route=R1 order=ORD-2F82 client=Litware item=WC-400x6 result=MISSED reason=no-signature
+2026-10-06 14:57:56 route=U2 order=ORD-C050 client=Margie's Travel item=WC-400x4 WC-420x1 result=DELIVERED
+2026-10-06 15:12:32 route=R4 order=ORD-7E3D client=Contoso Bank Branch 4 item=WC-400x12 result=DELIVERED
+2026-10-06 15:14:28 route=K2 order=ORD-ED46 client=Tailspin item=WC-400x4 result=DELIVERED
+2026-10-06 15:26:59 route=R3 order=ORD-4173 client=Woodgrove item=WC-400x8 result=MISSED reason=no-access
+2026-10-06 15:41:12 route=R2 order=ORD-0282 client=Woodgrove item=WC-400x12 result=DELIVERED
+2026-10-06 15:42:25 route=K1 order=ORD-5526 client=Alpine Ski House item=WC-400x12 result=DELIVERED
+2026-10-06 15:53:56 route=R4 order=ORD-967A client=Woodgrove item=WC-400x4 WC-420x1 result=MISSED reason=no-signature
