@@ -6,6 +6,8 @@ Run the same setup twice, get the same file, apart from `date` and `took_s`.
 import json, os, random, re, sys, time
 from pathlib import Path
 
+import models
+
 from . import PY, chunkers, datasets, metrics, pipeline
 
 VOLATILE = ("date", "took_s")   # the only fields allowed to differ between two runs of the same setup
@@ -46,7 +48,8 @@ def run(ds, setup, phase, name, retriever="pipeline", dry=False, chat=None, limi
                      "scores": {k: round(v, 4) for k, v in sc.items()}})
     out = {"dataset": ds.name, "phase": phase, "name": name, "retriever": retriever,
            "setup": dict(setup.to_dict(), chunking=setup.chunking or ds.chunking,
-                         embed=index.embed if index else "", embedder=pipeline.embed_desc(index.embed) if index else ""),
+                         embed=index.embed if index else "", embedder=pipeline.embed_desc(index.embed) if index else "",
+                         reranker=(models.rerank_block() or "") if setup.rerank else ""),
            "chunks": len(index.chunks) if index else 0, "questions": rows, "summary": summarize(rows),
            "date": time.strftime("%Y-%m-%d %H:%M"), "took_s": round(time.time() - t0, 1)}
     if chat and (setup.transform or (setup.chunking or "").startswith("contextual")):
@@ -205,7 +208,7 @@ def report():
             prev = None
             for r in order:
                 st = r["setup"]
-                search = "—" if r["retriever"] != "pipeline" else st["retriever"] + (" + rerank" if st.get("rerank") else "") \
+                search = "—" if r["retriever"] != "pipeline" else st["retriever"] + (" + rerank" if st.get("rerank") else "") + (f" ({st['reranker']})" if st.get("reranker") else "") \
                     + (f" + {st['transform']}" if st.get("transform") else "") + "".join(f", {k}={v}" for k, v in sorted((st.get("filters") or {}).items()))
                 chg = ""
                 if prev is not None and r["retriever"] == "pipeline" and prev["retriever"] == "pipeline" \

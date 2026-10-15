@@ -1,7 +1,7 @@
 {
  "chunks": 469,
  "dataset": "contoso",
- "date": "2026-10-15 06:20",
+ "date": "2026-10-15 09:13",
  "name": "random",
  "phase": "eval",
  "questions": [
@@ -3479,11 +3479,12 @@
  "retriever": "random",
  "setup": {
   "chunking": "structure",
-  "embed": "ollama-embed",
-  "embedder": "ollama-embed (nomic-embed-text)",
+  "embed": "nexus-embed",
+  "embedder": "nexus-embed (text-embedding-3-large)",
   "filters": {},
   "k": 5,
   "rerank": false,
+  "reranker": "",
   "retriever": "semantic",
   "transform": ""
  },
@@ -3497,5 +3498,5 @@
   "n": 38,
   "nDCG@5": 0.0
  },
- "took_s": 0.4
+ "took_s": 0.2
 }

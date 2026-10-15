@@ -162,33 +162,19 @@ def allowed_units(index, units, setup, q=None):
 
 
 # ------------------------------------------------------------------ rerank
-_reranker = None
-RERANKER = "BAAI/bge-reranker-base"
-
-
-def reranker():
-    global _reranker
-    if _reranker is None:
-        import platform
-        from sentence_transformers import CrossEncoder
-        # Intel Macs: torch 2.2.2 on MPS returns wrong scores, so rerank on the CPU there (as rag.py does).
-        device = "cpu" if sys.platform == "darwin" and platform.machine() == "x86_64" else None
-        _reranker = CrossEncoder(RERANKER, device=device)
-    return _reranker
-
-
 def rerank(question, hits):
-    """A second, slower model rereads the question with each candidate and puts them in a better order. Scores saved."""
-    keys = [cache.key("rerank", RERANKER, question, c["text"]) for c, _ in hits]
+    """A second, slower model rereads the question with each candidate and puts them in a better order. Scores saved.
+    The model is models.rerank_block(): a chat block, or the local cross-encoder. What it may not read keeps its place."""
+    keys = [cache.key("rerank", models.rerank_id(), question, c["text"]) for c, _ in hits]
     have = cache.get_many(keys)
     todo = [(k, c) for k, (c, _) in zip(keys, hits) if k not in have]
+    fresh = {}
     if todo:
-        scores = reranker().predict([(question, c["text"]) for _, c in todo], batch_size=16)
-        new = [(k, round(float(s), 4)) for (k, _), s in zip(todo, scores)]
-        cache.put_many(new)
-        have.update(new)
-    out = [(c, have[k]) for k, (c, _) in zip(keys, hits)]
-    return [x for _, x in sorted(enumerate(out), key=lambda p: (-p[1][1], p[0]))]
+        scores = models.rerank_scores(question, [c for _, c in todo])
+        fresh = {k: None if s is None else round(s, 4) for (k, _), s in zip(todo, scores)}
+        cache.put_many([(k, s) for k, s in fresh.items() if s is not None])   # held-back passages: never scored, never saved
+    scores = [have[k] if k in have else fresh[k] for k in keys]
+    return models.rerank_order([(c, s) for (c, _), s in zip(hits, scores)], scores)
 
 
 def retrieve(index, question, setup, queries=None, q=None):

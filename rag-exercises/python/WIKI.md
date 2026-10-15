@@ -188,7 +188,7 @@ The sidecar is not a cache of Qdrant; it is the primary store for BM25, `find_ti
 4. **Search.** For each tuple: BM25 (`rank_bm25.BM25Okapi` over `tokens(embed_text)`) returns up to 30 indices with a positive score; Qdrant returns 30 nearest points. `--keyword-only` and `--semantic-only` drop one side.
 5. **Fuse** every ranked list with Reciprocal Rank Fusion, `1 / (60 + rank)`. With `multi` that is up to eight lists.
 6. **Parent swap and dedupe.** Walk the fused order; if a chunk has a `parent`, substitute the parent section. Keep the first 20 distinct `uid`s as candidates, each with its RRF score.
-7. **Rerank** (unless `--no-rerank`): lazy-load the cross-encoder `BAAI/bge-reranker-base` once per process (forced onto the CPU on Intel Macs, where torch on MPS returns wrong scores), score `(question, text)` for every candidate, replace `score` and re-sort. Flow 4.5. If the import or download fails, print a warning, set `a.no_rerank = True` so it is not retried, and return the RRF order.
+7. **Rerank** (unless `--no-rerank`): `models.rerank_scores`. By default it lazy-loads the cross-encoder `BAAI/bge-reranker-base` once per process (forced onto the CPU on Intel Macs, where torch on MPS returns wrong scores) and scores `(question, text)` for every candidate. With `rerank = "<chat block>"` in providers.toml (or `LLM_RERANK`), that chat model scores all candidates in one call instead, seeing only the classes its `where` allows; the others keep their place. Replace `score` and re-sort. Flow 4.5. If the import or download fails, print a warning, set `a.no_rerank = True` so it is not retried, and return the RRF order.
 
 `retrieve` returns up to 20 candidates; callers cut to `--k`.
 

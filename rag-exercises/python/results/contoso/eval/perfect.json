@@ -1,7 +1,7 @@
 {
  "chunks": 0,
  "dataset": "contoso",
- "date": "2026-10-15 06:20",
+ "date": "2026-10-15 09:13",
  "name": "perfect",
  "phase": "eval",
  "questions": [
@@ -1540,6 +1540,7 @@
   "filters": {},
   "k": 5,
   "rerank": false,
+  "reranker": "",
   "retriever": "semantic",
   "transform": ""
  },

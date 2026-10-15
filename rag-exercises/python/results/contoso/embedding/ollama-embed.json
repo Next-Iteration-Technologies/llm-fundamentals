@@ -1,7 +1,7 @@
 {
  "chunks": 469,
  "dataset": "contoso",
- "date": "2026-10-15 08:34",
+ "date": "2026-10-15 09:18",
  "name": "ollama-embed",
  "order": 2,
  "phase": "embedding",
@@ -3485,6 +3485,7 @@
   "filters": {},
   "k": 5,
   "rerank": false,
+  "reranker": "",
   "retriever": "semantic",
   "transform": ""
  },
@@ -3498,5 +3499,5 @@
   "n": 38,
   "nDCG@5": 0.7966
  },
- "took_s": 0.1
+ "took_s": 0.3
 }

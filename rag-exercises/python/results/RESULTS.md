@@ -10,21 +10,21 @@ Scores are per question, then averaged. R@k = Recall@k (of the right passages, h
 
 | Run | Chunking | Search | Embedding | Q | R@3 | R@5 | MRR | nDCG@5 | All found | R@~2k tok | R@50 | Won / lost vs row above (Recall@5) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| baseline | structure | semantic | ollama-embed | 38 | 0.80 | 0.89 | 0.80 | 0.80 | 0.82 | 0.94 | 0.96 |  |
+| baseline | structure | semantic | nexus-embed | 38 | 0.75 | 0.87 | 0.80 | 0.79 | 0.82 | 0.98 | 0.98 |  |
 | perfect | structure | — | — | 38 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |  |
-| random | structure | — | ollama-embed | 38 | 0.00 | 0.00 | 0.01 | 0.00 | 0.00 | 0.03 | 0.11 |  |
+| random | structure | — | nexus-embed | 38 | 0.00 | 0.00 | 0.01 | 0.00 | 0.00 | 0.03 | 0.11 |  |
 
 ### chunking
 
 | Run | Chunking | Search | Embedding | Q | R@3 | R@5 | MRR | nDCG@5 | All found | R@~2k tok | R@50 | Won / lost vs row above (Recall@5) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| structure | structure | semantic | ollama-embed | 38 | 0.80 | 0.89 | 0.80 | 0.80 | 0.82 | 0.94 | 0.96 |  |
-| naive-500 | naive-500 | semantic | ollama-embed | 38 | 0.61 | 0.71 | 0.65 | 0.62 | 0.61 | 0.86 | 0.97 | won 3, lost 10 |
-| fixed-200 | fixed-200 | semantic | ollama-embed | 38 | 0.65 | 0.73 | 0.63 | 0.63 | 0.68 | 0.76 | 0.93 | won 8, lost 6 |
-| recursive | recursive | semantic | ollama-embed | 38 | 0.79 | 0.82 | 0.77 | 0.75 | 0.74 | 0.88 | 0.97 | won 6, lost 4 |
-| sentence | sentence | semantic | ollama-embed | 38 | 0.71 | 0.76 | 0.68 | 0.66 | 0.66 | 0.96 | 0.96 | won 3, lost 7 |
-| semantic | semantic | semantic | ollama-embed | 38 | 0.60 | 0.66 | 0.57 | 0.56 | 0.58 | 0.86 | 0.91 | won 1, lost 5 |
-| hierarchical | hierarchical | semantic | ollama-embed | 38 | 0.78 | 0.84 | 0.74 | 0.75 | 0.76 | 0.87 | 0.98 | won 9, lost 0 |
+| structure | structure | semantic | nexus-embed | 38 | 0.75 | 0.87 | 0.80 | 0.79 | 0.82 | 0.98 | 0.98 |  |
+| naive-500 | naive-500 | semantic | nexus-embed | 38 | 0.72 | 0.84 | 0.66 | 0.66 | 0.76 | 0.96 | 1.00 | won 1, lost 4 |
+| fixed-200 | fixed-200 | semantic | nexus-embed | 38 | 0.79 | 0.82 | 0.77 | 0.75 | 0.79 | 0.94 | 1.00 | won 4, lost 3 |
+| recursive | recursive | semantic | nexus-embed | 38 | 0.77 | 0.86 | 0.81 | 0.79 | 0.79 | 0.92 | 0.98 | won 4, lost 4 |
+| sentence | sentence | semantic | nexus-embed | 38 | 0.79 | 0.87 | 0.69 | 0.71 | 0.82 | 0.97 | 0.97 | won 4, lost 3 |
+| semantic | semantic | semantic | nexus-embed | 38 | 0.69 | 0.77 | 0.65 | 0.66 | 0.71 | 0.92 | 0.96 | won 0, lost 5 |
+| hierarchical | hierarchical | semantic | ollama-embed | 38 | 0.78 | 0.84 | 0.74 | 0.75 | 0.76 | 0.87 | 0.98 | won 6, lost 2 |
 
 ### retrieval
 
@@ -52,6 +52,7 @@ Scores are per question, then averaged. R@k = Recall@k (of the right passages, h
 | bge-small | structure | semantic | bge-small | 38 | 0.72 | 0.85 | 0.76 | 0.76 | 0.76 | 0.91 | 0.92 | won 11, lost 1 |
 | ollama-embed | structure | semantic | ollama-embed | 38 | 0.80 | 0.89 | 0.80 | 0.80 | 0.82 | 0.94 | 0.96 | won 2, lost 1 |
 | bge-base | structure | semantic | bge-base | 38 | 0.86 | 0.89 | 0.79 | 0.80 | 0.84 | 0.93 | 0.96 | won 1, lost 1 |
+| nexus-embed | structure | semantic | nexus-embed | 38 | 0.75 | 0.87 | 0.80 | 0.79 | 0.82 | 0.98 | 0.98 | won 1, lost 2 |
 
 ### filters
 

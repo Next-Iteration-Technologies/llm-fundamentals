@@ -265,9 +265,6 @@ def ingest(a):
 
 
 # ------------------------------------------------------------------ retrieval
-_reranker = None
-
-
 PLAIN = " It goes to the team's own index, not the web: plain words, no site:, quotes or operators."
 
 
@@ -341,17 +338,12 @@ def retrieve(question, a, asker="employee"):
         if len(cand) == 20:
             break
     if not a.no_rerank and cand:
-        global _reranker
-        try:
-            if _reranker is None:
-                import platform
-                from sentence_transformers import CrossEncoder
-                # Intel Macs: torch 2.2.2 on MPS (the AMD GPU) returns wrong scores, so rerank on the CPU there.
-                device = "cpu" if sys.platform == "darwin" and platform.machine() == "x86_64" else None
-                _reranker = CrossEncoder("BAAI/bge-reranker-base", device=device)
-            for c, r in zip(cand, _reranker.predict([(question, c["text"]) for c in cand])):
-                c["score"] = round(float(r), 4)
-            cand.sort(key=lambda c: c["score"], reverse=True)
+        try:  # the local cross-encoder, or the chat block `rerank` in providers.toml (models.rerank_scores)
+            scores = models.rerank_scores(question, cand)
+            for c, r in zip(cand, scores):
+                if r is not None:
+                    c["score"] = round(r, 4)
+            cand = models.rerank_order(cand, scores)
         except Exception as e:
             print(f"! rerank skipped ({type(e).__name__}: {e}); use --no-rerank to silence.", file=sys.stderr)
             a.no_rerank = True
@@ -531,6 +523,12 @@ def check(a):
         ok, advice = models.reachable(name, "chat" if role == "judge" else role)
         ok_all &= ok
         print(f"[{'ok' if ok else '!!'}] {role} block '{bname}': {advice}")
+    rr = models.rerank_block()
+    if rr:  # unset: the local cross-encoder, loaded on first use
+        ok, advice = models.reachable(rr, "chat")
+        ok_all &= ok
+        print(f"[{'ok' if ok else '!!'}] rerank block '{rr}': {advice.rstrip('.')}; may read "
+              + ", ".join(sorted(c for c in models.MAY_READ[models.where(rr)] if c)))
     print(f"[{'ok' if PACK.exists() else '!!'}] pack at {PACK}")
     print(f"[ok] chat model counts as '{WHERE}': may read " + ", ".join(sorted(c for c in MAY_READ if c)))
     if not ok_all:

@@ -5,6 +5,8 @@
 chat = "sonnet"           # default chat block: answers, contextual prefixes, query rewrites, agent
 judge = "opus"            # default judge for the lab's answer scores (LAB.md chapters 7 and 9); LLM_JUDGE or --judge override
 embed = "bge-small"       # default embed block: what the chunks and questions are turned into (setup.py asks)
+# rerank = "nexus"        # a chat block that reranks the candidates (reads only what its `where` allows); LLM_RERANK overrides.
+                          # Left out (or LLM_RERANK=cross-encoder): the local cross-encoder BAAI/bge-reranker-base.
 
 # ---------- chat blocks ----------
 # `where` is flow 9.4: where this model runs, and so which data classes it may read.
@@ -16,7 +18,9 @@ embed = "bge-small"       # default embed block: what the chunks and questions a
 [nexus]                   # the room's laptops: the company gateway
 kind = "openai"           # VERIFY: assumes Nexus speaks the OpenAI chat-completions format
 base_url = "https://nexus.example.internal/v1"   # VERIFY
+base_url_env = "NEXUS_BASE_URL"                  # set in .env (e.g. the test gateway): wins over base_url
 model = "MODEL-NAME"      # VERIFY: `agent` needs a model that calls tools
+# api_version = "2024-10-21"   # Azure OpenAI layout: the model is a deployment, /openai/deployments/MODEL/...?api-version=
 api_key_env = "NEXUS_API_KEY"
 where = "tenant"
 
@@ -51,6 +55,7 @@ num_ctx = 8192            # the window sent to Ollama; a longer prompt stops wit
 [nexus-embed]
 kind = "openai"
 base_url = "https://nexus.example.internal/v1"   # VERIFY
+base_url_env = "NEXUS_BASE_URL"
 model = "EMBED-MODEL-NAME"                       # VERIFY
 api_key_env = "NEXUS_API_KEY"
 
