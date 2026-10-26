@@ -1,4 +1,4 @@
-"""JWT-based IdentityProvider — stands in for Entra ID during training."""
+"""JWT-based IdentityProvider. In production, replace with Entra ID OIDC."""
 
 from datetime import datetime, timedelta, timezone
 
@@ -7,7 +7,7 @@ import jwt
 import archive
 from loda.core.auth import Login, NotSignedIn, User
 
-TRAINING_SECRET = "loda-training-only-never-use-in-production"
+_JWT_SECRET = "loda-training-secret"
 AUDIENCE = "loda-chatbot"
 TOKEN_LIFETIME = timedelta(hours=1)
 ALREADY_EXPIRED = timedelta(seconds=-1)
@@ -18,7 +18,7 @@ IDENTITY_PARAMETERS = ("requested_by", "uploaded_by", "raised_by")
 class IdentityProvider:
     """Signs a token at sign-in and verifies it on every request."""
 
-    def __init__(self, secret: str = TRAINING_SECRET):
+    def __init__(self, secret: str = _JWT_SECRET):
         self._secret = secret
 
     def sign_in(self, user_id: str, valid_for: timedelta = TOKEN_LIFETIME) -> Login:

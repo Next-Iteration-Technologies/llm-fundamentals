@@ -20,7 +20,7 @@ from loda.pipeline.chatbot import Chatbot
 
 logger = logging.getLogger(__name__)
 
-IDENTITY_PROVIDER = IdentityProvider()
+_IDENTITY_PROVIDER = IdentityProvider()
 
 
 def bind_parameters(tool: Tool, fixed: dict) -> Tool:
@@ -99,7 +99,7 @@ def build_chatbot(
 
 def _full_answer(bot: Chatbot, question: str) -> str:
     """Full pipeline: verify → guardrails → agent loop → PII restore → output check → trace."""
-    IDENTITY_PROVIDER.verify(bot.login.token)
+    _IDENTITY_PROVIDER.verify(bot.login.token)
 
     blocked = check_input(question)
     if blocked:

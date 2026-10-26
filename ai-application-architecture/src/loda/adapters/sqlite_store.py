@@ -4,7 +4,7 @@ import json
 import sqlite3
 from pathlib import Path
 
-DEFAULT_DATABASE = Path(__file__).parents[4] / "conversations.db"
+DEFAULT_DATABASE = Path(__file__).parents[3] / "conversations.db"
 IN_MEMORY_STORE = ":memory:"
 
 

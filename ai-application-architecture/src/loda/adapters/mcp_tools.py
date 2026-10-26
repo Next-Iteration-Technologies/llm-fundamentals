@@ -14,10 +14,10 @@ from loda.core.tools import Tool
 CONNECT_TIMEOUT_SECONDS = 30
 CALL_TIMEOUT_SECONDS = 60
 
-HERE = Path(__file__).parents[4]
+_LODA_PKG = Path(__file__).parent.parent  # src/loda/
 DEFAULT_SERVER = StdioServerParameters(
     command=sys.executable,
-    args=[str(HERE / "step9_mcp_server_secure.py")],
+    args=[str(_LODA_PKG / "server" / "mcp.py")],
 )
 
 

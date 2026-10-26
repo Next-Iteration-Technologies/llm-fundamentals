@@ -17,7 +17,7 @@ from loda.features.pii import Redactor
 
 logger = logging.getLogger(__name__)
 
-TRACE_FOLDER = Path(__file__).parents[4] / "traces"
+TRACE_FOLDER = Path(__file__).parents[3] / "traces"
 _UNMASKED_FIELDS = {"trace", "time", "kind", "user", "groups"}
 
 
