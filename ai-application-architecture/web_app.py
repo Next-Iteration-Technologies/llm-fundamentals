@@ -1,12 +1,4 @@
-"""
-A browser UI for the LoDA chatbot steps: chat on the left, the request/tool
-printout on the right, live.
-
-This file does not change step1/2/3: it imports their system prompts, tools
-and constants, and re-runs the same loop they print to the console, emitting
-each step as a JSON event instead. The step files stay exactly as the course
-teaches them.
-"""
+"""Browser UI for the LoDA chatbot: chat on the left, request/tool log on the right."""
 
 import json
 from pathlib import Path
@@ -16,21 +8,31 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, StreamingResponse
 
 import llm_client
-import step1_bare_model_call as step1
-import step2_agent_loop as step2
-import step3_retrieval as step3
-import step4_conversation_store as step4
+from loda.adapters.sqlite_store import ConversationStore
+from loda.features.retrieval import SYSTEM_PROMPT as RETRIEVAL_PROMPT
+from loda.features.retrieval import TOOLS
+from loda.pipeline.agent import MAX_CALLS_PER_QUESTION, STEP_LIMIT_ANSWER
 from request_view import message_text, shorten
 
 HERE = Path(__file__).parent
 STATIC_DIR = HERE / "web_static"
-STORE_SESSION_ID = "priya"       # the one session the UI demos, same default as the CLI
+STORE_SESSION_ID = "priya"
+
+_BARE_PROMPT = (
+    "You are the LoDA chatbot. You help department users with questions about the LoDA "
+    "document archive (CSP and Classic). Answer briefly and in plain language."
+)
+_AGENT_PROMPT = _BARE_PROMPT + (
+    " Use the tools to check the archive and answer only from their results."
+    " If the tools cannot answer, hand the question to the developers with a short summary."
+)
+_ARCHIVE_TOOLS = [t for t in TOOLS if t.name != "search_known_issues"]
 
 STEPS = {
-    "1": {"system": step1.SYSTEM_PROMPT, "tools": None, "store": False},
-    "2": {"system": step2.SYSTEM_PROMPT, "tools": step2.ARCHIVE_TOOLS, "store": False},
-    "3": {"system": step3.SYSTEM_PROMPT, "tools": step3.TOOLS, "store": False},
-    "4": {"system": step4.SYSTEM_PROMPT, "tools": step4.TOOLS, "store": True},
+    "1": {"system": _BARE_PROMPT,     "tools": None,          "store": False},
+    "2": {"system": _AGENT_PROMPT,    "tools": _ARCHIVE_TOOLS, "store": False},
+    "3": {"system": RETRIEVAL_PROMPT, "tools": TOOLS,          "store": False},
+    "4": {"system": RETRIEVAL_PROMPT, "tools": TOOLS,          "store": True},
 }
 
 app = FastAPI()
@@ -39,10 +41,17 @@ histories: dict[str, list[dict]] = {"1": [], "2": [], "3": []}
 call_numbers = {"1": 0, "2": 0, "3": 0, "4": 0}
 
 
-def open_store() -> step4.ConversationStore:
-    """A fresh connection per call: FastAPI runs sync endpoints in a thread pool,
-    and sqlite3 connections cannot cross threads."""
-    return step4.ConversationStore()
+def _call_safely(function, arguments: dict) -> str:
+    try:
+        result = function(**arguments)
+        return result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
+    except TypeError as error:
+        return json.dumps({"error": f"Wrong arguments: {error}"})
+
+
+def open_store() -> ConversationStore:
+    """Fresh connection per call: sqlite3 connections cannot cross threads."""
+    return ConversationStore()
 
 
 @app.get("/")
@@ -64,13 +73,13 @@ def request_event(step: str, messages: list[dict], reply, system: str, tools: li
         "replayed": reply.replayed,
         "system": shorten(system),
         "tools_offered": [tool.name for tool in tools] if tools else [],
-        "messages": [{"role": message["role"], "text": message_text(message)} for message in messages],
+        "messages": [{"role": m["role"], "text": message_text(m)} for m in messages],
         "input_tokens": reply.input_tokens,
     }
 
 
 def run_step(step: str, user_text: str):
-    """Run one question through a step's loop, yielding one event dict per step of the loop."""
+    """Run one question through the configured pipeline, yielding one event per step."""
     config = STEPS[step]
     history = open_store().load(STORE_SESSION_ID) if config["store"] else histories[step]
     history.append({"role": "user", "content": user_text})
@@ -92,7 +101,7 @@ def run_step(step: str, user_text: str):
     definitions = [tool.definition() for tool in tools]
     tools_by_name = {tool.name: tool for tool in tools}
 
-    for _ in range(step2.MAX_CALLS_PER_QUESTION):
+    for _ in range(MAX_CALLS_PER_QUESTION):
         reply = llm.chat(history, system=config["system"], tools=definitions)
         yield request_event(step, history, reply, config["system"], tools)
         history.append({"role": "assistant", "content": reply.text, "tool_calls": reply.tool_calls})
@@ -104,12 +113,12 @@ def run_step(step: str, user_text: str):
             if tool is None:
                 result = json.dumps({"error": f"There is no tool called {call['name']}."})
             else:
-                result = llm.run_tool(call, lambda **arguments: step2.call_safely(tool.function, arguments))
+                result = llm.run_tool(call, lambda **arguments: _call_safely(tool.function, arguments))
             yield {"type": "tool_call", "name": call["name"], "arguments": call["arguments"], "result": shorten(result)}
             history.append({"role": "tool", "tool_call_id": call["id"], "name": call["name"], "content": result})
 
-    history.append({"role": "assistant", "content": step2.STEP_LIMIT_ANSWER})
-    yield from finish(step2.STEP_LIMIT_ANSWER)
+    history.append({"role": "assistant", "content": STEP_LIMIT_ANSWER})
+    yield from finish(STEP_LIMIT_ANSWER)
 
 
 @app.post("/api/send")
@@ -139,14 +148,13 @@ def reset(body: dict):
 
 @app.get("/api/dump")
 def dump(step: str):
-    """What is really stored for this step, for the UI to show (or restore) on demand."""
     if not STEPS[step]["store"]:
         return {"session_id": None, "count": 0, "messages": []}
     messages = open_store().load(STORE_SESSION_ID)
     return {
         "session_id": STORE_SESSION_ID,
         "count": len(messages),
-        "messages": [{"role": message["role"], "text": message_text(message)} for message in messages],
+        "messages": [{"role": m["role"], "text": message_text(m)} for m in messages],
         "raw": messages,
     }
 
