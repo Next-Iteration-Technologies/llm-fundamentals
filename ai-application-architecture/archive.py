@@ -12,6 +12,8 @@ from pathlib import Path
 
 DATA_FOLDER = Path(__file__).parent / "data"
 ARCHIVE_URL = "https://archive.example.internal/documents"
+WORKSPACE_GROUP = {"Finance": "Finance-Records", "HR": "HR-Records"}   # who may open each workspace
+ADMIN_GROUP = "LoDA-Developers"                                        # may open every workspace
 
 
 @cache
@@ -22,6 +24,10 @@ def read_data(file_name: str) -> list[dict]:
 
 def find_document(doc_id: str) -> dict | None:
     return next((doc for doc in read_data("documents.json") if doc["doc_id"] == doc_id.strip()), None)
+
+
+def find_user(user_id: str) -> dict | None:
+    return next((user for user in read_data("users.json") if user["user_id"] == user_id.strip().lower()), None)
 
 
 def is_same_person(given_name: str, user_id: str) -> bool:
@@ -105,7 +111,7 @@ def get_retention_info(doc_id: str) -> dict:
     }
 
 
-def handoff_to_developers(summary: str, urgency: str = "normal") -> dict:
+def handoff_to_developers(summary: str, urgency: str = "normal", raised_by: str = "") -> dict:
     """Open a ticket for the LoDA developer team."""
     ticket = SERVICENOW.create(
         "INC",
@@ -113,6 +119,20 @@ def handoff_to_developers(summary: str, urgency: str = "normal") -> dict:
         assignment_group="LoDA developers",
         summary=summary,
         urgency=urgency,
+        raised_by=raised_by,
         status="New",
     )
     return {"created": True, **ticket}
+
+
+def list_workspace_access(workspace: str) -> dict:
+    """Everyone who can open a workspace, and through which group. Contains personal data."""
+    group = WORKSPACE_GROUP.get(workspace)
+    if group is None:
+        return {"workspace": workspace, "error": f"There is no workspace {workspace}."}
+    people = [
+        {"name": user["name"], "email": user["email"], "through_group": member_group}
+        for user in read_data("users.json")
+        for member_group in (group, ADMIN_GROUP) if member_group in user["groups"]
+    ]
+    return {"workspace": workspace, "people": people}
