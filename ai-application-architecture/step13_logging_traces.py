@@ -17,120 +17,58 @@ Try it:
 """
 
 import argparse
-import json
-import time
-import uuid
 from dataclasses import replace
-from datetime import date, datetime, timezone
-from pathlib import Path
 
 import archive
 import llm_client
-from request_view import shorten
 from step1_bare_model_call import run_safely
-from step2_agent_loop import Tool
-from step4_conversation_store import ConversationStore
-from step6_mcp_client import McpConnection
-from step8_authentication import IDENTITY_PROVIDER, Chatbot, Login, run_signed_in_chat
-from step9_authorization import SECURE_SERVER
-from step12_pii_redaction import Redactor
-from step12_pii_redaction import answer as answer_redacted
-from step12_pii_redaction import build as build_redacted
+from step8_authentication import IDENTITY_PROVIDER, run_signed_in_chat
 
-TRACE_FOLDER = Path(__file__).parent / "traces"
-UNMASKED_FIELDS = {"trace", "time", "kind", "user", "groups"}   # ids, not personal data: needed to explain a trace
+from loda.adapters.mcp_tools import DEFAULT_SERVER as SECURE_SERVER, McpConnection, tools_from_server
+from loda.adapters.sqlite_store import ConversationStore
+from loda.core.auth import Login
+from loda.features.gateway import ModelGateway, private_model
+from loda.features.guardrails import (
+    BLOCKED_INPUT_ANSWER, SCOPE_RULES, check_output, looks_like_injection, wrap_as_outside_data,
+)
+from loda.features.pii import Redactor, RedactingModel, personal_data_visible_to
+from loda.features.retrieval import SYSTEM_PROMPT as STEP3_PROMPT
+from loda.features.tracing import Tracer, TracingModel, traced
+from loda.pipeline.agent import answer_with_memory
+from loda.pipeline.builder import acting_as, offered_tools, with_token
+from loda.pipeline.chatbot import Chatbot
+
 DEMO_LINES = [
     "Where is invoice 1234?",
     "I uploaded 20 invoices yesterday. Did they all get archived?",
 ]
 
 
-class Tracer:
-    """One JSON line per step of a question. Free text is masked with the chat's redactor."""
-
-    def __init__(self, redactor: Redactor, folder: Path = TRACE_FOLDER):
-        self._redactor = redactor
-        self._file = folder / f"{date.today().isoformat()}.jsonl"
-        folder.mkdir(exist_ok=True)
-        self.trace_id = None
-        self.tools_called: list[str] = []
-
-    @property
-    def file_name(self) -> str:
-        return self._file.name
-
-    def start(self, login: Login, question: str):
-        self.trace_id = uuid.uuid4().hex[:8]
-        self.tools_called = []
-        self.write("question", user=login.user.user_id, groups=list(login.user.groups), question=question)
-
-    def write(self, kind: str, **fields):
-        line = {"trace": self.trace_id, "time": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                "kind": kind, **fields}
-        masked = {name: value if name in UNMASKED_FIELDS else self._masked(value) for name, value in line.items()}
-        with self._file.open("a", encoding="utf-8") as file:
-            file.write(json.dumps(masked, ensure_ascii=False) + "\n")
-
-    def _masked(self, value):
-        return json.loads(self._redactor.redact(json.dumps(value, ensure_ascii=False)))
-
-
-def model_prices() -> dict[str, float]:
-    """Input price per million tokens, by model name, from providers.toml."""
-    return {block["model"]: block.get("input_price_per_million", 0)
-            for block in llm_client.load_providers().values() if isinstance(block, dict)}
-
-
-class TracingModel:
-    """In front of the model: every call is written to the trace. Anything else goes to the model."""
-
-    def __init__(self, model, tracer: Tracer):
-        self.model = model
-        self.tracer = tracer
-        self._prices = model_prices()
-
-    def chat(self, messages, system=None, tools=None):
-        started = time.perf_counter()
-        reply = self.model.chat(messages, system=system, tools=tools)
-        input_cost = (reply.input_tokens or 0) * self._prices.get(reply.model, 0) / 1_000_000
-        self.tracer.write("model_call", model=reply.model, messages_sent=len(messages),
-                          asked_for=[call["name"] for call in reply.tool_calls],
-                          input_tokens=reply.input_tokens, output_tokens=reply.output_tokens,
-                          input_cost_usd=round(input_cost, 6), seconds=round(time.perf_counter() - started, 2))
-        return reply
-
-    def __getattr__(self, name):
-        """Anything else comes from the wrapped model, for example its .redactor."""
-        if name.startswith("_"):
-            raise AttributeError(name)
-        return getattr(self.model, name)
-
-
-def traced(tool: Tool, tracer: Tracer) -> Tool:
-    def run_and_record(**arguments):
-        started = time.perf_counter()
-        result = tool.function(**arguments)
-        tracer.tools_called.append(tool.name)
-        tracer.write("tool_call", tool=tool.name, arguments=arguments, result=shorten(str(result)),
-                     seconds=round(time.perf_counter() - started, 2))
-        return result
-
-    return replace(tool, function=run_and_record)
-
-
 def build(llm: llm_client.Session, login: Login, connection: McpConnection) -> Chatbot:
-    bot = build_redacted(llm, login, connection)
-    tracer = Tracer(bot.model.redactor)
-    return replace(bot, model=TracingModel(bot.model, tracer), tools=[traced(tool, tracer) for tool in bot.tools])
+    system = STEP3_PROMPT + f" The signed-in user belongs to: {', '.join(login.user.groups)}." + SCOPE_RULES
+    tools = [wrap_as_outside_data(t) for t in
+             with_token(offered_tools(acting_as(login.user, tools_from_server(connection)), login.user), login)]
+    redactor = Redactor()
+    gateway = ModelGateway(default=llm, private=private_model(llm))
+    tracer = Tracer(redactor)
+    model = TracingModel(RedactingModel(gateway, redactor), tracer)
+    return Chatbot(llm, login, [traced(t, tracer) for t in tools], system, ConversationStore(), model=model)
 
 
 def answer(bot: Chatbot, question: str) -> str:
+    if looks_like_injection(question):
+        return BLOCKED_INPUT_ANSWER
     tracer = bot.model.tracer
     tracer.start(bot.login, question)
-    reply = answer_redacted(bot, question)
-    tracer.write("answer", answer=reply)
+    IDENTITY_PROVIDER.verify(bot.login.token)
+    reply = answer_with_memory(bot.llm, bot.store, bot.session_id, question,
+                               tools=bot.tools, system=bot.system, model=bot.model)
+    is_dev = lambda u: archive.ADMIN_GROUP in u.groups
+    restored = bot.model.redactor.restore(reply, personal_data_visible_to(bot.login.user, is_dev))
+    result = check_output(restored)
+    tracer.write("answer", answer=result)
     print(f"  trace {tracer.trace_id} written to traces/{tracer.file_name}")
-    return reply
+    return result
 
 
 # ---------- the golden questions ----------
@@ -150,7 +88,7 @@ def run_golden_questions():
     with McpConnection(SECURE_SERVER) as connection:
         for number, case in enumerate(cases, start=1):
             login = IDENTITY_PROVIDER.sign_in(case["user"])
-            bot = replace(build(llm, login, connection), store=ConversationStore(":memory:"))   # a fresh chat each
+            bot = replace(build(llm, login, connection), store=ConversationStore(":memory:"))
             reply = answer(bot, case["question"])
             problems = check_case(case, reply, bot.model.tracer.tools_called)
             passed += not problems

@@ -14,15 +14,17 @@ Try it:
 For each request, say before it runs which boxes it will pass through.
 """
 
-from dataclasses import replace
-
 import llm_client
 from step1_bare_model_call import run_safely
-from step4_conversation_store import ConversationStore
-from step6_mcp_client import McpConnection
-from step8_authentication import IDENTITY_PROVIDER, NotSignedIn
-from step9_authorization import SECURE_SERVER
-from step13_logging_traces import answer, build
+
+from loda.adapters.entra_auth import IdentityProvider
+from loda.adapters.mcp_tools import DEFAULT_SERVER as SECURE_SERVER, McpConnection
+from loda.adapters.sqlite_store import ConversationStore
+from loda.core.auth import NotSignedIn
+from loda.pipeline.builder import build_chatbot
+from loda.pipeline.chatbot import IN_MEMORY_STORE
+
+IDENTITY_PROVIDER = IdentityProvider()
 
 SCRIPT = [   # (user, question, what should happen)
     ("priya", "Hi, I can't find my invoice 1234.", "location and link"),
@@ -43,9 +45,12 @@ def run_capstone():
             print(f"===== {number}. {user_id}: {question}")
             print(f"      expected: {expected}\n")
             login = IDENTITY_PROVIDER.sign_in(user_id)
-            bot = replace(build(llm, login, connection), store=ConversationStore(":memory:"))
+            bot = build_chatbot(llm, login, connection)
+            # each request gets its own fresh in-memory store so conversations don't bleed
+            from dataclasses import replace
+            bot = replace(bot, store=ConversationStore(IN_MEMORY_STORE))
             try:
-                print(f"LLM: {answer(bot, question)}\n")
+                print(f"LLM: {bot.answer(question)}\n")
             except NotSignedIn as problem:
                 print(f"Refused before the model was called: {problem}\n")
     print("Done. Every step of every request is in traces/. Next: uv run step13_logging_traces.py --golden")

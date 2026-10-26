@@ -15,23 +15,22 @@ Try it:
     uv run step9_authorization.py --user mia --demo       # a developer: every workspace, and who has access
 """
 
-import sys
 from dataclasses import replace
-from pathlib import Path
-
-from mcp import StdioServerParameters
 
 import llm_client
 from step1_bare_model_call import run_safely
-from step2_agent_loop import Tool
-from step6_mcp_client import McpConnection
-from step8_authentication import Chatbot, Login, User, answer, bind_parameters, run_signed_in_chat
-from step8_authentication import build as build_signed_in
+from step8_authentication import IDENTITY_PROVIDER, run_signed_in_chat
+
+from loda.adapters.mcp_tools import DEFAULT_SERVER as SECURE_SERVER, McpConnection, tools_from_server
+from loda.adapters.sqlite_store import ConversationStore
+from loda.core.auth import Login, User
+from loda.core.tools import Tool
+from loda.features.retrieval import SYSTEM_PROMPT as STEP3_PROMPT
+from loda.pipeline.agent import answer_with_memory
+from loda.pipeline.builder import acting_as, bind_parameters
+from loda.pipeline.chatbot import Chatbot
 from step9_mcp_server_secure import allowed_tools
 
-SECURE_SERVER = StdioServerParameters(
-    command=sys.executable, args=[str(Path(__file__).parent / "step9_mcp_server_secure.py")]
-)
 DEMO_LINES = [
     "Where is invoice 1234?",
     "Show me employment contract 7001.",
@@ -50,8 +49,15 @@ def with_token(tools: list[Tool], login: Login) -> list[Tool]:
 
 
 def build(llm: llm_client.Session, login: Login, connection: McpConnection) -> Chatbot:
-    bot = build_signed_in(llm, login, connection)
-    return replace(bot, tools=with_token(offered_tools(bot.tools, login.user), login))
+    system = STEP3_PROMPT + f" The signed-in user belongs to: {', '.join(login.user.groups)}."
+    tools = with_token(offered_tools(acting_as(login.user, tools_from_server(connection)), login.user), login)
+    return Chatbot(llm, login, tools, system, ConversationStore())
+
+
+def answer(bot: Chatbot, question: str) -> str:
+    IDENTITY_PROVIDER.verify(bot.login.token)
+    return answer_with_memory(bot.llm, bot.store, bot.session_id, question,
+                              tools=bot.tools, system=bot.system, model=bot.model)
 
 
 if __name__ == "__main__":

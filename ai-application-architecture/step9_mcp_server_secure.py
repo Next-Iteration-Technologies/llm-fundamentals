@@ -20,10 +20,12 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 import archive
-import step3_retrieval
-from step3_retrieval import TOOLS
+from loda.adapters.entra_auth import IdentityProvider
+from loda.core.auth import NotSignedIn, User
+from loda.features.retrieval import TOOLS, search_known_issues
 from step6_mcp_server import SERVER_NAME, serve
-from step8_authentication import IDENTITY_PROVIDER, NotSignedIn, User
+
+IDENTITY_PROVIDER = IdentityProvider()
 
 DEPARTMENT_TOOLS = frozenset(tool.name for tool in TOOLS)
 DEVELOPER_TOOLS = DEPARTMENT_TOOLS | {"list_workspace_access"}
@@ -97,7 +99,7 @@ def check_upload_status(caller_token: str, upload_id: str = "") -> dict:
 @server.tool(description=description_of("search_known_issues"))
 def search_known_issues(question: str, caller_token: str) -> dict:
     caller(caller_token, "search_known_issues")
-    return step3_retrieval.search_known_issues(question)
+    return search_known_issues(question)
 
 
 @server.tool(description=description_of("handoff_to_developers"))
