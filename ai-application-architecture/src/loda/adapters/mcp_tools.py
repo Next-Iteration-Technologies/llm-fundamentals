@@ -83,9 +83,14 @@ def tools_from_server(connection: McpConnection) -> list[Tool]:
 
 
 def _remote_tool(connection: McpConnection, listed) -> Tool:
+    name = listed.name  # captured by value so the closure is stable across iterations
+
+    def call(**arguments):
+        return connection.call_tool(name, arguments)
+
     return Tool(
-        name=listed.name,
+        name=name,
         description=listed.description or "",
         parameters=listed.input_schema,
-        function=lambda **arguments, _name=listed.name: connection.call_tool(_name, arguments),
+        function=call,
     )
