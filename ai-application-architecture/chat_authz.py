@@ -1,7 +1,7 @@
 """Demo: authorization — tools filtered by role, token checked on every server call."""
 
 import llm_client
-from demo_utils import run_safely, run_signed_in_chat
+from cli_utils import run_safely, run_signed_in_chat
 from loda.adapters.entra_auth import IdentityProvider
 from loda.adapters.mcp_tools import DEFAULT_SERVER, McpConnection, tools_from_server
 from loda.adapters.sqlite_store import ConversationStore

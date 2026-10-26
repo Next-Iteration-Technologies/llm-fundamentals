@@ -4,7 +4,7 @@ import argparse
 import json
 
 import llm_client
-from demo_utils import read_questions, run_safely
+from cli_utils import read_questions, run_safely
 from loda.adapters.sqlite_store import DEFAULT_DATABASE, ConversationStore
 from loda.features.retrieval import SYSTEM_PROMPT, TOOLS
 from loda.pipeline.agent import answer_with_memory, run_agent_loop

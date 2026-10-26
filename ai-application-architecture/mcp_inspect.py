@@ -6,12 +6,12 @@ from pathlib import Path
 
 from mcp import StdioServerParameters
 
-from demo_utils import run_safely
+from cli_utils import run_safely
 from loda.adapters.mcp_tools import McpConnection
 
 DEMO_SERVER = StdioServerParameters(
     command=sys.executable,
-    args=[str(Path(__file__).parent / "demo_mcp_server.py")],
+    args=[str(Path(__file__).parent / "mcp_server.py")],
 )
 
 

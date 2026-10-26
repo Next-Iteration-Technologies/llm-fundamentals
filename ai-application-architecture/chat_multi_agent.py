@@ -3,7 +3,7 @@
 import argparse
 
 import llm_client
-from demo_utils import read_questions, run_safely
+from cli_utils import read_questions, run_safely
 from loda.adapters.sqlite_store import ConversationStore
 from loda.core.tools import Tool, arguments_schema, text_field
 from loda.features.retrieval import SYSTEM_PROMPT as RETRIEVAL_PROMPT

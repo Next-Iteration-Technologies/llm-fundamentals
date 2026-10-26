@@ -1,7 +1,7 @@
 """Demo: a bare model call — no tools, no memory."""
 
 import llm_client
-from demo_utils import read_questions, run_safely, show_call
+from cli_utils import read_questions, run_safely, show_call
 
 SYSTEM_PROMPT = (
     "You are the LoDA chatbot. You help department users with questions about the LoDA "

@@ -6,7 +6,7 @@ from pathlib import Path
 from mcp import StdioServerParameters
 
 import llm_client
-from demo_utils import run_safely, run_signed_in_chat
+from cli_utils import run_safely, run_signed_in_chat
 from loda.adapters.entra_auth import IdentityProvider
 from loda.adapters.mcp_tools import McpConnection, tools_from_server
 from loda.adapters.sqlite_store import ConversationStore
@@ -18,7 +18,7 @@ from loda.pipeline.chatbot import Chatbot
 
 DEMO_SERVER = StdioServerParameters(
     command=sys.executable,
-    args=[str(Path(__file__).parent / "demo_mcp_server.py")],
+    args=[str(Path(__file__).parent / "mcp_server.py")],
 )
 DEMO_LINES = [
     "Hi, I'm Priya. Did my upload from yesterday get archived?",

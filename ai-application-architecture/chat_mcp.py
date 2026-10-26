@@ -6,7 +6,7 @@ from pathlib import Path
 from mcp import StdioServerParameters
 
 import llm_client
-from demo_utils import read_questions, run_safely
+from cli_utils import read_questions, run_safely
 from loda.adapters.mcp_tools import McpConnection, tools_from_server
 from loda.adapters.sqlite_store import ConversationStore
 from loda.features.retrieval import SYSTEM_PROMPT
@@ -14,7 +14,7 @@ from loda.pipeline.agent import answer_with_memory
 
 DEMO_SERVER = StdioServerParameters(
     command=sys.executable,
-    args=[str(Path(__file__).parent / "demo_mcp_server.py")],
+    args=[str(Path(__file__).parent / "mcp_server.py")],
 )
 DEMO_LINES = [
     "Hi, I'm Priya. I can't find my invoice 1234.",

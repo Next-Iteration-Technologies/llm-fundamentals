@@ -1,7 +1,7 @@
 """Demo: agent loop — the model calls tools, we run them, repeat until it answers."""
 
 import llm_client
-from demo_utils import read_questions, run_safely
+from cli_utils import read_questions, run_safely
 from loda.features.retrieval import SYSTEM_PROMPT, TOOLS
 from loda.pipeline.agent import run_agent_loop
 

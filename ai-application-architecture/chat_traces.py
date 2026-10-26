@@ -3,7 +3,7 @@
 import argparse
 
 import llm_client
-from demo_utils import run_safely, run_signed_in_chat
+from cli_utils import run_safely, run_signed_in_chat
 from loda.adapters.authorization import is_developer
 from loda.adapters.entra_auth import IdentityProvider
 from loda.adapters.mcp_tools import DEFAULT_SERVER, McpConnection, tools_from_server

@@ -3,7 +3,7 @@
 from dataclasses import replace
 
 import llm_client
-from demo_utils import run_safely
+from cli_utils import run_safely
 from loda.adapters.entra_auth import IdentityProvider
 from loda.adapters.mcp_tools import DEFAULT_SERVER, McpConnection
 from loda.adapters.sqlite_store import ConversationStore
