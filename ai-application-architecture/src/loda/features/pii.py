@@ -46,9 +46,9 @@ class Redactor:
 
     def redact(self, text: str) -> str:
         for kind, pattern in self._patterns.items():
-            text = pattern.sub(
-                lambda match, kind=kind: self._placeholder(kind, match.group()), text
-            )
+            def _sub(match: re.Match, kind: str = kind) -> str:
+                return self._placeholder(kind, match.group())
+            text = pattern.sub(_sub, text)
         return text
 
     def restore(self, text: str, may_see: Callable[[str], bool] = lambda _: True) -> str:
