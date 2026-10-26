@@ -3,9 +3,8 @@
 import logging
 from dataclasses import replace
 
-import archive
-
 import llm_client
+from loda.adapters.authorization import allowed_tools as _allowed_tools, is_developer as _is_developer
 from loda.adapters.entra_auth import IDENTITY_PARAMETERS, IdentityProvider
 from loda.adapters.mcp_tools import DEFAULT_SERVER, McpConnection, tools_from_server
 from loda.adapters.sqlite_store import ConversationStore
@@ -22,29 +21,6 @@ from loda.pipeline.chatbot import Chatbot
 logger = logging.getLogger(__name__)
 
 IDENTITY_PROVIDER = IdentityProvider()
-
-# --- authorization helpers (Phase 6 will move to loda.adapters.authorization) ---
-
-_DEPARTMENT_TOOLS = frozenset(
-    tool_name
-    for tool_name in (
-        "search_document",
-        "get_retention_info",
-        "raise_access_request",
-        "check_upload_status",
-        "handoff_to_developers",
-        "search_known_issues",
-    )
-)
-_DEVELOPER_TOOLS = _DEPARTMENT_TOOLS | {"list_workspace_access"}
-
-
-def _is_developer(user: User) -> bool:
-    return archive.ADMIN_GROUP in user.groups
-
-
-def _allowed_tools(user: User) -> frozenset[str]:
-    return _DEVELOPER_TOOLS if _is_developer(user) else _DEPARTMENT_TOOLS
 
 
 def bind_parameters(tool: Tool, fixed: dict) -> Tool:

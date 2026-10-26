@@ -20,6 +20,7 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 import archive
+from loda.adapters.authorization import allowed_tools, can_open, is_developer
 from loda.adapters.entra_auth import IdentityProvider
 from loda.core.auth import NotSignedIn, User
 from loda.features.retrieval import TOOLS, search_known_issues
@@ -27,25 +28,11 @@ from step6_mcp_server import SERVER_NAME, serve
 
 IDENTITY_PROVIDER = IdentityProvider()
 
-DEPARTMENT_TOOLS = frozenset(tool.name for tool in TOOLS)
-DEVELOPER_TOOLS = DEPARTMENT_TOOLS | {"list_workspace_access"}
 NOT_VISIBLE = {
     "found": "not visible to you",
     "message": "This document is in a workspace you cannot open. You can raise an access request; "
                "the workspace owner decides.",
 }
-
-
-def is_developer(user: User) -> bool:
-    return archive.ADMIN_GROUP in user.groups
-
-
-def allowed_tools(user: User) -> frozenset[str]:
-    return DEVELOPER_TOOLS if is_developer(user) else DEPARTMENT_TOOLS
-
-
-def can_open(user: User, workspace: str) -> bool:
-    return is_developer(user) or archive.WORKSPACE_GROUP.get(workspace) in user.groups
 
 
 def caller(token: str, tool_name: str) -> User:

@@ -19,11 +19,11 @@ Try it:
     You: Who can see the Finance workspace?
 """
 
-import archive
 import llm_client
 from step1_bare_model_call import run_safely
 from step8_authentication import IDENTITY_PROVIDER, run_signed_in_chat
 
+from loda.adapters.authorization import is_developer
 from loda.adapters.mcp_tools import DEFAULT_SERVER as SECURE_SERVER, McpConnection, tools_from_server
 from loda.adapters.sqlite_store import ConversationStore
 from loda.core.auth import Login
@@ -58,8 +58,7 @@ def answer(bot: Chatbot, question: str) -> str:
     IDENTITY_PROVIDER.verify(bot.login.token)
     reply = answer_with_memory(bot.llm, bot.store, bot.session_id, question,
                                tools=bot.tools, system=bot.system, model=bot.model)
-    is_dev = lambda u: archive.ADMIN_GROUP in u.groups
-    restored = bot.model.redactor.restore(reply, personal_data_visible_to(bot.login.user, is_dev))
+    restored = bot.model.redactor.restore(reply, personal_data_visible_to(bot.login.user, is_developer))
     return check_output(restored)
 
 

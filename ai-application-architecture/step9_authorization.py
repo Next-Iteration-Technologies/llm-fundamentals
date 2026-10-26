@@ -27,9 +27,9 @@ from loda.core.auth import Login, User
 from loda.core.tools import Tool
 from loda.features.retrieval import SYSTEM_PROMPT as STEP3_PROMPT
 from loda.pipeline.agent import answer_with_memory
+from loda.adapters.authorization import allowed_tools
 from loda.pipeline.builder import acting_as, bind_parameters
 from loda.pipeline.chatbot import Chatbot
-from step9_mcp_server_secure import allowed_tools
 
 DEMO_LINES = [
     "Where is invoice 1234?",
