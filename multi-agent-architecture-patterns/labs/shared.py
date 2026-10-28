@@ -47,11 +47,19 @@ if _MISSING:
 NEXUS_BASE_URL = os.environ["NEXUS_BASE_URL"]
 NEXUS_API_KEY = os.environ["NEXUS_API_KEY"]
 NEXUS_MODEL = os.environ.get("NEXUS_MODEL", "nexus-default")
+# Nexus is an Azure OpenAI style gateway: the model is in the path. Set
+# NEXUS_API_VERSION= (empty) for a plain OpenAI-style /chat/completions endpoint.
+NEXUS_API_VERSION = os.environ.get("NEXUS_API_VERSION", "2024-10-21")
 
 
 def _chat(messages: list[dict]) -> str:
+    base = NEXUS_BASE_URL.rstrip("/")
+    if NEXUS_API_VERSION:
+        url = f"{base}/openai/deployments/{NEXUS_MODEL}/chat/completions?api-version={NEXUS_API_VERSION}"
+    else:
+        url = base + "/chat/completions"
     response = httpx.post(
-        NEXUS_BASE_URL.rstrip("/") + "/chat/completions",
+        url,
         headers={"Authorization": f"Bearer {NEXUS_API_KEY}"},
         json={"model": NEXUS_MODEL, "messages": messages},
         timeout=120,
