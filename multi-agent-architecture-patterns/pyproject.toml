@@ -1,0 +1,9 @@
+[project]
+name = "multi-agent-architecture-patterns"
+version = "0.1.0"
+description = "Six multi-agent patterns, each run against the DAS archive chatbot"
+requires-python = ">=3.11"
+dependencies = ["httpx"]
+
+[tool.uv]
+package = false
