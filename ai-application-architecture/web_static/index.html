@@ -10,6 +10,7 @@
     --accent-weak: #eaf0fe;
     --blue: #3b6fd6;
     --green: #1f9d6c;
+    --purple: #9b5de5;
     --red: #e5484d;
     --bg: #f4f5f7;
     --panel: #ffffff;
@@ -26,6 +27,7 @@
       --accent-weak: #1b2544;
       --blue: #7aa2ff;
       --green: #3ddc97;
+      --purple: #b794f6;
       --red: #ff6b6e;
       --bg: #15171c;
       --panel: #1d2026;
@@ -202,7 +204,9 @@
   }
   .card.request .chip, .card.tool_call .chip { background: var(--blue); }
   .card.answer .chip { background: var(--green); }
+  .card.stored .chip { background: var(--purple); }
   .card.error .chip { background: var(--red); }
+  .timestamp.restored { font-style: italic; }
   .card-head .summary { flex: 1; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-head .caret { color: var(--text-dim); font-size: 10px; transition: transform 0.1s; }
   .card.open .card-head .caret { transform: rotate(90deg); }
@@ -265,6 +269,7 @@
     <button data-step="1" class="active">1 &middot; bare call</button>
     <button data-step="2">2 &middot; tools</button>
     <button data-step="3">3 &middot; retrieval</button>
+    <button data-step="4">4 &middot; memory (SQLite)</button>
   </div>
   <div class="spacer"></div>
   <span id="status"><span class="dot"></span> connecting&hellip;</span>
@@ -296,6 +301,7 @@ const tabsEl = document.getElementById("step-tabs");
 const messageEl = document.getElementById("message");
 const sendEl = document.getElementById("send");
 const statusEl = document.getElementById("status");
+const STORE_STEPS = new Set(["4"]);
 let currentStep = "1";
 let typingEl = null;
 
@@ -305,7 +311,7 @@ function timeNow() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function addBubble(role, text) {
+function addBubble(role, text, restored) {
   const turn = document.createElement("div");
   turn.className = "turn " + role;
   const avatar = document.createElement("div");
@@ -317,8 +323,8 @@ function addBubble(role, text) {
   bubble.className = "bubble";
   bubble.textContent = text;
   const time = document.createElement("div");
-  time.className = "timestamp";
-  time.textContent = timeNow();
+  time.className = "timestamp" + (restored ? " restored" : "");
+  time.textContent = restored ? "from conversations.db" : timeNow();
   col.appendChild(bubble);
   col.appendChild(time);
   turn.appendChild(avatar);
@@ -356,6 +362,7 @@ function summaryFor(event) {
     return `ran ${escapeHtml(event.name)}(${escapeHtml(args)})`;
   }
   if (event.type === "answer") return "answer ready";
+  if (event.type === "stored") return `saved &middot; ${event.count} message(s) in conversations.db`;
   if (event.type === "error") return "setup problem";
   return event.type;
 }
@@ -373,6 +380,11 @@ function bodyFor(event) {
   }
   if (event.type === "tool_call") return `<div class="row">${escapeHtml(event.result)}</div>`;
   if (event.type === "answer") return `<div class="row">${escapeHtml(event.text)}</div>`;
+  if (event.type === "stored") {
+    let html = `<div class="row">session '${escapeHtml(event.session_id)}' now has ${event.count} stored message(s)</div>`;
+    if (event.raw) html += `<div class="row">${escapeHtml(JSON.stringify(event.raw, null, 2))}</div>`;
+    return html;
+  }
   if (event.type === "error") return `<div class="row">${escapeHtml(event.text)}</div>`;
   return "";
 }
@@ -440,13 +452,28 @@ function clearPanes() {
   logEl.innerHTML = "";
 }
 
+async function loadStoredHistory(step) {
+  const dump = await fetch(`/api/dump?step=${step}`).then(r => r.json());
+  for (const message of dump.raw) {
+    if (message.role === "user" || (message.role === "assistant" && message.content)) {
+      addBubble(message.role, message.content, true);
+    }
+  }
+  addCard({ type: "stored", session_id: dump.session_id, count: dump.count, raw: dump.raw });
+}
+
+async function enterStep(step) {
+  clearPanes();
+  if (STORE_STEPS.has(step)) await loadStoredHistory(step);
+}
+
 document.getElementById("reset").addEventListener("click", async () => {
   await fetch("/api/reset", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ step: currentStep }),
   });
-  clearPanes();
+  await enterStep(currentStep);
 });
 
 tabsEl.addEventListener("click", (e) => {
@@ -454,7 +481,7 @@ tabsEl.addEventListener("click", (e) => {
   if (!button) return;
   currentStep = button.dataset.step;
   for (const b of tabsEl.querySelectorAll("button")) b.classList.toggle("active", b === button);
-  clearPanes();
+  enterStep(currentStep);
   messageEl.focus();
 });
 
