@@ -12,6 +12,7 @@ Labs also reuse the mock DAS archive (archive.py, one level up) so "find
 invoice 1234" is a real lookup against data/documents.json.
 """
 
+import inspect
 import json
 import os
 import sys
@@ -127,13 +128,14 @@ def _parse_json(reply: str) -> dict:
     return json.loads(reply[start:end + 1])
 
 
-def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: int = 8):
+def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: int = 15):
     """
     A minimal agent: the model picks a tool, we run it, it sees the result,
     repeat until it returns {"final": ...}. Tools are plain Python functions;
     their docstrings are what the model reads to choose between them.
     """
-    catalogue = "\n".join(f"- {name}: {fn.__doc__.strip()}" for name, fn in tools.items())
+    catalogue = "\n".join(f"- {name}{inspect.signature(fn)}: {fn.__doc__.strip()}"
+                          for name, fn in tools.items())
     messages = [
         {"role": "system", "content": role_prompt + _AGENT_PROTOCOL % catalogue},
         {"role": "user", "content": task},
