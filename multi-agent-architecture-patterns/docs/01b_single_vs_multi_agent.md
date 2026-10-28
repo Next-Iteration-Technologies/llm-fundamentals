@@ -43,6 +43,75 @@ shows.
 - **Untrusted content at volume:** the more hostile text an agent reads, the
   more you want it unable to act.
 
+## Costs of the split
+
+Multi-agent isn't free. This lab already ran into most of these costs.
+
+### Tokens and latency
+
+- **Context gets re-sent every step.** `run_agent` sends the whole
+  conversation so far on each step. Retrieval made 7 calls, so the earliest
+  tool results were billed 7 times.
+- **Information gets re-read.** Policy reads the policy and the emails
+  itself, and the Responder sees a summary of everything again. A single
+  agent would read each once.
+- **Overhead per agent.** Each one has its own system prompt and tool
+  protocol.
+- **It's slow.** A full run is about 20 sequential LLM calls; a single agent
+  might need about 12. Each stage waits for the previous one, so nothing runs
+  in parallel.
+
+### State and handoffs
+
+Every handoff is a **contract**: a schema plus an understanding of who owns
+what. Three of the bugs found while building this lab were at handoffs:
+
+- **The Responder said "the work order doesn't mention an auditor's letter".**
+  The information existed but wasn't passed on, so `requested_as` was added.
+- **The Policy agent treated "Classic" as a policy issue** because its
+  boundary was unclear. A prompt change fixed it.
+- **In a dry run, a request with no decision fell through the gap** between
+  stages, so "skipped means blocked" was added.
+
+A single agent has no handoffs, so none of these could have happened.
+
+### Errors compound
+
+- **Mistakes carry forward.** Intake's extra "supporting documents" item is
+  why credit note 1240 appeared. Later stages trust earlier output and don't
+  re-read the original request, so they rarely catch it.
+- **Five stages at 95% each give about 77% end to end.**
+
+### Distributed-system problems
+
+This lab runs in one process, so it avoids most of these. A real deployment
+wouldn't:
+
+- **Partial failure:** if Policy times out, Intake's and Retrieval's work is
+  lost unless the work order is saved at each step.
+- **Retries and duplicates:** retrying the action stage could export twice or
+  open two tickets.
+- **Versioning:** changing one agent's prompt or output format can break the
+  next agent without any error.
+- **Debugging:** you need tracing across agents to see where a run went
+  wrong. The `step()` trace lines are the lab's minimal version.
+- **Testing:** you need tests per stage *and* end to end.
+
+## The trade-off
+
+| | Single agent + code gate | Multi-agent + code gate |
+|---|---|---|
+| Tokens / latency | Lower | Higher |
+| Handoff bugs | None | Every boundary |
+| Failure handling | One loop | Checkpoints and retries per stage |
+| Independent check | No | Yes |
+| Scale / ownership / audit separation | Weak | Strong |
+
+**Rule of thumb:** start with one agent plus code. Split only when a specific
+need forces it: context limits, separate ownership, an auditor requiring
+separation, or untrusted content. Don't split just because a diagram looks
+cleaner.
+
 ## For the session
 
 Learners will spot this, so say it up front:
