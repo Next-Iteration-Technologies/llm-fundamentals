@@ -1,0 +1,5 @@
+[
+  {"date": "2026-10-12", "from": "hr-business-partner", "to": "priya", "subject": "Contract 7001", "about": ["7001"], "body": "Hi Priya, the employee on contract 7001 left in September, so the contract can be deleted from the archive now."},
+  {"date": "2026-10-20", "from": "legal-counsel", "to": "hr-records-lead", "subject": "Hold: contract 7001", "about": ["7001"], "body": "The former employee on contract 7001 has filed a claim about unpaid overtime. Please place the contract on legal hold. Do not delete it until Legal confirms the hold is lifted."},
+  {"date": "2026-10-21", "from": "finance-records-lead", "to": "priya", "subject": "Q3 freight invoices", "about": ["1234", "1235"], "body": "Reminder: both Q3 freight invoices (Meyer and Nordbahn) are already archived on CSP."}
+]

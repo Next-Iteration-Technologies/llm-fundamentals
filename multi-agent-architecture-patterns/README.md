@@ -7,6 +7,7 @@ project: it only depends on this folder's own `archive.py` and `data/`.
 | Pattern | Lab |
 |---|---|
 | 01 Sequential Pipeline | `labs/01_sequential_pipeline.py` |
+| 01b Sequential Pipeline, with real agents ([design](docs/01b_sequential_agents.md)) | `labs/01b_sequential_agents.py` |
 | 02 Coordinator + Specialists | `labs/02_coordinator_specialists.py` |
 | 03 Parallel Fan-Out | `labs/03_parallel_fanout.py` |
 | 04 Hierarchical Escalation | `labs/04_hierarchical_escalation.py` |
