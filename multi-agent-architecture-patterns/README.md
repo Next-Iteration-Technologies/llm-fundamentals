@@ -16,12 +16,16 @@ project: it only depends on this folder's own `archive.py` and `data/`.
 
 ## Setup
 
-Copy `.env.example` to `.env` and fill in Nexus's URL and key:
+Copy `.env.example` to `.env`, pick a provider and fill in its settings:
 
 ```
+LLM_PROVIDER=nexus            # or: anthropic
+
 NEXUS_BASE_URL=https://nexus.example.internal/v1
 NEXUS_API_KEY=...
 NEXUS_MODEL=MODEL-NAME
+
+ANTHROPIC_API_KEY=...         # only for LLM_PROVIDER=anthropic
 ```
 
 Every lab reads these from the environment — nothing is hardcoded.

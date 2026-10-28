@@ -1,9 +1,12 @@
 """
 Shared helpers for the multi-agent-pattern labs.
 
-Every lab talks to the same model: Nexus, read entirely from the environment
-(NEXUS_BASE_URL, NEXUS_API_KEY, optionally NEXUS_MODEL). Nothing is hardcoded,
-so each laptop in the room can point at its own Nexus endpoint via .env.
+Every lab talks to one model provider, picked by LLM_PROVIDER in .env:
+  nexus      (default) the company gateway: NEXUS_BASE_URL, NEXUS_API_KEY,
+             optionally NEXUS_MODEL and NEXUS_API_VERSION
+  anthropic  Claude via the Anthropic SDK: ANTHROPIC_API_KEY, optionally
+             ANTHROPIC_MODEL
+Nothing is hardcoded, so each laptop in the room can point at its own model.
 
 Labs also reuse the mock DAS archive (archive.py, one level up) so "find
 invoice 1234" is a real lookup against data/documents.json.
@@ -16,13 +19,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))  # project root, for archive.py
 
-import httpx
-
 import archive
 
 
 def _load_env_file() -> None:
-    """Read NEXUS_* from .env in the project root. A variable already set wins."""
+    """Read .env in the project root. A variable already set wins."""
     env_file = Path(__file__).parent.parent / ".env"
     if not env_file.exists():
         return
@@ -36,23 +37,54 @@ def _load_env_file() -> None:
 
 _load_env_file()
 
-_REQUIRED = ("NEXUS_BASE_URL", "NEXUS_API_KEY")
-_MISSING = [name for name in _REQUIRED if not os.environ.get(name)]
+PROVIDER = os.environ.get("LLM_PROVIDER", "nexus").strip().lower()
+_REQUIRED = {"nexus": ("NEXUS_BASE_URL", "NEXUS_API_KEY"), "anthropic": ("ANTHROPIC_API_KEY",)}
+if PROVIDER not in _REQUIRED:
+    sys.exit(f"LLM_PROVIDER={PROVIDER!r} is not known. Use one of: {', '.join(_REQUIRED)}.")
+_MISSING = [name for name in _REQUIRED[PROVIDER] if not os.environ.get(name)]
 if _MISSING:
     sys.exit(
-        f"Missing {', '.join(_MISSING)}. Set them in .env (see .env.example) "
-        "or export them before running a lab."
+        f"LLM_PROVIDER={PROVIDER} needs {', '.join(_MISSING)}. Set them in .env "
+        "(see .env.example) or export them before running a lab."
     )
 
-NEXUS_BASE_URL = os.environ["NEXUS_BASE_URL"]
-NEXUS_API_KEY = os.environ["NEXUS_API_KEY"]
-NEXUS_MODEL = os.environ.get("NEXUS_MODEL", "nexus-default")
-# Nexus is an Azure OpenAI style gateway: the model is in the path. Set
-# NEXUS_API_VERSION= (empty) for a plain OpenAI-style /chat/completions endpoint.
-NEXUS_API_VERSION = os.environ.get("NEXUS_API_VERSION", "2024-10-21")
+if PROVIDER == "nexus":
+    import httpx
+
+    NEXUS_BASE_URL = os.environ["NEXUS_BASE_URL"]
+    NEXUS_API_KEY = os.environ["NEXUS_API_KEY"]
+    NEXUS_MODEL = os.environ.get("NEXUS_MODEL", "nexus-default")
+    # Nexus is an Azure OpenAI style gateway: the model is in the path. Set
+    # NEXUS_API_VERSION= (empty) for a plain OpenAI-style /chat/completions endpoint.
+    NEXUS_API_VERSION = os.environ.get("NEXUS_API_VERSION", "2024-10-21")
+else:
+    import anthropic
+
+    ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-opus-5-5")
+    _claude = anthropic.Anthropic()
 
 
 def _chat(messages: list[dict]) -> str:
+    """One chat call. messages[0] is the system prompt, then user/assistant turns."""
+    return _chat_anthropic(messages) if PROVIDER == "anthropic" else _chat_nexus(messages)
+
+
+def _chat_anthropic(messages: list[dict]) -> str:
+    response = _claude.beta.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=16000,
+        system=messages[0]["content"],
+        messages=messages[1:],
+        # If a safety classifier declines, the API retries on a fallback model.
+        betas=["server-side-fallback-2026-07-01"],
+        fallbacks="default",
+    )
+    if response.stop_reason == "refusal":
+        raise RuntimeError(f"Claude declined the request ({response.stop_details})")
+    return "".join(block.text for block in response.content if block.type == "text")
+
+
+def _chat_nexus(messages: list[dict]) -> str:
     base = NEXUS_BASE_URL.rstrip("/")
     if NEXUS_API_VERSION:
         url = f"{base}/openai/deployments/{NEXUS_MODEL}/chat/completions?api-version={NEXUS_API_VERSION}"
@@ -69,7 +101,7 @@ def _chat(messages: list[dict]) -> str:
 
 
 def ask(role_prompt: str, user_text: str) -> str:
-    """One Nexus chat call: a role's system prompt plus the text it's asked about."""
+    """One chat call: a role's system prompt plus the text it's asked about."""
     return _chat([
         {"role": "system", "content": role_prompt},
         {"role": "user", "content": user_text},
