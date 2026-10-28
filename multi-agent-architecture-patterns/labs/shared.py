@@ -16,6 +16,7 @@ import inspect
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))  # project root, for archive.py
@@ -65,12 +66,34 @@ else:
     _claude = anthropic.Anthropic()
 
 
-def _chat(messages: list[dict]) -> str:
+# Cost per agent: label -> calls, tokens in/out, seconds. print_usage() shows it.
+USAGE: dict[str, dict] = {}
+
+
+def _chat(messages: list[dict], label: str = "") -> str:
     """One chat call. messages[0] is the system prompt, then user/assistant turns."""
-    return _chat_anthropic(messages) if PROVIDER == "anthropic" else _chat_nexus(messages)
+    started = time.perf_counter()
+    text, tokens_in, tokens_out = (_chat_anthropic if PROVIDER == "anthropic" else _chat_nexus)(messages)
+    entry = USAGE.setdefault(label or "(unlabelled)", {"calls": 0, "in": 0, "out": 0, "seconds": 0.0})
+    entry["calls"] += 1
+    entry["in"] += tokens_in
+    entry["out"] += tokens_out
+    entry["seconds"] += time.perf_counter() - started
+    return text
 
 
-def _chat_anthropic(messages: list[dict]) -> str:
+def print_usage() -> None:
+    """A per-agent cost table: what the split costs in calls, tokens and time."""
+    print(f"\n{'Agent':<18}{'calls':>6}{'tokens in':>11}{'tokens out':>12}{'seconds':>9}")
+    totals = {"calls": 0, "in": 0, "out": 0, "seconds": 0.0}
+    for label, u in USAGE.items():
+        print(f"{label:<18}{u['calls']:>6}{u['in']:>11,}{u['out']:>12,}{u['seconds']:>9.0f}")
+        for key in totals:
+            totals[key] += u[key]
+    print(f"{'Total':<18}{totals['calls']:>6}{totals['in']:>11,}{totals['out']:>12,}{totals['seconds']:>9.0f}")
+
+
+def _chat_anthropic(messages: list[dict]) -> tuple[str, int, int]:
     response = _claude.beta.messages.create(
         model=ANTHROPIC_MODEL,
         max_tokens=16000,
@@ -82,10 +105,11 @@ def _chat_anthropic(messages: list[dict]) -> str:
     )
     if response.stop_reason == "refusal":
         raise RuntimeError(f"Claude declined the request ({response.stop_details})")
-    return "".join(block.text for block in response.content if block.type == "text")
+    text = "".join(block.text for block in response.content if block.type == "text")
+    return text, response.usage.input_tokens, response.usage.output_tokens
 
 
-def _chat_nexus(messages: list[dict]) -> str:
+def _chat_nexus(messages: list[dict]) -> tuple[str, int, int]:
     base = NEXUS_BASE_URL.rstrip("/")
     if NEXUS_API_VERSION:
         url = f"{base}/openai/deployments/{NEXUS_MODEL}/chat/completions?api-version={NEXUS_API_VERSION}"
@@ -98,15 +122,18 @@ def _chat_nexus(messages: list[dict]) -> str:
         timeout=120,
     )
     response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"]
+    body = response.json()
+    usage = body.get("usage") or {}
+    return (body["choices"][0]["message"]["content"],
+            usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0))
 
 
-def ask(role_prompt: str, user_text: str) -> str:
+def ask(role_prompt: str, user_text: str, label: str = "") -> str:
     """One chat call: a role's system prompt plus the text it's asked about."""
     return _chat([
         {"role": "system", "content": role_prompt},
         {"role": "user", "content": user_text},
-    ])
+    ], label)
 
 
 _AGENT_PROTOCOL = """
@@ -128,11 +155,16 @@ def _parse_json(reply: str) -> dict:
     return json.loads(reply[start:end + 1])
 
 
-def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: int = 15):
+def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: int = 15,
+              validate=None):
     """
     A minimal agent: the model picks a tool, we run it, it sees the result,
     repeat until it returns {"final": ...}. Tools are plain Python functions;
     their docstrings are what the model reads to choose between them.
+
+    validate (optional) checks the final answer before it is handed on. It
+    returns the checked answer or raises ValueError; the error goes back to
+    the agent, which tries again within its step budget.
     """
     catalogue = "\n".join(f"- {name}{inspect.signature(fn)}: {fn.__doc__.strip()}"
                           for name, fn in tools.items())
@@ -141,7 +173,7 @@ def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: i
         {"role": "user", "content": task},
     ]
     for _ in range(max_steps):
-        reply = _chat(messages)
+        reply = _chat(messages, label)
         messages.append({"role": "assistant", "content": reply})
         try:
             action = _parse_json(reply)
@@ -149,8 +181,19 @@ def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: i
             messages.append({"role": "user", "content": "Reply with one JSON object only."})
             continue
         if "final" in action:
-            step(label, "done")
-            return action["final"]
+            if validate is None:
+                step(label, "done")
+                return action["final"]
+            try:
+                checked = validate(action["final"])
+            except ValueError as error:
+                step(label, f"handoff rejected: {_short(error)}")
+                messages.append({"role": "user", "content":
+                                 f"Your final answer was rejected at the handoff:\n{error}\n"
+                                 "Fix it and send the corrected final answer."})
+                continue
+            step(label, "done (handoff validated)")
+            return checked
         name, args = action.get("tool"), action.get("args") or {}
         if name not in tools:
             result = f"Unknown tool {name!r}. Use one of: {', '.join(tools)}."
@@ -162,6 +205,12 @@ def run_agent(label: str, role_prompt: str, task: str, tools: dict, max_steps: i
                 result = f"Tool error: {error}"
         messages.append({"role": "user", "content": f"<tool_result>{json.dumps(result, default=str)}</tool_result>"})
     raise RuntimeError(f"{label} did not finish within {max_steps} steps")
+
+
+def _short(error: Exception) -> str:
+    """The first line of an error, for one-line trace output."""
+    lines = str(error).strip().splitlines()
+    return lines[0][:120] + (f" (+{len(lines) - 1} more)" if len(lines) > 1 else "")
 
 
 def lookup_invoice(doc_id: str) -> dict | None:

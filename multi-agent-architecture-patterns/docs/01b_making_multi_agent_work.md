@@ -70,13 +70,20 @@ you do split, budget for the engineering.**
 
 ## Where the lab stands
 
-| Fix | In the lab? |
-|---|---|
-| Each stage writes only its own fields | Yes |
-| Side effects only in the code stage | Yes |
-| Invariant checks in code | Partly ("skipped means blocked", stricter wins) |
-| Trace | Minimal (`step()`) |
-| Schema validation, checkpoints, idempotency, token logging, per-stage evals, caching | No |
+| Fix | Simple 01b | Hardened 01b |
+|---|---|---|
+| Each stage writes only its own fields | Yes | Yes |
+| Side effects only in the code stage | Yes | Yes |
+| Invariant checks in code | Partly ("skipped means blocked", stricter wins) | Yes, at every handoff |
+| Cost per agent (calls, tokens, time) | Yes | Yes |
+| Schema validation with send-back | No | Yes |
+| Grounding check on Intake | No | Yes |
+| Checkpoints, resume, idempotent actions | No | Yes |
+| Trace | Minimal (`step()`) | Minimal (`step()`) |
+| Per-stage evals, caching, model per stage, fan-out | No | No |
+
+What each of these looks like in our pipeline, and how to run the hardened
+version: [01b_fixes_in_our_example.md](01b_fixes_in_our_example.md).
 
 ## For the session
 

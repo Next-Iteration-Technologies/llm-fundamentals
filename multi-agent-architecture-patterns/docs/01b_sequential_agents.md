@@ -1,6 +1,8 @@
 # Pattern 01b · Sequential Pipeline with real agents
 
 Lab: `labs/01b_sequential_agents.py` · Data: `data/audit_request/`
+· Hardened version: `labs/01b_sequential_agents_hardened.py`
+([notes](01b_fixes_in_our_example.md))
 
 Lab 01 shows the *shape* of a sequential pipeline, but none of its stages is
 an agent: two are plain functions and two are single LLM calls. With a clean
