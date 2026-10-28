@@ -123,3 +123,6 @@ which stage caught (or missed) each mess.
 3. Why is "stricter wins" in code rather than in the Policy agent's prompt?
 4. Which stage would you move to code first if the archive's vendor names were
    clean?
+
+For question 2, and whether this needs several agents at all, see
+[01b_single_vs_multi_agent.md](01b_single_vs_multi_agent.md).
