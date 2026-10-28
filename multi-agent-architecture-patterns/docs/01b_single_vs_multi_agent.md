@@ -112,6 +112,10 @@ need forces it: context limits, separate ownership, an auditor requiring
 separation, or untrusted content. Don't split just because a diagram looks
 cleaner.
 
+When you do have a reason to split, see
+[01b_making_multi_agent_work.md](01b_making_multi_agent_work.md) for how to
+handle each of these costs.
+
 ## For the session
 
 Learners will spot this, so say it up front:
