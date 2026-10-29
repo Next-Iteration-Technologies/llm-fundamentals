@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Subagents vs Standalone Agents</title>
+<style>
+/* Layout: same case-file reader as 01b; each section is one slide. Subagents are teal, the standalone agent is ochre, everywhere. */
+:root {
+  --paper: #f6f7f8;
+  --sheet: #ffffff;
+  --ink: #1b2430;
+  --ink-soft: #4a5868;
+  --rule: #d6dce3;
+  --sub: #0d7368;
+  --sub-tint: #e2f2ef;
+  --solo: #9a5b00;
+  --solo-tint: #f8eedc;
+  --flag: #b4322a;
+  --flag-tint: #f9e3e1;
+  --pre-bg: #eef1f4;
+  --display: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Cascadia Code", "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12171d; --sheet: #192028; --ink: #e4e9ee; --ink-soft: #a3b0bd; --rule: #2e3944;
+    --sub: #4cc2b3; --sub-tint: #15312e; --solo: #e0a443; --solo-tint: #33271a;
+    --flag: #ef7f75; --flag-tint: #3a1f1d; --pre-bg: #0f1419; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12171d; --sheet: #192028; --ink: #e4e9ee; --ink-soft: #a3b0bd; --rule: #2e3944;
+  --sub: #4cc2b3; --sub-tint: #15312e; --solo: #e0a443; --solo-tint: #33271a;
+  --flag: #ef7f75; --flag-tint: #3a1f1d; --pre-bg: #0f1419; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 16px/1.6 var(--body);
+  padding-inline: 16px;
+}
+a { color: var(--sub); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sub); outline-offset: 2px; }
+
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  margin-inline: -16px; padding: 8px 16px;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  font-size: 13px;
+}
+.bar strong { font-family: var(--display); font-size: 15px; }
+.bar nav { display: flex; gap: 4px 10px; flex-wrap: wrap; min-width: 0; }
+.bar nav a { color: var(--ink-soft); text-decoration: none; white-space: nowrap; }
+.bar nav a:hover, .bar nav a.here { color: var(--sub); }
+.bar .keys { margin-left: auto; color: var(--ink-soft); }
+.bar button {
+  font: inherit; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 2px 10px; cursor: pointer;
+}
+
+main { max-width: 980px; margin: 0 auto; padding-block: 24px 96px; }
+
+section.slide {
+  scroll-margin-top: 56px;
+  min-height: calc(100vh - 56px);
+  padding-block: 40px;
+  border-bottom: 1px solid var(--rule);
+  display: flex; flex-direction: column; justify-content: center; gap: 20px;
+}
+section.slide > * { min-width: 0; }
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: clamp(34px, 6.5vw, 58px); }
+h2 { font-size: clamp(26px, 4vw, 36px); }
+h3 { font-size: 19px; }
+p, li { max-width: 68ch; }
+p { margin: 0; }
+.lede { font-size: 19px; color: var(--ink-soft); }
+ul { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+
+.sub { color: var(--sub); font-weight: 600; }
+.solo { color: var(--solo); font-weight: 600; }
+.tag {
+  display: inline-block; font: 600 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 7px; border-radius: 4px; vertical-align: 2px;
+}
+.tag.s { background: var(--sub-tint); color: var(--sub); }
+.tag.o { background: var(--solo-tint); color: var(--solo); }
+.tag.f { background: var(--flag-tint); color: var(--flag); }
+
+/* the two definitions on the title slide */
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.def {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px;
+  display: grid; gap: 8px; align-content: start;
+}
+.def.is-solo { border-top: 4px solid var(--solo); }
+.def.is-sub { border-top: 4px solid var(--sub); }
+.def p { font-family: var(--display); font-size: 19px; line-height: 1.5; }
+
+/* comparison table */
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15.5px; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+thead th { font: 600 12px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+thead th.o { color: var(--solo); }
+thead th.s { color: var(--sub); }
+tbody th { font: 600 12px/1.5 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+td.s { background: var(--sub-tint); }
+
+/* trait cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 16px;
+  display: grid; gap: 8px; align-content: start;
+}
+.card.warn { border-color: var(--flag); background: var(--flag-tint); }
+.card .so { font-size: 14.5px; color: var(--ink-soft); border-top: 1px solid var(--rule); padding-top: 8px; }
+.card.warn .so { border-top-color: var(--flag); }
+
+/* briefs */
+figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+figcaption { font: 600 12px/1.4 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+figcaption.bad { color: var(--flag); }
+figcaption.good { color: var(--sub); }
+pre {
+  margin: 0; overflow-x: auto; background: var(--pre-bg); border-radius: 6px;
+  padding: 14px 16px; font: 14px/1.6 var(--mono); white-space: pre-wrap;
+}
+pre.bad { border-left: 3px solid var(--flag); }
+pre.good { border-left: 3px solid var(--sub); }
+pre b { color: var(--sub); font-weight: 600; }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; }
+.note { border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; background: var(--sheet); display: grid; gap: 6px; }
+.note.key { border-color: var(--sub); }
+.say {
+  font-family: var(--display); font-size: clamp(21px, 3vw, 26px); line-height: 1.45; padding-left: 18px;
+  border-left: 3px solid var(--sub); max-width: 52ch;
+}
+.diagram { overflow-x: auto; }
+.diagram svg { display: block; min-width: 720px; width: 100%; height: auto; }
+.diagram svg.small { min-width: 380px; }
+figcaption { color: var(--ink-soft); }
+td code { font: 0.88em var(--mono); background: var(--pre-bg); padding: 1px 5px; border-radius: 3px; }
+svg text { font-family: var(--body); }
+
+.counter {
+  position: fixed; right: 16px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 5;
+  font: 12px/1 var(--mono); color: var(--ink-soft); background: var(--sheet);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px;
+}
+@media (max-width: 1100px) { .bar .keys { display: none; } }
+@media (max-width: 640px) { section.slide { min-height: 0; padding-block: 28px; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <strong>Subagents</strong>
+  <nav id="nav" aria-label="Sections"></nav>
+  <span class="keys">← → or Space to move · F for full screen</span>
+  <button type="button" id="theme">Theme</button>
+</header>
+
+<main>
+
+<section class="slide" id="intro" data-short="Idea">
+  <div class="eyebrow">Multi-agent patterns · Concept</div>
+  <h1>A subagent is the same loop in a different seat</h1>
+  <p class="lede">Under the hood both are a model, a set of tools and a loop that runs until the model decides it's done. What makes one a subagent is who it works for. The second half covers how an orchestrator runs its subagents: in parallel or in sequence, by handoff or as tools, and what the industry calls each part.</p>
+  <div class="pair">
+    <div class="def is-solo">
+      <span class="tag o">Standalone agent</span>
+      <p>Works for a person. Owns the whole goal, sees the whole conversation, and can stop and ask.</p>
+    </div>
+    <div class="def is-sub">
+      <span class="tag s">Subagent</span>
+      <p>Works for another agent. Gets one task like a function call, hands one result back, then it's gone.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="compare" data-short="Compare">
+  <div class="eyebrow">Side by side</div>
+  <h2>Same engine, very different working conditions</h2>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th class="o">Standalone agent</th><th class="s">Subagent</th></tr></thead>
+    <tbody>
+      <tr><th>Works for</th><td>You</td><td class="s">A parent agent (the orchestrator)</td></tr>
+      <tr><th>Starts with</th><td>The full conversation, including your corrections</td><td class="s">Only the brief the parent wrote</td></tr>
+      <tr><th>Can it ask?</th><td>Yes, it can stop and check with you</td><td class="s">Usually not. It guesses or reports that it's blocked</td></tr>
+      <tr><th>Output read by</th><td>A person</td><td class="s">Another model</td></tr>
+      <tr><th>Lifetime</th><td>The whole session</td><td class="s">One task, then thrown away</td></tr>
+      <tr><th>Tools</th><td>Everything the session allows</td><td class="s">A narrowed set, e.g. search only</td></tr>
+      <tr><th>Decides done</th><td>When your goal is met</td><td class="s">When its task is met. The parent decides the rest</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="slide" id="picture" data-short="Picture">
+  <div class="eyebrow">What it looks like</div>
+  <h2>Briefs go down, short results come up, and the heavy reading stays below</h2>
+  <div class="diagram" role="img" aria-label="You talk to an orchestrator. The orchestrator sends a brief to each of three subagents and gets a short result back. The files each subagent reads stay inside that subagent.">
+    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--sub)"/></marker>
+        <marker id="arI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker>
+        <marker id="arO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--solo)"/></marker>
+      </defs>
+
+      <!-- you -->
+      <rect x="370" y="10" width="160" height="50" rx="25" fill="var(--sheet)" stroke="var(--ink-soft)"/>
+      <text x="450" y="41" text-anchor="middle" fill="var(--ink)" font-size="16" font-weight="600">You</text>
+      <g stroke="var(--solo)" stroke-width="1.6">
+        <line x1="440" y1="62" x2="440" y2="106" marker-end="url(#arO)"/>
+        <line x1="460" y1="106" x2="460" y2="64" marker-end="url(#arO)"/>
+      </g>
+      <text x="430" y="90" text-anchor="end" fill="var(--ink-soft)" font-size="13">goal, corrections</text>
+      <text x="470" y="90" text-anchor="start" fill="var(--ink-soft)" font-size="13">final answer</text>
+
+      <!-- orchestrator -->
+      <rect x="100" y="110" width="700" height="66" rx="6" fill="var(--solo-tint)" stroke="var(--solo)"/>
+      <text x="450" y="139" text-anchor="middle" fill="var(--ink)" font-size="16" font-weight="600">Orchestrator · a standalone agent</text>
+      <text x="450" y="162" text-anchor="middle" fill="var(--solo)" font-size="13">holds the whole conversation · sees only what subagents send back</text>
+
+      <!-- briefs and results -->
+      <g stroke-width="1.6">
+        <line x1="140" y1="178" x2="140" y2="246" stroke="var(--sub)" marker-end="url(#arS)"/>
+        <line x1="160" y1="248" x2="160" y2="180" stroke="var(--ink-soft)" stroke-dasharray="5 4" marker-end="url(#arI)"/>
+        <line x1="440" y1="178" x2="440" y2="246" stroke="var(--sub)" marker-end="url(#arS)"/>
+        <line x1="460" y1="248" x2="460" y2="180" stroke="var(--ink-soft)" stroke-dasharray="5 4" marker-end="url(#arI)"/>
+        <line x1="740" y1="178" x2="740" y2="246" stroke="var(--sub)" marker-end="url(#arS)"/>
+        <line x1="760" y1="248" x2="760" y2="180" stroke="var(--ink-soft)" stroke-dasharray="5 4" marker-end="url(#arI)"/>
+      </g>
+      <g font-size="13">
+        <text x="132" y="218" text-anchor="end" fill="var(--sub)">brief</text>
+        <text x="168" y="218" fill="var(--ink-soft)">result</text>
+        <text x="432" y="218" text-anchor="end" fill="var(--sub)">brief</text>
+        <text x="468" y="218" fill="var(--ink-soft)">result</text>
+        <text x="732" y="218" text-anchor="end" fill="var(--sub)">brief</text>
+        <text x="768" y="218" fill="var(--ink-soft)">result</text>
+      </g>
+
+      <!-- subagents -->
+      <g>
+        <rect x="40" y="250" width="220" height="130" rx="6" fill="var(--sub-tint)" stroke="var(--sub)"/>
+        <text x="150" y="276" text-anchor="middle" fill="var(--ink)" font-size="15" font-weight="600">Subagent · search code</text>
+        <rect x="340" y="250" width="220" height="130" rx="6" fill="var(--sub-tint)" stroke="var(--sub)"/>
+        <text x="450" y="276" text-anchor="middle" fill="var(--ink)" font-size="15" font-weight="600">Subagent · read logs</text>
+        <rect x="640" y="250" width="220" height="130" rx="6" fill="var(--sub-tint)" stroke="var(--sub)"/>
+        <text x="750" y="276" text-anchor="middle" fill="var(--ink)" font-size="15" font-weight="600">Subagent · check docs</text>
+      </g>
+      <g id="files" fill="var(--sheet)" stroke="var(--sub)" stroke-width="1">
+        <rect x="64" y="294" width="18" height="24" rx="2"/><rect x="90" y="294" width="18" height="24" rx="2"/><rect x="116" y="294" width="18" height="24" rx="2"/><rect x="142" y="294" width="18" height="24" rx="2"/><rect x="168" y="294" width="18" height="24" rx="2"/><rect x="194" y="294" width="18" height="24" rx="2"/><rect x="220" y="294" width="18" height="24" rx="2"/>
+        <rect x="364" y="294" width="18" height="24" rx="2"/><rect x="390" y="294" width="18" height="24" rx="2"/><rect x="416" y="294" width="18" height="24" rx="2"/><rect x="442" y="294" width="18" height="24" rx="2"/><rect x="468" y="294" width="18" height="24" rx="2"/><rect x="494" y="294" width="18" height="24" rx="2"/><rect x="520" y="294" width="18" height="24" rx="2"/>
+        <rect x="664" y="294" width="18" height="24" rx="2"/><rect x="690" y="294" width="18" height="24" rx="2"/><rect x="716" y="294" width="18" height="24" rx="2"/><rect x="742" y="294" width="18" height="24" rx="2"/><rect x="768" y="294" width="18" height="24" rx="2"/><rect x="794" y="294" width="18" height="24" rx="2"/><rect x="820" y="294" width="18" height="24" rx="2"/>
+      </g>
+      <g font-size="13" fill="var(--sub)" text-anchor="middle">
+        <text x="150" y="342">40 files read</text><text x="150" y="362">stay here</text>
+        <text x="450" y="342">12,000 log lines</text><text x="450" y="362">stay here</text>
+        <text x="750" y="342">9 pages read</text><text x="750" y="362">stay here</text>
+      </g>
+    </svg>
+  </div>
+  <p>The three subagents run at the same time. The orchestrator gets three paragraphs back instead of 40 files, 12,000 log lines and 9 pages. That gap is the main reason to split the work.</p>
+</section>
+
+<section class="slide" id="traits" data-short="Traits">
+  <div class="eyebrow">Five things that change in the subagent seat</div>
+  <h2>What a subagent lives with</h2>
+  <div class="cards">
+    <div class="card warn">
+      <h3>It starts knowing nothing</h3>
+      <p>All it has is the brief. "Check the auth code" with no reason means it has to guess what you're after.</p>
+      <p class="so">Most subagent failures come from thin briefs, not weak models.</p>
+    </div>
+    <div class="card">
+      <h3>Another model reads its output</h3>
+      <p>Its reader is the parent agent, not a person. A friendly essay just costs the parent tokens to parse.</p>
+      <p class="so">Ask for findings, evidence and a confidence level.</p>
+    </div>
+    <div class="card">
+      <h3>It can't ask anyone</h3>
+      <p>Nobody is on the other end to answer a question, so it has to pick a reading of the task.</p>
+      <p class="so">Tell it what to do when it's unsure: guess and say so, or stop.</p>
+    </div>
+    <div class="card">
+      <h3>It's short-lived</h3>
+      <p>It's created for one task and thrown away when that task is done. Anything it learned and didn't report is lost.</p>
+      <p class="so">Whatever the parent needs later has to be in the result.</p>
+    </div>
+    <div class="card">
+      <h3>Its tools are narrowed</h3>
+      <p>A search agent gets read access only. A reviewer can't edit files.</p>
+      <p class="so">A narrower toolset makes it more focused and safer to run.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="brief" data-short="Brief">
+  <div class="eyebrow">The handoff is the whole job</div>
+  <h2>The same task, briefed two ways</h2>
+  <div class="two">
+    <figure>
+      <figcaption class="bad">Thin brief</figcaption>
+      <pre class="bad">Check the auth code.</pre>
+    </figure>
+    <figure>
+      <figcaption class="good">Brief a subagent can act on</figcaption>
+      <pre class="good"><b>Goal</b>     Users get logged out after ~5 min.
+         Find why.
+<b>Known</b>    Token TTL is set to 60 min in
+         config/auth.yaml. Not the cause.
+<b>Scope</b>    src/auth/ and src/session/ only.
+         Read only, do not edit.
+<b>Return</b>   Up to 3 suspects: file:line,
+         why, confidence (high/med/low).
+<b>Stop</b>     If nothing turns up in 15 files,
+         say so and list what you ruled out.</pre>
+    </figure>
+  </div>
+  <p>Write the brief as if the reader had walked in mid-meeting. Include the goal, what you already know, where to look, what shape to send back, and when to stop.</p>
+</section>
+
+<section class="slide" id="why" data-short="Why">
+  <div class="eyebrow">Why split at all</div>
+  <h2>Three reasons to hand work to a subagent</h2>
+  <div class="cards">
+    <div class="note key">
+      <span class="tag s">Usually the real reason</span>
+      <h3>Isolation</h3>
+      <p>The subagent does the messy reading, and the parent's context stays clean. You keep the conclusion, not the file dumps.</p>
+    </div>
+    <div class="note">
+      <h3>Parallel work</h3>
+      <p>Five independent searches can run at once, each in its own subagent, instead of one after another.</p>
+    </div>
+    <div class="note">
+      <h3>Focus</h3>
+      <p>A narrow job with a narrow toolset gets done more reliably than one more item on a long to-do list.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="cost" data-short="Cost">
+  <div class="eyebrow">What you pay</div>
+  <h2>Every handoff costs something</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Tokens</h3>
+      <p>Each subagent re-reads its own instructions and does its own exploring. Three subagents can cost several times what one agent would.</p>
+    </div>
+    <div class="card">
+      <h3>Lost context</h3>
+      <p>Whatever the parent leaves out of the brief, the subagent doesn't know. Nuance gets lost at every handoff.</p>
+    </div>
+    <div class="card warn">
+      <h3>Unchecked results</h3>
+      <p>The parent only sees the summary. If a subagent invents a finding, the parent can't tell unless something checks it.</p>
+    </div>
+  </div>
+  <p>This is why the hardened <a href="../01b/index.html">Pattern 01b</a> adds <span class="sub">typed handoffs</span> (results must match a schema) and a <span class="sub">grounding check</span> (claims must point at real evidence). They exist to cover these weaknesses.</p>
+</section>
+
+<section class="slide" id="flow" data-short="Flow">
+  <div class="eyebrow">Orchestration · parallel or sequential</div>
+  <h2>Subagents aren't parallel or sequential. The dependencies decide.</h2>
+  <p class="lede">Ask one question: does the next step need this result? If it does, the step waits. If it doesn't, run them at the same time.</p>
+  <div class="diagram" role="img" aria-label="Research fans out to three subagents in parallel, then waits for all three. Plan and Build run in sequence. Review fans out to two subagents, then waits for both.">
+    <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g font-size="12" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" letter-spacing=".06em">
+        <text x="110" y="24">RESEARCH · PARALLEL</text>
+        <text x="350" y="24">PLAN</text>
+        <text x="540" y="24">BUILD</text>
+        <text x="760" y="24">REVIEW · PARALLEL</text>
+      </g>
+      <g stroke="var(--sub)" fill="var(--sub-tint)">
+        <rect x="30" y="40" width="160" height="46" rx="6"/>
+        <rect x="30" y="105" width="160" height="46" rx="6"/>
+        <rect x="30" y="170" width="160" height="46" rx="6"/>
+        <rect x="680" y="72" width="160" height="46" rx="6"/>
+        <rect x="680" y="138" width="160" height="46" rx="6"/>
+      </g>
+      <g stroke="var(--rule)" fill="var(--sheet)">
+        <rect x="280" y="105" width="140" height="46" rx="6"/>
+        <rect x="470" y="105" width="140" height="46" rx="6"/>
+      </g>
+      <g font-size="14" fill="var(--ink)" text-anchor="middle">
+        <text x="110" y="68">search code</text>
+        <text x="110" y="133">read logs</text>
+        <text x="110" y="198">check docs</text>
+        <text x="350" y="133">write the plan</text>
+        <text x="540" y="133">build it</text>
+        <text x="760" y="100">bugs</text>
+        <text x="760" y="166">security</text>
+      </g>
+      <g fill="var(--flag)">
+        <rect x="228" y="40" width="8" height="176" rx="2"/>
+        <rect x="870" y="72" width="8" height="112" rx="2"/>
+      </g>
+      <g font-size="12" fill="var(--flag)" font-weight="600">
+        <text x="232" y="240" text-anchor="middle">wait for all 3</text>
+        <text x="878" y="208" text-anchor="end">wait for both</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="1.5" fill="none" marker-end="url(#arF)">
+        <line x1="192" y1="63" x2="225" y2="63"/>
+        <line x1="192" y1="128" x2="225" y2="128"/>
+        <line x1="192" y1="193" x2="225" y2="193"/>
+        <line x1="238" y1="128" x2="277" y2="128"/>
+        <line x1="422" y1="128" x2="467" y2="128"/>
+        <line x1="612" y1="128" x2="677" y2="97"/>
+        <line x1="612" y1="128" x2="677" y2="159"/>
+        <line x1="842" y1="95" x2="867" y2="95"/>
+        <line x1="842" y1="161" x2="867" y2="161"/>
+      </g>
+      <text x="445" y="180" text-anchor="middle" font-size="12" fill="var(--ink-soft)">each needs the previous result · sequential</text>
+    </svg>
+  </div>
+  <div class="two">
+    <div class="note">
+      <h3>Parallel cuts the wait</h3>
+      <p>Three research subagents take as long as the slowest one, not as long as all three added together.</p>
+    </div>
+    <div class="note">
+      <h3>Background doesn't remove the wait</h3>
+      <p>The orchestrator can do unrelated work while a subagent runs, but anything that uses the result still waits for it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="control" data-short="Control">
+  <div class="eyebrow">Orchestration · who keeps control</div>
+  <h2>Handoff relay vs manager with agents as tools</h2>
+  <div class="two">
+    <figure>
+      <figcaption>Handoff · the baton moves</figcaption>
+      <div class="diagram"><svg class="small" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="User to Triage, handoff to Billing, handoff to Refunds. Refunds answers the user.">
+        <defs><marker id="arH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--solo)"/></marker></defs>
+        <rect x="8" y="50" width="62" height="40" rx="20" fill="var(--sheet)" stroke="var(--ink-soft)"/>
+        <g fill="var(--solo-tint)" stroke="var(--solo)">
+          <rect x="95" y="50" width="90" height="40" rx="6"/>
+          <rect x="210" y="50" width="90" height="40" rx="6"/>
+          <rect x="325" y="50" width="90" height="40" rx="6"/>
+        </g>
+        <g font-size="13" fill="var(--ink)" text-anchor="middle" font-weight="600">
+          <text x="39" y="75">User</text><text x="140" y="75">Triage</text><text x="255" y="75">Billing</text><text x="370" y="75">Refunds</text>
+        </g>
+        <g stroke="var(--solo)" stroke-width="1.5" fill="none" marker-end="url(#arH)">
+          <line x1="72" y1="70" x2="92" y2="70"/><line x1="187" y1="70" x2="207" y2="70"/><line x1="302" y1="70" x2="322" y2="70"/>
+          <path d="M370,92 L370,118 L39,118 L39,94"/>
+        </g>
+        <g font-size="11" fill="var(--ink-soft)" text-anchor="middle">
+          <text x="197" y="42">handoff</text><text x="312" y="42">handoff</text>
+          <text x="205" y="140">the last agent answers the user</text>
+        </g>
+      </svg></div>
+    </figure>
+    <figure>
+      <figcaption>Manager · control stays put</figcaption>
+      <div class="diagram"><svg class="small" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="User talks to Manager. Manager calls Billing and Refunds as tools and gets results back. Manager answers the user.">
+        <defs>
+          <marker id="arM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--sub)"/></marker>
+          <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker>
+        </defs>
+        <rect x="8" y="55" width="62" height="40" rx="20" fill="var(--sheet)" stroke="var(--ink-soft)"/>
+        <rect x="100" y="45" width="120" height="60" rx="6" fill="var(--solo-tint)" stroke="var(--solo)"/>
+        <g fill="var(--sub-tint)" stroke="var(--sub)">
+          <rect x="300" y="12" width="110" height="40" rx="6"/>
+          <rect x="300" y="98" width="110" height="40" rx="6"/>
+        </g>
+        <g font-size="13" fill="var(--ink)" text-anchor="middle" font-weight="600">
+          <text x="39" y="80">User</text><text x="160" y="80">Manager</text><text x="355" y="37">Billing</text><text x="355" y="123">Refunds</text>
+        </g>
+        <g stroke-width="1.5" fill="none">
+          <line x1="72" y1="70" x2="97" y2="70" stroke="var(--ink-soft)" marker-end="url(#arR)"/>
+          <line x1="98" y1="81" x2="74" y2="81" stroke="var(--ink-soft)" marker-end="url(#arR)"/>
+          <line x1="222" y1="60" x2="297" y2="28" stroke="var(--sub)" marker-end="url(#arM)"/>
+          <line x1="298" y1="40" x2="224" y2="70" stroke="var(--ink-soft)" stroke-dasharray="4 3" marker-end="url(#arR)"/>
+          <line x1="222" y1="90" x2="297" y2="122" stroke="var(--sub)" marker-end="url(#arM)"/>
+          <line x1="298" y1="110" x2="224" y2="80" stroke="var(--ink-soft)" stroke-dasharray="4 3" marker-end="url(#arR)"/>
+        </g>
+        <text x="160" y="140" font-size="11" fill="var(--ink-soft)" text-anchor="middle">the manager answers the user</text>
+      </svg></div>
+    </figure>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th class="o">Handoff / relay</th><th class="s">Manager + agents as tools</th></tr></thead>
+    <tbody>
+      <tr><th>Control</th><td>Moves to the next agent</td><td class="s">Stays with the manager</td></tr>
+      <tr><th>Talks to the user</th><td>Whoever holds the baton</td><td class="s">Only the manager</td></tr>
+      <tr><th>Context passed</th><td>Usually the full conversation</td><td class="s">A brief, like any subagent</td></tr>
+      <tr><th>Result goes to</th><td>The user, directly</td><td class="s">The manager, who checks and combines it</td></tr>
+      <tr><th>Combining results</th><td>Hard, since nobody sees the whole picture</td><td class="s">Natural, the manager does it</td></tr>
+      <tr><th>Failure mode</th><td>Routed to the wrong agent, or passed back and forth</td><td class="s">The manager becomes a bottleneck, and briefs get thin</td></tr>
+      <tr><th>Cost</th><td>Lower, no extra manager calls</td><td class="s">Higher, the manager re-reads every result</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cards">
+    <div class="note">
+      <span class="tag o">Use a handoff when</span>
+      <p>One specialist should own the rest of the conversation. Triage sends you to Billing, and Billing takes it from there.</p>
+    </div>
+    <div class="note key">
+      <span class="tag s">Use a manager when</span>
+      <p>The answer needs several specialists combined, checked, or kept in one voice, like research or the 01b audit request.</p>
+    </div>
+    <div class="note">
+      <span class="tag f">Not the same as 01b</span>
+      <p>In the 01b pipeline, code fixes the order. In a relay, the agent decides who's next. That makes it more flexible and harder to test.</p>
+    </div>
+  </div>
+  <p>Agents as tools are subagents. A handoff changes seats: the agent that receives it becomes the standalone agent, because it now owns the user and the goal.</p>
+</section>
+
+<section class="slide" id="terms" data-short="Terms">
+  <div class="eyebrow">Orchestration · what to call it</div>
+  <h2>Five names for the agent in charge</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>Where you'll see it</th><th>What it emphasises</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sub">Orchestrator</span></td><td>Anthropic's orchestrator-workers pattern, Microsoft's Magentic-One, most papers and blogs</td><td>The role: plans, delegates, combines</td></tr>
+      <tr><td><strong>Manager</strong></td><td>OpenAI's agent guide (manager pattern, agents as tools), CrewAI's hierarchical process</td><td>The control: one agent in charge</td></tr>
+      <tr><td><strong>Supervisor</strong></td><td>LangGraph's supervisor architecture</td><td>Routing and oversight of workers</td></tr>
+      <tr><td><strong>Coordinator</strong></td><td>Google ADK's coordinator/dispatcher pattern</td><td>Sending requests to the right specialist</td></tr>
+      <tr><td><span class="sub">Parent</span></td><td>Claude Code subagents, Google ADK <code>sub_agents</code></td><td>The structure: who spawned whom</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="note key">
+      <span class="tag s">In this course</span>
+      <p><strong>Orchestrator</strong> for the role. <strong>Parent / subagent</strong> for the relationship. Read manager and supervisor as synonyms when you meet them in other docs.</p>
+    </div>
+    <div class="note">
+      <span class="tag f">Careful</span>
+      <p>A coordinator is sometimes a pure router. It dispatches and never combines results, which makes it closer to a handoff than to a manager.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="takeaway" data-short="Takeaway">
+  <div class="eyebrow">One line to remember</div>
+  <div class="two">
+    <div class="def is-solo">
+      <span class="tag o">Standalone agent = employee</span>
+      <p>Talks to the client, knows the history, can ask questions and decides when the job is done.</p>
+    </div>
+    <div class="def is-sub">
+      <span class="tag s">Subagent = contractor</span>
+      <p>Gets a work order, can't call the client, and sends back a report.</p>
+    </div>
+  </div>
+  <p class="say">Any standalone agent becomes a subagent the moment another agent calls it as a tool.</p>
+</section>
+
+</main>
+
+<div class="counter" id="counter" aria-live="polite">1 / 11</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // SVG presentation attributes don't reliably take CSS variables; move them into style so both themes apply.
+  document.querySelectorAll("svg [fill], svg [stroke]").forEach(function (el) {
+    ["fill", "stroke"].forEach(function (attr) {
+      var v = el.getAttribute(attr);
+      if (v && v.indexOf("var(") === 0) { el.style.setProperty(attr, v); el.removeAttribute(attr); }
+    });
+  });
+
+  // Section nav and slide mode.
+  var slides = Array.prototype.slice.call(document.querySelectorAll("section.slide"));
+  var nav = document.getElementById("nav"), counter = document.getElementById("counter");
+  slides.forEach(function (s) {
+    var a = document.createElement("a");
+    a.href = "#" + s.id; a.textContent = s.dataset.short || s.id;
+    nav.appendChild(a);
+  });
+  var links = nav.querySelectorAll("a");
+  function mark(i) {
+    counter.textContent = (i + 1) + " / " + slides.length;
+    links.forEach(function (l, j) { l.classList.toggle("here", j === i); });
+  }
+  function nearest() {
+    var best = 0, bestDist = Infinity;
+    slides.forEach(function (s, i) {
+      var d = Math.abs(s.getBoundingClientRect().top - 60);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  }
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { mark(nearest()); ticking = false; });
+  }, { passive: true });
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ block: "start" });
+    mark(i);
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var k = e.key;
+    if (k === "ArrowRight" || k === "PageDown" || (k === " " && !e.shiftKey)) { e.preventDefault(); go(nearest() + 1); }
+    else if (k === "ArrowLeft" || k === "PageUp" || (k === " " && e.shiftKey)) { e.preventDefault(); go(nearest() - 1); }
+    else if (k === "Home") { e.preventDefault(); go(0); }
+    else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
+    else if (k === "f" || k === "F") {
+      try {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen().catch(function () {});
+      } catch (err) { /* full screen is optional */ }
+    }
+  });
+
+  // Theme toggle: system by default, then light, then dark.
+  var root = document.documentElement, btn = document.getElementById("theme");
+  var order = ["system", "light", "dark"], mode = "system";
+  try { mode = localStorage.getItem("subagents-theme") || "system"; } catch (err) {}
+  function apply() {
+    if (mode === "system") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", mode);
+    btn.textContent = "Theme: " + mode;
+  }
+  btn.addEventListener("click", function () {
+    mode = order[(order.indexOf(mode) + 1) % order.length];
+    try { localStorage.setItem("subagents-theme", mode); } catch (err) {}
+    apply();
+  });
+  apply();
+  mark(nearest());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recap: Agent Fundamentals and Multi-Agent</title>
+<style>
+:root {
+  --paper:#f6f7f8; --sheet:#fff; --ink:#1b2430; --ink-soft:#4a5868; --rule:#d6dce3;
+  --agent:#0d7368; --agent-tint:#e2f2ef; --code:#9a5b00; --code-tint:#f8eedc;
+  --flag:#b4322a; --flag-tint:#f9e3e1; --pre-bg:#eef1f4;
+  --display: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Cascadia Code", "Cascadia Mono", Consolas, ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper:#12171d; --sheet:#192028; --ink:#e4e9ee; --ink-soft:#a3b0bd; --rule:#2e3944;
+    --agent:#4cc2b3; --agent-tint:#15312e; --code:#e0a443; --code-tint:#33271a;
+    --flag:#ef7f75; --flag-tint:#3a1f1d; --pre-bg:#0f1419; color-scheme: dark; }
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.6 var(--body); }
+a { color:var(--agent); }
+header { position:sticky; top:0; z-index:5; background:var(--paper); border-bottom:1px solid var(--rule);
+  padding:10px 20px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+header strong { font-family:var(--display); font-size:18px; }
+header .hint { color:var(--ink-soft); font-size:13px; margin-left:auto; }
+header button { font:inherit; font-size:14px; color:var(--ink); background:var(--sheet);
+  border:1px solid var(--rule); border-radius:6px; padding:4px 12px; cursor:pointer; }
+button:focus-visible, a:focus-visible { outline:2px solid var(--agent); outline-offset:2px; }
+main { max-width:920px; margin:0 auto; padding:28px 20px 80px; }
+h1 { font-family:var(--display); font-size:34px; line-height:1.2; margin:0 0 4px; }
+.sub { color:var(--ink-soft); margin:0 0 20px; }
+h2.part { font-family:var(--display); font-size:15px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-soft); margin:36px 0 10px; }
+details.q { background:var(--sheet); border:1px solid var(--rule); border-radius:10px; margin:12px 0; }
+details.q[open] { border-color:var(--agent); }
+summary { list-style:none; cursor:pointer; padding:16px 20px; display:flex; gap:14px; align-items:baseline;
+  font-family:var(--display); font-size:21px; }
+summary::-webkit-details-marker { display:none; }
+summary .n { font:600 13px var(--mono); color:var(--agent); min-width:2.2em; }
+summary::after { content:"+"; margin-left:auto; color:var(--ink-soft); font:400 22px var(--body); }
+details[open] > summary::after { content:"\2212"; }
+summary:focus-visible { outline:2px solid var(--agent); outline-offset:-2px; border-radius:10px; }
+.a { padding:0 20px 18px 56px; }
+@media (max-width:600px) { .a { padding-left:20px; } summary { font-size:19px; } }
+.short { font-size:19px; font-weight:600; border-left:4px solid var(--agent); background:var(--agent-tint);
+  padding:8px 14px; border-radius:0 8px 8px 0; margin:4px 0 14px; }
+.short::before { content:"Short: "; color:var(--agent); }
+blockquote { margin:8px 0; padding:4px 0 4px 14px; border-left:3px solid var(--rule); color:var(--ink); }
+blockquote .src { font:600 12px var(--mono); color:var(--agent); margin-right:6px; }
+h3 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin:16px 0 4px; }
+.note { background:var(--code-tint); border-radius:8px; padding:8px 14px; margin:12px 0; font-size:15px; }
+.note b { color:var(--code); }
+.tag { display:inline-block; font:600 11px var(--mono); padding:0 7px; border-radius:999px;
+  background:var(--code-tint); color:var(--code); margin-right:4px; vertical-align:1px; }
+code { font-family:var(--mono); font-size:14px; background:var(--pre-bg); padding:1px 5px; border-radius:4px; }
+table { border-collapse:collapse; width:100%; font-size:15px; margin:8px 0; }
+th, td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { color:var(--ink-soft); font-weight:600; }
+ul { margin:.3em 0 .8em; padding-left:1.2em; }
+li { margin:.2em 0; }
+.sources { margin-top:48px; font-size:15px; }
+.sources h2 { font-family:var(--display); font-size:20px; }
+.sources li { margin:.4em 0; }
+.sources .src { font:600 12px var(--mono); color:var(--agent); display:inline-block; min-width:4.5em; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Recap</strong>
+  <button id="toggle" type="button">Expand all</button>
+  <span class="hint">Click a question to reveal · &uarr;/&darr; move · Enter/Space reveal</span>
+</header>
+<main>
+<h1>Agent Fundamentals &amp; Multi-Agent</h1>
+<p class="sub">Ask the room first, then click to reveal. Definitions are quoted from Anthropic, OpenAI and the MCP project; see <a href="#sources">Sources</a>.</p>
+
+<h2 class="part">Part 1 · Agent fundamentals</h2>
+
+<details class="q"><summary><span class="n">01</span>What is an agent?</summary><div class="a">
+  <p class="short">An LLM that decides its own steps and tools to get a task done.</p>
+  <blockquote><span class="src">[O]</span>&ldquo;Agents are systems that independently accomplish tasks on your behalf.&rdquo;</blockquote>
+  <blockquote><span class="src">[A]</span>&ldquo;Agents &hellip; are systems where LLMs dynamically direct their own processes and tool usage, maintaining control over how they accomplish tasks.&rdquo;</blockquote>
+  <blockquote><span class="src">[A]</span>Contrast: &ldquo;Workflows are systems where LLMs and tools are orchestrated through predefined code paths.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">DAS</span>The Retrieval agent finds nothing for &ldquo;Meyer Logistics&rdquo;, so it widens the search and finds &ldquo;Meyer Log. GmbH&rdquo;.</li>
+    <li>A coding agent runs the tests, reads the failure, fixes the code and runs the tests again.</li>
+    <li>Not an agent <span class="tag">[O]</span>: &ldquo;simple chatbots, single-turn LLMs, or sentiment classifiers&rdquo;.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">02</span>What is a tool?</summary><div class="a">
+  <p class="short">A function the model chooses to call. Your code runs it.</p>
+  <blockquote><span class="src">[O]</span>&ldquo;External functions or APIs the agent can use to take action.&rdquo;</blockquote>
+  <blockquote><span class="src">[A-TU]</span>&ldquo;Claude determines when to call a tool based on the user&rsquo;s request and the tool&rsquo;s description. It then returns a structured call that your application runs.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[O]</span>Three tool types: <b>Data</b> (query a CRM, read PDFs, search the web), <b>Action</b> (send email, update a record), <b>Orchestration</b> (another agent used as a tool).</li>
+    <li><span class="tag">DAS</span><code>search_documents</code> and <code>read_policy</code> are data tools.</li>
+    <li><span class="tag">DAS</span>No agent has a delete or send tool, so contract 7001 is safe and the instruction smuggled into record 1236 does nothing.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">03</span>What is a skill?</summary><div class="a">
+  <p class="short">An onboarding guide the agent opens only when it needs it.</p>
+  <blockquote><span class="src">[A-SK]</span>&ldquo;Agent Skills: organized folders of instructions, scripts, and resources that agents can discover and load dynamically to perform better at specific tasks.&rdquo;</blockquote>
+  <blockquote><span class="src">[A-SK]</span>&ldquo;Building a skill for an agent is like putting together an onboarding guide for a new hire.&rdquo;</blockquote>
+  <p>How it loads <span class="tag">[A-SK]</span>: only the <code>name</code> and <code>description</code> are loaded at startup. The full <code>SKILL.md</code> and its extra files are read only when relevant (&ldquo;progressive disclosure&rdquo;).</p>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[A-SK]</span>A PDF skill with form-filling instructions and a Python script that extracts form fields.</li>
+    <li><span class="tag">DAS</span>A &ldquo;tax-audit export&rdquo; skill holding the checklist, naming rules and who to notify.</li>
+    <li>Contrast: <code>send_email</code> is a tool; &ldquo;how we write escalation emails&rdquo; is a skill.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">04</span>What is the agent loop?</summary><div class="a">
+  <p class="short">Gather context, take action, verify, repeat until an exit condition is met.</p>
+  <blockquote><span class="src">[A]</span>Agents &ldquo;are typically just LLMs using tools based on environmental feedback in a loop.&rdquo;</blockquote>
+  <blockquote><span class="src">[A-SDK]</span>&ldquo;gather context &rarr; take action &rarr; verify work &rarr; repeat.&rdquo;</blockquote>
+  <blockquote><span class="src">[O]</span>&ldquo;a loop that lets agents operate until an exit condition is reached. Common exit conditions include tool calls, a certain structured output, errors, or reaching a maximum number of turns.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">DAS</span>Retrieval makes 7 searches, each one based on the previous result.</li>
+    <li><span class="tag">DAS</span>Policy reads the policy, then the emails, then finds the Legal hold.</li>
+    <li><span class="tag">[A]</span>Agents get &ldquo;ground truth&rdquo; at each step from tool results or code execution, and use &ldquo;stopping conditions (such as a maximum number of iterations)&rdquo;.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">05</span>What is MCP?</summary><div class="a">
+  <p class="short">A USB-C port for AI. You build the connector once and every agent can use it.</p>
+  <blockquote><span class="src">[MCP]</span>&ldquo;MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.&rdquo;</blockquote>
+  <blockquote><span class="src">[MCP]</span>&ldquo;Think of MCP like a USB-C port for AI applications.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[MCP]</span>Agents can access Google Calendar and Notion; Claude Code can build a web app from a Figma design.</li>
+    <li><span class="tag">[MCP]</span>The same server works in Claude, ChatGPT, VS Code and Cursor.</li>
+    <li><span class="tag">DAS</span><code>search_documents</code> could be served as an MCP server. MCP doesn&rsquo;t choose which tool to call; the agent does.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">06</span>What is the agent stack?</summary><div class="a">
+  <p class="short">Model + instructions + tools + knowledge/memory, wrapped in orchestration and guardrails.</p>
+  <blockquote><span class="src">[O]</span>An agent &ldquo;consists of three core components:&rdquo; <b>Model</b>, <b>Tools</b>, <b>Instructions</b>, plus <b>Orchestration</b> and <b>Guardrails</b>.</blockquote>
+  <blockquote><span class="src">[A]</span>&ldquo;The basic building block of agentic systems is an LLM enhanced with augmentations such as retrieval, tools, and memory.&rdquo; (the <em>augmented LLM</em>)</blockquote>
+  <p class="note"><b>Synthesis:</b> no standard source defines an &ldquo;agent stack&rdquo; by that name. This combines the closest official definitions.</p>
+  <h3>Examples</h3>
+  <table>
+    <tr><th>Layer</th><th>DAS lab</th></tr>
+    <tr><td>Model</td><td>Nexus or Anthropic</td></tr>
+    <tr><td>Instructions</td><td><code>POLICY_PROMPT</code></td></tr>
+    <tr><td>Tools</td><td><code>search_documents</code></td></tr>
+    <tr><td>Retrieval / memory</td><td>The policy, the emails, the work order</td></tr>
+    <tr><td>Orchestration</td><td>The pipeline order</td></tr>
+    <tr><td>Guardrails</td><td>The Access &amp; Action code</td></tr>
+  </table>
+  <blockquote><span class="src">[O]</span>&ldquo;Think of guardrails as a layered defense mechanism.&rdquo;</blockquote>
+</div></details>
+
+<h2 class="part">Part 2 · Multi-agent</h2>
+
+<details class="q"><summary><span class="n">07</span>What is multi-agent?</summary><div class="a">
+  <p class="short">Several agents, each running its own loop, working together on one task.</p>
+  <blockquote><span class="src">[A-MA]</span>&ldquo;A multi-agent system consists of multiple agents (LLMs autonomously using tools in a loop) working together.&rdquo;</blockquote>
+  <blockquote><span class="src">[O]</span>&ldquo;workflow execution is distributed across multiple coordinated agents.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[A-MA]</span>Claude Research: a lead agent spawns parallel search subagents, then a CitationAgent.</li>
+    <li><span class="tag">[O]</span>A triage agent hands off to an order-management agent or a technical-support agent.</li>
+    <li><span class="tag">DAS</span>Intake &rarr; Retrieval &rarr; Policy &rarr; Access &amp; Action (code) &rarr; Responder.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">08</span>What is an agent boundary?</summary><div class="a">
+  <p class="short">Objective, output format, tools, and clear limits.</p>
+  <blockquote><span class="src">[A-MA]</span>&ldquo;Each subagent needs an objective, an output format, guidance on the tools and sources to use, and clear task boundaries. Without detailed task descriptions, agents duplicate work, leave gaps, or fail to find necessary information.&rdquo;</blockquote>
+  <blockquote><span class="src">[O]</span>An agent uses tools &ldquo;always operating within clearly defined guardrails.&rdquo;</blockquote>
+  <p class="note"><b>Synthesis:</b> no standard source defines &ldquo;agent boundary&rdquo; as a term. These are the closest official statements.</p>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">DAS</span>Retrieval is read-only, Policy advises but never grants, and the Responder has no tools.</li>
+    <li><span class="tag">DAS</span>An unclear boundary made Policy treat &ldquo;Classic&rdquo; as a policy issue.</li>
+    <li><span class="tag">[A-MA]</span>Without clear boundaries, agents duplicate work or leave gaps.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">09</span>When should you go multi-agent?</summary><div class="a">
+  <p class="short">Start with one agent. Split for complex logic, tool overload, parallel work or context limits.</p>
+  <blockquote><span class="src">[O]</span>&ldquo;maximize a single agent&rsquo;s capabilities first &hellip; often a single agent with tools is sufficient.&rdquo;</blockquote>
+  <blockquote><span class="src">[O]</span>When to split: <b>Complex logic</b> (many if-then-else branches in one prompt) and <b>Tool overload</b>: &ldquo;some &hellip; manage more than 15 well-defined, distinct tools while others struggle with fewer than 10 overlapping tools.&rdquo;</blockquote>
+  <blockquote><span class="src">[A-MA]</span>Multi-agent excels at &ldquo;heavy parallelization, information that exceeds single context windows, and interfacing with numerous complex tools.&rdquo;</blockquote>
+  <blockquote><span class="src">[A-MA]</span>Cost: &ldquo;multi-agent systems use about 15&times; more tokens than chats.&rdquo; A poor fit when agents must share the same context or depend heavily on each other.</blockquote>
+  <blockquote><span class="src">[A]</span>&ldquo;find the simplest solution possible, and only increase complexity when needed.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[A-MA]</span>Finding the board members of every IT company in the S&amp;P 500: the multi-agent system succeeded where the single agent failed.</li>
+    <li><span class="tag">[A-MA]</span>Poor fit: most coding tasks, which have few truly parallel parts.</li>
+    <li><span class="tag">DAS</span>With 7 records and 1 policy, a single agent would do. Split for scale, ownership or audit.</li>
+  </ul>
+</div></details>
+
+<details class="q"><summary><span class="n">10</span>What are the multi-agent patterns?</summary><div class="a">
+  <p class="short">Chain, route, parallelize, orchestrate, evaluate; or manager vs. handoff.</p>
+  <h3>Anthropic workflow patterns [A]</h3>
+  <ul>
+    <li><b>Prompt chaining:</b> steps run in sequence.</li>
+    <li><b>Routing:</b> &ldquo;classifies an input and directs it to a specialized followup task.&rdquo;</li>
+    <li><b>Parallelization:</b> sectioning (independent subtasks) or voting (same task several times).</li>
+    <li><b>Orchestrator-workers:</b> &ldquo;a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results.&rdquo;</li>
+    <li><b>Evaluator-optimizer:</b> &ldquo;one LLM call generates a response while another provides evaluation and feedback in a loop.&rdquo;</li>
+  </ul>
+  <h3>OpenAI multi-agent patterns [O]</h3>
+  <ul>
+    <li><b>Manager (agents as tools):</b> &ldquo;A central &lsquo;manager&rsquo; agent coordinates multiple specialized agents via tool calls.&rdquo;</li>
+    <li><b>Decentralized (agents handing off to agents):</b> &ldquo;Multiple agents operate as peers, handing off tasks to one another.&rdquo;</li>
+  </ul>
+  <h3>Our lab patterns mapped</h3>
+  <table>
+    <tr><th>Lab pattern</th><th>Standard equivalent</th></tr>
+    <tr><td>01 Sequential Pipeline</td><td>[A] Prompt chaining</td></tr>
+    <tr><td>02 Coordinator + Specialists</td><td>[A] Routing / Orchestrator-workers, [O] Manager</td></tr>
+    <tr><td>03 Parallel Fan-Out</td><td>[A] Parallelization (sectioning)</td></tr>
+    <tr><td>04 Hierarchical Escalation</td><td>[A] Routing (easy &rarr; small model, hard &rarr; capable model) + human checkpoints</td></tr>
+    <tr><td>05 Event-Driven</td><td>Not named in either source</td></tr>
+    <tr><td>06 Blackboard / P2P</td><td>[O] Decentralized (closest match)</td></tr>
+  </table>
+  <p class="note"><b>Our interpretation:</b> neither Anthropic nor OpenAI uses the lab&rsquo;s pattern names. The mapping is ours.</p>
+</div></details>
+
+<details class="q"><summary><span class="n">11</span>What is a sequential pipeline?</summary><div class="a">
+  <p class="short">Fixed steps in order, each one taking the last one&rsquo;s output, with code gates in between.</p>
+  <blockquote><span class="src">[A]</span>&ldquo;Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one. You can add programmatic checks (see &lsquo;gate&rsquo; in the diagram below) on any intermediate steps.&rdquo;</blockquote>
+  <blockquote><span class="src">[A]</span>When to use: &ldquo;the task can be easily and cleanly decomposed into fixed subtasks. The main goal is to trade off latency for higher accuracy, by making each LLM call an easier task.&rdquo;</blockquote>
+  <h3>Examples</h3>
+  <ul>
+    <li><span class="tag">[A]</span>Write marketing copy, then translate it.</li>
+    <li><span class="tag">[A]</span>Write an outline, check it against criteria, then write the document.</li>
+    <li><span class="tag">DAS</span>Intake &rarr; Retrieval &rarr; Policy &rarr; <b>gate: Access &amp; Action (code)</b> &rarr; Responder.</li>
+  </ul>
+</div></details>
+
+<section class="sources" id="sources">
+  <h2>Sources</h2>
+  <ul>
+    <li><span class="src">[A]</span><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic, Building effective agents</a> (Dec 2024). Anthropic notes its tooling landscape has since changed; the definitions remain widely cited.</li>
+    <li><span class="src">[A-MA]</span><a href="https://www.anthropic.com/engineering/multi-agent-research-system">Anthropic, How we built our multi-agent research system</a> (Jun 2025)</li>
+    <li><span class="src">[A-SK]</span><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Anthropic, Equipping agents for the real world with Agent Skills</a> (Oct 2025)</li>
+    <li><span class="src">[A-SDK]</span><a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk">Anthropic, Building agents with the Claude Agent SDK</a> (Sep 2025)</li>
+    <li><span class="src">[A-TU]</span><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Anthropic docs, Tool use with Claude</a></li>
+    <li><span class="src">[O]</span><a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">OpenAI, A practical guide to building agents</a></li>
+    <li><span class="src">[MCP]</span><a href="https://modelcontextprotocol.io/docs/getting-started/intro">Model Context Protocol, What is MCP?</a></li>
+  </ul>
+</section>
+</main>
+<script>
+const all = [...document.querySelectorAll('details.q')];
+const btn = document.getElementById('toggle');
+const sync = () => { btn.textContent = all.every(d => d.open) ? 'Collapse all' : 'Expand all'; };
+btn.addEventListener('click', () => {
+  const open = !all.every(d => d.open);
+  all.forEach(d => { d.open = open; });
+  sync();
+});
+all.forEach(d => d.addEventListener('toggle', sync));
+document.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const i = all.findIndex(d => d.contains(document.activeElement));
+  const j = i < 0 ? 0 : Math.min(all.length - 1, Math.max(0, i + (e.key === 'ArrowDown' ? 1 : -1)));
+  e.preventDefault();
+  all[j].querySelector('summary').focus();
+  all[j].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+});
+</script>
+</body>
+</html>

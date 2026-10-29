@@ -9,13 +9,22 @@ project: it only depends on this folder's own `archive.py` and `data/`.
 | 01 Sequential Pipeline | `labs/01_sequential_pipeline.py` |
 | 01b Sequential Pipeline, with real agents ([design](docs/01b_sequential_agents.md)) | `labs/01b_sequential_agents.py` |
 | 01b hardened: contracts, checkpoints, cost ([notes](docs/01b_fixes_in_our_example.md)) | `labs/01b_sequential_agents_hardened.py` |
-
-**Pattern 01b explained without the code:** open [`docs/01b/index.html`](docs/01b/index.html) in a browser. It reads as a page, and the arrow keys turn it into slides.
 | 02 Coordinator + Specialists | `labs/02_coordinator_specialists.py` |
 | 03 Parallel Fan-Out | `labs/03_parallel_fanout.py` |
 | 04 Hierarchical Escalation | `labs/04_hierarchical_escalation.py` |
 | 05 Event-Driven | `labs/05_event_driven.py` |
 | 06 Blackboard / P2P | `labs/06_blackboard.py` |
+
+**Pattern 01b explained without the code:** open [`docs/01b/index.html`](docs/01b/index.html) in a browser. It reads as a page, and the arrow keys turn it into slides.
+
+## Content deck extras (TBD)
+
+Extra pages for the multi-agent content deck; the full deck lives elsewhere.
+Folder naming and linking are still to be decided.
+
+- `docs/design-exercises/index.html`: DAS multi-agent design session (exercises)
+- `docs/recap/recap-2026-10-29.html`: recap, agent fundamentals + multi-agent
+- `docs/subagents/index.html`: subagents vs standalone agents
 
 ## Setup
 
