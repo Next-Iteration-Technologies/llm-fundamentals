@@ -1,0 +1,26 @@
+[project]
+name = "open-weight-and-fine-tuning"
+version = "0.1.0"
+description = "Guides and scripts for running open-weight models locally and fine-tuning them"
+requires-python = ">=3.11"
+dependencies = [
+    "ollama>=0.4.0",
+    "openai>=1.40.0",
+    "pypdf>=5.0.0",
+    "numpy>=2.0.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+]
+
+[dependency-groups]
+docs = [
+    "mkdocs-material>=9.5.0",
+]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]

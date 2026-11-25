@@ -1,0 +1,29 @@
+# mlx-lm LoRA config for the Harbor Labs policy demo.
+# Official mlx-lm examples use a lower learning rate than typical PEFT
+# defaults, and LoRA scale 20. Do not copy a 1e-4 Unsloth/PEFT rate here.
+#
+# Default model: Qwen 3.5 0.8B (4-bit MLX build). To use 4B, set:
+#   model: mlx-community/Qwen3.5-4B-4bit
+# (confirm the current mlx-community id on Hugging Face before training).
+
+model: mlx-community/Qwen3.5-0.8B-4bit
+train: true
+data: ../data
+seed: 7
+fine_tune_type: lora
+optimizer: adamw
+iters: 200
+batch_size: 1
+num_layers: 16
+learning_rate: 1.0e-5
+max_seq_length: 1024
+adapter_path: ./adapters
+save_every: 50
+val_batches: 6
+grad_checkpoint: true
+
+lora_parameters:
+  keys: ["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj", "self_attn.o_proj", "mlp.gate_proj", "mlp.up_proj", "mlp.down_proj"]
+  rank: 16
+  scale: 20
+  dropout: 0.0

@@ -1,0 +1,11 @@
+[project]
+name = "qwen-finetune-mac-mlx"
+version = "0.1.0"
+description = "Apple Silicon LoRA training for the Harbor Labs Qwen 3.5 demo"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx-lm>=0.26.0",
+]
+
+[tool.uv]
+package = false

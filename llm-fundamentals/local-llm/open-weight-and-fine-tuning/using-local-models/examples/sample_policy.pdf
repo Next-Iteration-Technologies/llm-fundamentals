@@ -1,0 +1,107 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 5 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Length 2003 >>
+stream
+BT
+/F1 11 Tf
+50 780 Td
+14 TL
+(Harbor Labs Employee Policies \(internal\)) Tj
+T*
+( ) Tj
+T*
+(HR-14  Parental leave) Tj
+T*
+(Eligible employees receive 16 weeks of maternity leave. Eligible employees) Tj
+T*
+(receive 10 working days of paternity leave, to be taken within 60 days of) Tj
+T*
+(the child's birth. Eligible employees who adopt a child receive 4 weeks of) Tj
+T*
+(adoption leave. Leave is paid at the employee's base salary. Requests go) Tj
+T*
+(to People Operations at least 30 days in advance when the date is known.) Tj
+T*
+( ) Tj
+T*
+(HR-07  Expenses) Tj
+T*
+(Meals under 75 USD may be submitted without a receipt if paid on a company) Tj
+T*
+(card. Meals of 75 USD or more require an itemised receipt. Alcohol is not) Tj
+T*
+(reimbursable. Submit expense reports within 30 days of the purchase.) Tj
+T*
+(Travel over 400 USD needs manager pre-approval.) Tj
+T*
+( ) Tj
+T*
+(HR-03  Paid time off) Tj
+T*
+(Full-time employees receive 20 days of paid time off per calendar year,) Tj
+T*
+(accrued monthly. A maximum of 5 unused days may be carried into the next) Tj
+T*
+(year. Requests of 3 or more consecutive days must be submitted at least) Tj
+T*
+(7 days in advance. Sick leave is tracked separately and is not deducted) Tj
+T*
+(from the 20-day balance.) Tj
+T*
+( ) Tj
+T*
+(IT-11  Laptops and devices) Tj
+T*
+(Customer data may be stored only on a company-issued laptop. Personal) Tj
+T*
+(devices used for work email must be enrolled in mobile device management.) Tj
+T*
+(A lost or stolen laptop must be reported to IT within 4 hours.) Tj
+T*
+(Employees may not install unapproved remote-access software.) Tj
+T*
+( ) Tj
+T*
+(SEC-02  Data handling) Tj
+T*
+(Customer personal data must not be pasted into Slack, personal email, or) Tj
+T*
+(unapproved AI tools. Production access is granted only through a ticket) Tj
+T*
+(and is revoked on the day an employee leaves. Secrets belong in the) Tj
+T*
+(company vault, not in git.) Tj
+T*
+( ) Tj
+T*
+(This document is for Harbor Labs staff. It is not legal advice.) Tj
+T*
+( ) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000185 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2366
+%%EOF
