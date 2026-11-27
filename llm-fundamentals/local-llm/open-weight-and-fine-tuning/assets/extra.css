@@ -1,0 +1,38 @@
+/* Custom palette: deep navy + a single warm accent. */
+:root, [data-md-color-scheme="default"] {
+  --md-primary-fg-color: #1b2a4a;
+  --md-primary-fg-color--light: #2c4068;
+  --md-primary-fg-color--dark: #121c33;
+  --md-accent-fg-color: #c41e3a;
+  --md-accent-fg-color--transparent: rgba(196, 30, 58, 0.12);
+  --md-typeset-a-color: #9f1a31;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #d6deee;
+  --md-primary-fg-color--light: #e8edf6;
+  --md-primary-fg-color--dark: #b8c3d9;
+  --md-accent-fg-color: #ee5a6f;
+  --md-typeset-a-color: #ee5a6f;
+}
+
+.md-header { box-shadow: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.md-typeset h1 { font-weight: 650; letter-spacing: -0.02em; }
+.md-typeset h2 { font-weight: 600; letter-spacing: -0.01em; margin-top: 1.8em; }
+.md-typeset .tabbed-set { margin: 1.1em 0 1.6em; }
+.md-typeset .admonition, .md-typeset details {
+  border-radius: 8px;
+  box-shadow: none;
+}
+.md-typeset img {
+  border: 1px solid rgba(27, 42, 74, 0.12);
+  border-radius: 8px;
+  background: #fff;
+}
+[data-md-color-scheme="slate"] .md-typeset img {
+  border-color: rgba(255,255,255,0.12);
+}
+.md-typeset figcaption, .md-typeset em.caption {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85em;
+}

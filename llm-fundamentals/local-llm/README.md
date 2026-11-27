@@ -141,3 +141,21 @@ Running `train.py` overwrites `model.pt`. With the same settings and seed, `uv r
 2. In `train.py`, raise `DIM` to 64 and `N_LAYERS` to 4. How many parameters is that now, and how much slower does training get?
 3. Retrain the tokenizer with 1000 merges (`uv run bpe_tokenizer.py stories.txt 1000`), then delete `data.pt` and train again. Fewer, longer tokens: does that help? (`git restore tokenizer.json`, then delete `data.pt` and run `uv run train.py 10000`, puts everything back.)
 4. Run `generate.py` with a sentence from the stories, and then with a sentence from your own work. Compare how confident the model is about each.
+
+## Open-weight models and fine-tuning
+
+The toy GPT in this folder is a 63k-parameter teaching model. A separate workshop, with its own `uv` project, covers running real open-weight models on your machine and fine-tuning a small Qwen 3.5 model:
+
+[open-weight-and-fine-tuning/](open-weight-and-fine-tuning/)
+
+It includes an Ollama guide (install, APIs, and loading or unloading models from RAM), chat versus agent harnesses, LM Studio, a field-by-field VRAM calculator walkthrough, a RAG versus fine-tuning note, and a hands-on Qwen 3.5 0.8B policy-Q&A demo for Apple Silicon and NVIDIA.
+
+Do not mix that environment with this one. From the
+[open-weight-and-fine-tuning](open-weight-and-fine-tuning/) folder:
+
+```bash
+uv sync --group docs
+NO_MKDOCS_2_WARNING=1 uv run mkdocs serve
+```
+
+Then open http://127.0.0.1:8000, or read the Markdown on GitHub, starting at [open-weight-and-fine-tuning/README.md](open-weight-and-fine-tuning/README.md).

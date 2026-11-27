@@ -1,0 +1,99 @@
+site_name: Open-weight models and fine-tuning
+site_description: A workshop guide for running open-weight models on your own machine and fine-tuning them
+docs_dir: docs
+site_dir: site
+hooks:
+  - ensure_docs_links.py
+# Markdown in this folder is the source. GitHub readers can open the same files.
+
+exclude_docs: |
+  pyproject.toml
+  uv.lock
+  .gitignore
+  mkdocs.yml
+  site
+  lib
+  docs-theme
+  fine-tuning/sample_raw_docs
+  **/__pycache__
+  **/*.py
+  **/*.sh
+  **/*.toml
+  **/*.yaml
+  **/*.yml
+  **/*.jsonl
+  **/*.csv
+  **/Modelfile.template
+
+nav:
+  - Home: index.md
+  - Start here: start.md
+  - Using models locally:
+      - Ollama guide: using-local-models/ollama-guide.md
+      - Chat vs agent harnesses: using-local-models/chat-vs-agent-harnesses.md
+      - LM Studio: using-local-models/lm-studio-guide.md
+      - Hardware and VRAM: using-local-models/hardware-and-vram-guide.md
+      - Runnable examples: using-local-models/examples/README.md
+  - Fine-tuning:
+      - How fine-tuning works: fine-tuning/README.md
+      - RAG vs fine-tuning: fine-tuning/rag-vs-fine-tuning.md
+      - Dataset scripts: fine-tuning/scripts/README.md
+      - Qwen demo, how to run it: fine-tuning/qwen-finetune-demo/README.md
+      - How to read the demo folder: fine-tuning/qwen-finetune-demo/HOW_TO_READ.md
+
+theme:
+  name: material
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.sections
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark theme
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light theme
+
+extra_css:
+  - assets/extra.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true

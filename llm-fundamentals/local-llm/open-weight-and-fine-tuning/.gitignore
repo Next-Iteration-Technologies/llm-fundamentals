@@ -1,0 +1,11 @@
+site/
+.cache/
+__pycache__/
+*.pyc
+.venv/
+outputs/
+adapters/
+fused_model/
+export_gguf/
+*.gguf
+.DS_Store
